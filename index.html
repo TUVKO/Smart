@@ -314,6 +314,31 @@ input[type="password"]{padding-right:46px;}
 .logout-btn-new{width:auto;min-width:140px;margin:4px auto 0;background:var(--warn);border:none;border-radius:10px;color:#fff;padding:10px 22px;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
 .logout-btn-new:active{transform:scale(.98);}
 
+/* Style 5 — Bold Blocks (Account/Details page only) */
+#sec-profile{background:#fff;padding-bottom:0;}
+#sec-profile .inner-header{background:#1A1A1A;padding:26px 20px 22px;margin:0;display:block;gap:0;}
+#sec-profile .inner-header .inner-title{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8CFF6B;font-weight:800;margin-bottom:8px;}
+#sec-profile .inner-header .inner-sub{display:none;}
+#sec-profile .inner-header::after{content:'ACCOUNT';display:block;font-size:32px;font-weight:900;color:#fff;letter-spacing:.5px;margin-top:2px;}
+#sec-profile .section{padding:0;}
+#sec-profile .profile-compact-row{display:flex;align-items:center;gap:0;background:#8CFF6B;border:none;border-radius:0;padding:22px 20px;margin-bottom:0;box-shadow:none;}
+#sec-profile .profile-compact-avatar{display:none;}
+#sec-profile .profile-compact-name{font-size:22px;font-weight:900;color:#1A1A1A;margin-bottom:8px;}
+#sec-profile .profile-compact-status{background:#fff;color:#1A1A1A;border-radius:0;font-size:10px;letter-spacing:1px;padding:4px 10px;}
+#sec-profile .profile-info-section{background:#fff;border:none;border-radius:0;margin-bottom:0;}
+#sec-profile .profile-section-title{font-size:11px;letter-spacing:1.5px;color:#1A1A1A;font-weight:800;background:#fff;border-bottom:none;padding:22px 20px 12px;}
+#sec-profile .profile-info-item{padding:15px 20px;border-bottom:3px solid #1A1A1A;}
+#sec-profile .profile-info-label{font-size:11.5px;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
+#sec-profile .profile-info-value{font-size:16px;font-weight:900;color:#1A1A1A;}
+#sec-profile .settings-list{background:#fff;border:none;border-radius:0;margin-top:6px;margin-bottom:0;}
+#sec-profile .settings-row{padding:18px 20px;border-bottom:2px solid #EDEDED;transition:.15s;}
+#sec-profile .settings-row:hover{background:#1A1A1A;}
+#sec-profile .settings-row:hover .settings-row-label, #sec-profile .settings-row:hover .settings-chevron{color:#8CFF6B;}
+#sec-profile .settings-row-label{font-size:14.5px;font-weight:800;color:#1A1A1A;transition:.15s;}
+#sec-profile .settings-chevron{color:#1A1A1A;font-weight:900;transition:.15s;}
+#sec-profile .logout-btn-new{width:calc(100% - 40px);min-width:0;margin:26px 20px 30px;background:#1A1A1A;border-radius:0;color:#8CFF6B;padding:16px;font-size:13px;letter-spacing:1px;transition:.2s;}
+#sec-profile .logout-btn-new:hover{background:#8CFF6B;color:#1A1A1A;}
+
 /* Bottom Nav */
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:#1C3A22;display:flex;align-items:center;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:200;height:58px;box-sizing:content-box;}
 .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;padding:4px 2px;border-radius:10px;transition:transform .15s;background:transparent;flex:1;min-width:0;}
@@ -584,7 +609,6 @@ input[type="password"]{padding-right:46px;}
  <div class="section" style="padding-top:14px;">
  <div class="welcome-card">
  <span class="investor-pill">Investor</span>
- <div class="welcome-avatar" id="dash-welcome-avatar">—</div>
  <div class="welcome-text">
  <div class="welcome-greeting">Welcome back, <span id="dash-username">—</span></div>
  <button class="welcome-copy-link" onclick="copyRef()"><span></span>Copy Referral Link</button>
@@ -772,7 +796,6 @@ input[type="password"]{padding-right:46px;}
  <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Account</div><div class="inner-sub">Manage your profile</div></div></div>
  <div class="section">
  <div class="profile-compact-row">
- <div class="profile-compact-avatar" id="profile-avatar-lg">—</div>
  <div>
  <div class="profile-compact-name" id="profile-user-simple">—</div>
  <span class="profile-compact-status" id="profile-status-simple">—</span>
