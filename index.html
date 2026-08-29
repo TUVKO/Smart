@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
 <meta property="og:title" content="Smart_Trade — Smart Investment Platform">
 <meta property="og:description" content="Grow your money with 10% daily profit over 80 days. Trusted by thousands. Register free today.">
-<meta property="og:image" content="https://tuvko.github.io/Nexo/logo.png">
+<meta property="og:image" content="https://tuvko.github.io/Smart/logo.png">
 <meta property="og:url" content="https://tuvko.github.io/Nexo/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://tuvko.github.io/Nexo/logo.png">
+<meta name="twitter:image" content="https://tuvko.github.io/Smart/logo.png">
 <title>Smart_Trade — Grow Your Wealth</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2E7D32">
@@ -598,10 +598,6 @@ input[type="password"]{padding-right:46px;}
  <div class="menu-btn" onclick="openMenu()"><span></span><span></span><span></span></div>
  <div class="brand"><div class="brand-icon"><img src="logo.png" alt="Smart_Trade"></div><div class="brand-name">Smart_Trade</div></div>
  </div>
- <div class="topbar-right">
- <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()"></button>
- <div class="username-top" id="dash-avatar" onclick="openMenu()">—</div>
- </div>
  </div>
 
  <!-- HOME / DASHBOARD -->
@@ -836,7 +832,6 @@ input[type="password"]{padding-right:46px;}
  </div>
  </div>
 
- <div class="settings-row" onclick="openChangeAvatar()"><span class="settings-row-label">Change Avatar</span><span class="settings-chevron">›</span></div>
  <div class="settings-row" onclick="toggleSettingsForm('info')"><span class="settings-row-label">Edit Info</span><span class="settings-chevron" id="info-chevron">›</span></div>
  <div class="settings-form" id="info-form">
  <div class="settings-form-inner">
@@ -1072,16 +1067,6 @@ input[type="password"]{padding-right:46px;}
 <div class="toast" id="toast">Done!</div>
 <div class="popup-banner" id="popup-banner"></div>
 
-<!-- Avatar Picker -->
-<div class="avatar-picker-overlay" id="avatar-picker-overlay">
- <div class="avatar-picker-card">
- <div class="avatar-picker-title">Choose Your Avatar</div>
- <div class="avatar-picker-sub">Pick an emoji to represent you</div>
- <div class="emoji-grid" id="emoji-grid"></div>
- <button class="avatar-picker-skip" id="avatar-picker-skip-btn" onclick="skipAvatarPicker()">Skip for now</button>
- </div>
-</div>
-
 <!-- Growth Plan popup (shown from Login/Register pages) -->
 <div class="plan-modal-overlay" id="plan-modal-overlay">
  <div class="plan-modal-card">
@@ -1227,65 +1212,6 @@ const AVATAR_IMAGES = [
  'https://drive.google.com/uc?export=view&id=1fdQ8fQrD-JSCuh388qdx_IjFuyyFgkFm',
  'https://drive.google.com/uc?export=view&id=17z1Ws6xjZMtzOkx-fqSEVd0UcregT1nZ'
 ];
-let avatarPickerMode = 'register'; // 'register' or 'change'
-let avatarPickerSelection = null;
-
-function renderEmojiGrid() {
- const grid = document.getElementById('emoji-grid');
- if (!grid) return;
- let html = AVATAR_IMAGES.map(url =>
- `<div class="emoji-option avatar-img-option" data-val="${url}" onclick="pickAvatarEmoji(this)"><img src="${url}" alt="avatar" loading="lazy"></div>`
- ).join('');
- html += AVATAR_EMOJIS.map(e =>
- `<div class="emoji-option" data-val="${e}" onclick="pickAvatarEmoji(this)">${e}</div>`
- ).join('');
- grid.innerHTML = html;
-}
-
-function pickAvatarEmoji(el) {
- const val = el.getAttribute('data-val');
- avatarPickerSelection = val;
- document.querySelectorAll('.emoji-option').forEach(o => {
- o.classList.toggle('selected', o === el);
- });
- setTimeout(() => confirmAvatarSelection(), 200);
-}
-
-async function confirmAvatarSelection() {
- if (!avatarPickerSelection || !currentUsername) { closeAvatarPicker(); return; }
- currentUser.avatar = avatarPickerSelection;
- await db.ref('users/' + safeKey(currentUsername) + '/avatar').set(avatarPickerSelection);
- closeAvatarPicker();
- updateProfileUI();
- if (avatarPickerMode === 'register') {
- finishRegistrationFlow();
- }
-}
-
-function skipAvatarPicker() {
- closeAvatarPicker();
- if (avatarPickerMode === 'register') {
- finishRegistrationFlow();
- }
-}
-
-function closeAvatarPicker() {
- document.getElementById('avatar-picker-overlay').classList.remove('show');
- avatarPickerSelection = null;
-}
-
-function showAvatarPicker(mode) {
- avatarPickerMode = mode;
- avatarPickerSelection = null;
- renderEmojiGrid();
- const skipBtn = document.getElementById('avatar-picker-skip-btn');
- if (skipBtn) skipBtn.style.display = (mode === 'register') ? 'block' : 'none';
- document.getElementById('avatar-picker-overlay').classList.add('show');
-}
-
-function openChangeAvatar() {
- showAvatarPicker('change');
-}
 let currentUsername = null;
 let settingsData = {
  uraTax: 4, withdrawCharge: 10, refL1: 10, refL2: 4, refL3: 2,
@@ -1565,18 +1491,8 @@ function closeMenu() {
  document.getElementById('menu-overlay').classList.remove('open');
 }
 
-function toggleTheme() {
+function applyTheme() {
  const root = document.documentElement;
- const isDark = localStorage.getItem('pp_theme') === 'dark';
- const newTheme = isDark ? 'light' : 'dark';
- localStorage.setItem('pp_theme', newTheme);
- applyTheme(newTheme);
-}
-
-function applyTheme(theme) {
- const root = document.documentElement;
- const toggle = document.getElementById('theme-toggle');
- if (theme === 'light') {
  root.style.setProperty('--bg', '#E8F5E9');
  root.style.setProperty('--surface', '#ffffff');
  root.style.setProperty('--surface2', '#F1F8E9');
@@ -1585,23 +1501,11 @@ function applyTheme(theme) {
  root.style.setProperty('--text', '#1A2E1A');
  root.style.setProperty('--muted', '#5C7A5C');
  root.style.setProperty('--accent3', '#66BB6A');
- if (toggle) toggle.textContent = '';
- } else {
- root.style.setProperty('--bg', '#0F2113');
- root.style.setProperty('--surface', '#16301B');
- root.style.setProperty('--surface2', '#1C3A22');
- root.style.setProperty('--surface3', '#234A2A');
- root.style.setProperty('--border', 'rgba(255,255,255,0.1)');
- root.style.setProperty('--text', '#FFFFFF');
- root.style.setProperty('--muted', '#A5C9A8');
- root.style.setProperty('--accent3', '#66BB6A');
- if (toggle) toggle.textContent = '';
- }
 }
 
 function initTheme() {
- const savedTheme = localStorage.getItem('pp_theme') || 'light';
- applyTheme(savedTheme);
+ localStorage.removeItem('pp_theme');
+ applyTheme();
 }
 
 function showTerms() { 
