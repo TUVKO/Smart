@@ -294,6 +294,7 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  <div class="nav-item" onclick="showPage('pg-sog')"><span class="nav-icon">🔍</span><span>SOG</span></div>
  <div class="nav-item" onclick="showPage('pg-settings')"><span class="nav-icon">⚙️</span><span>Settings</span></div>
  <div class="nav-item" onclick="showPage('pg-admin-withdraw')"><span class="nav-icon">🏧</span><span>Admin Withdraw</span></div>
+ <div class="nav-item" onclick="showPage('pg-admin-deposit')"><span class="nav-icon">💰</span><span>Admin Deposit</span></div>
  </div>
  <div class="sidebar-footer">
  <button class="logout-btn" onclick="adminLogout()">Logout</button>
@@ -311,10 +312,11 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  <div class="stat-card"><div class="stat-card-label">Total Withdrawn</div><div class="stat-card-val red" id="d-total-withdrawn">—</div></div>
  </div>
  <div class="pct-summary" id="pct-summary"></div>
- <div class="stats-row" style="grid-template-columns:repeat(3,1fr)">
+ <div class="stats-row" style="grid-template-columns:repeat(4,1fr)">
  <div class="stat-card"><div class="stat-card-label">Locked Users</div><div class="stat-card-val red" id="d-locked">—</div></div>
  <div class="stat-card"><div class="stat-card-label">Min Deposit</div><div class="stat-card-val gold" id="d-min-deposit">—</div></div>
  <div class="stat-card"><div class="stat-card-label">Active Investors</div><div class="stat-card-val amber" id="d-active-investors">—</div></div>
+ <div class="stat-card"><div class="stat-card-label">Admin Deposits</div><div class="stat-card-val emerald" id="d-admin-deposits">—</div></div>
  </div>
  </div>
 
@@ -567,6 +569,36 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  </table>
  </div>
  </div>
+</div>
+
+<!-- ADMIN DEPOSIT -->
+<div class="page" id="pg-admin-deposit">
+ <div class="page-title">Admin Deposit</div>
+ <div class="page-sub">Collect funds via MarzPay — sends a PIN confirmation request to the phone</div>
+ <div class="table-wrap" style="max-width:520px;">
+ <div class="table-header"><div class="table-title">Add Cash via MarzPay</div></div>
+ <div style="padding:24px;">
+ <div style="margin-bottom:16px;">
+ <label class="f-label">Phone Number</label>
+ <div class="f-wrap"><span class="f-icon"></span><input type="tel" class="f-input" id="ad-phone" placeholder="+256712345678"></div>
+ <div class="f-err" id="ad-phone-err">Enter a valid phone number</div>
+ </div>
+ <div style="margin-bottom:16px;">
+ <label class="f-label">Amount (UGX)</label>
+ <div class="f-wrap"><span class="f-icon"></span><input type="number" class="f-input" id="ad-amount" placeholder="Enter amount e.g. 50000" min="1000"></div>
+ <div class="f-err" id="ad-amount-err">Enter a valid amount</div>
+ </div>
+ <div id="ad-result" style="display:none;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;font-weight:700;"></div>
+ <button class="btn btn-success" style="width:100%;padding:14px;font-size:14px;" id="ad-submit-btn" onclick="processAdminDeposit()">ADD CASH</button>
+ </div>
+ </div>
+ <div class="table-wrap" style="max-width:520px;margin-top:20px;">
+ <div class="table-header"><div class="table-title">Admin Deposit History</div></div>
+ <table>
+ <thead><tr><th>Date</th><th>Phone</th><th>Amount</th><th>Status</th></tr></thead>
+ <tbody id="ad-history-body"><tr class="empty-row"><td colspan="4">No deposits yet</tr></tbody>
+ </table>
+ </div>
  </div>
 </div>
 
@@ -645,6 +677,43 @@ async function marzSend(phone, amount, reference, description) {
  return await response.json();
 }
 
+async function marzCollect(phone, amount, reference, description) {
+ if (!allSettings.marzApiKey) throw new Error('Payment API not configured');
+ const formData = new FormData();
+ formData.append('phone_number', phone);
+ formData.append('amount', String(amount));
+ formData.append('country', 'UG');
+ formData.append('reference', reference);
+ formData.append('description', description);
+ const response = await fetch(MARZ_API + '/collect-money', {
+ method: 'POST',
+ headers: { 'Authorization': getMarzAuth() },
+ body: formData
+ });
+ if (!response.ok) throw new Error('Payment gateway error: ' + response.status);
+ return await response.json();
+}
+
+async function marzCheckStatus(uuid) {
+ const response = await fetch(MARZ_API + '/transactions/' + uuid, { headers: { 'Authorization': getMarzAuth() } });
+ if (!response.ok) return null;
+ return await response.json();
+}
+
+async function pollAdminDepositStatus(uuid, maxAttempts = 40, intervalMs = 5000) {
+ for (let i = 0; i < maxAttempts; i++) {
+ await new Promise(r => setTimeout(r, intervalMs));
+ try {
+ const result = await marzCheckStatus(uuid);
+ if (!result) continue;
+ const status = (result?.transaction?.status || result?.data?.transaction?.status || result?.status || '').toLowerCase();
+ if (status === 'completed' || status === 'successful' || status === 'success') return 'success';
+ if (status === 'failed' || status === 'cancelled') return 'failed';
+ } catch (e) { continue; }
+ }
+ return 'timeout';
+}
+
 let allUsers = {};
 let allSettings = {
  uraTax: 4,
@@ -667,6 +736,7 @@ let debitTargetUser = null;
 let debitHistory = [];
 let allWithdrawals = {};
 let awHistory = [];
+let adHistory = [];
 let allAdminTransactions = {};
 
 let usersUnsubscribe = null;
@@ -719,6 +789,7 @@ function startRealtimeListeners() {
  
  startNotifListener();
  loadAwHistory();
+ loadAdHistory();
 
  // Auto-cleanup: notifications older than 12h, admin transactions older than 10h,
  // and user transaction histories older than 40h
@@ -1707,6 +1778,128 @@ async function loadAwHistory() {
  renderAwHistory();
  }
  } catch (e) { console.warn('Could not load admin withdrawal history:', e); }
+}
+
+async function processAdminDeposit() {
+ const phoneErr = document.getElementById('ad-phone-err');
+ const amtErr = document.getElementById('ad-amount-err');
+ const resultDiv = document.getElementById('ad-result');
+ phoneErr.classList.remove('show');
+ amtErr.classList.remove('show');
+ resultDiv.style.display = 'none';
+
+ const phone = document.getElementById('ad-phone').value.trim();
+ const amount = parseInt(document.getElementById('ad-amount').value) || 0;
+
+ if (!phone) { phoneErr.classList.add('show'); return; }
+ if (amount < 1000) { amtErr.classList.add('show'); return; }
+
+ if (!allSettings.marzApiKey) {
+ resultDiv.style.display = 'block';
+ resultDiv.style.background = 'rgba(248,113,113,.12)';
+ resultDiv.style.border = '1px solid rgba(248,113,113,.3)';
+ resultDiv.style.color = 'var(--warn)';
+ resultDiv.textContent = 'MarzPay API key not configured. Go to Settings first.';
+ return;
+ }
+
+ const btn = document.getElementById('ad-submit-btn');
+ btn.disabled = true;
+ btn.textContent = 'Requesting...';
+
+ const reference = 'admdep_' + Date.now();
+ const now = dateStr();
+
+ resultDiv.style.display = 'block';
+ resultDiv.style.background = 'rgba(251,191,36,.12)';
+ resultDiv.style.border = '1px solid rgba(251,191,36,.3)';
+ resultDiv.style.color = 'var(--gold)';
+ resultDiv.textContent = 'Request sent — waiting for ' + phone + ' to confirm with their mobile money PIN...';
+
+ try {
+ const res = await marzCollect(phone, amount, reference, 'Smart_Trade Admin Deposit');
+ const txUuid = res?.data?.transaction?.uuid || res?.transaction?.uuid;
+ if (!txUuid) {
+ const msg = res?.message || 'Could not initiate request';
+ resultDiv.style.background = 'rgba(248,113,113,.12)';
+ resultDiv.style.border = '1px solid rgba(248,113,113,.3)';
+ resultDiv.style.color = 'var(--warn)';
+ resultDiv.textContent = 'Failed: ' + msg;
+ adHistory.unshift({ date: now, phone, amount, status: 'Failed: ' + msg });
+ await db.ref('adminDeposits/' + reference).set({ date: now, phone, amount, status: 'failed', message: msg });
+ renderAdHistory();
+ btn.disabled = false;
+ btn.textContent = 'ADD CASH';
+ return;
+ }
+ btn.textContent = 'Waiting for PIN...';
+ const pollResult = await pollAdminDepositStatus(txUuid);
+ if (pollResult === 'success') {
+ resultDiv.style.background = 'rgba(52,211,153,.12)';
+ resultDiv.style.border = '1px solid rgba(52,211,153,.3)';
+ resultDiv.style.color = 'var(--accent3)';
+ resultDiv.textContent = 'Success! ' + fmt(amount) + ' collected from ' + phone;
+ adHistory.unshift({ date: now, phone, amount, status: 'Success' });
+ await db.ref('adminDeposits/' + reference).set({ date: now, phone, amount, status: 'success', reference, uuid: txUuid });
+ document.getElementById('ad-phone').value = '';
+ document.getElementById('ad-amount').value = '';
+ updateAdminDepositsStat();
+ } else {
+ const label = pollResult === 'timeout' ? 'Timed out waiting for PIN confirmation' : 'Failed or cancelled by customer';
+ resultDiv.style.background = 'rgba(248,113,113,.12)';
+ resultDiv.style.border = '1px solid rgba(248,113,113,.3)';
+ resultDiv.style.color = 'var(--warn)';
+ resultDiv.textContent = label;
+ adHistory.unshift({ date: now, phone, amount, status: pollResult === 'timeout' ? 'Timeout' : 'Failed' });
+ await db.ref('adminDeposits/' + reference).set({ date: now, phone, amount, status: pollResult === 'timeout' ? 'timeout' : 'failed', uuid: txUuid });
+ }
+ } catch (e) {
+ resultDiv.style.background = 'rgba(248,113,113,.12)';
+ resultDiv.style.border = '1px solid rgba(248,113,113,.3)';
+ resultDiv.style.color = 'var(--warn)';
+ resultDiv.textContent = 'Error: ' + e.message;
+ adHistory.unshift({ date: now, phone, amount, status: 'Error: ' + e.message });
+ }
+
+ btn.disabled = false;
+ btn.textContent = 'ADD CASH';
+ renderAdHistory();
+}
+
+function renderAdHistory() {
+ const tbody = document.getElementById('ad-history-body');
+ if (!adHistory.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="4">No deposits yet<\/tr>'; return; }
+ tbody.innerHTML = adHistory.slice(0, 30).map(h => `
+ <tr>
+ <td class="mono" style="font-size:11px;">${h.date}</td>
+ <td class="mono">${h.phone}</td>
+ <td class="mono" style="color:var(--gold);">${fmt(h.amount)}</td>
+ <td style="font-size:12px;font-weight:700;">${h.status}</td>
+ </tr>
+ `).join('');
+}
+
+async function loadAdHistory() {
+ try {
+ const snap = await db.ref('adminDeposits').orderByKey().limitToLast(30).get();
+ if (snap.exists()) {
+ adHistory = Object.values(snap.val()).reverse();
+ renderAdHistory();
+ }
+ } catch (e) { console.warn('Could not load admin deposit history:', e); }
+ updateAdminDepositsStat();
+}
+
+async function updateAdminDepositsStat() {
+ try {
+ const snap = await db.ref('adminDeposits').get();
+ const el = document.getElementById('d-admin-deposits');
+ if (!el) return;
+ if (!snap.exists()) { el.textContent = fmt(0); return; }
+ let total = 0;
+ Object.values(snap.val()).forEach(d => { if (d.status === 'success') total += (d.amount || 0); });
+ el.textContent = fmt(total);
+ } catch (e) { console.warn('Could not compute admin deposits total:', e); }
 }
 
 let adminNotifications = {};
