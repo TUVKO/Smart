@@ -1807,7 +1807,7 @@ async function processAdminDeposit() {
  btn.disabled = true;
  btn.textContent = 'Requesting...';
 
- const reference = 'admdep_' + Date.now();
+ const reference = genUUID();
  const now = dateStr();
 
  resultDiv.style.display = 'block';
