@@ -700,7 +700,7 @@ async function marzCheckStatus(uuid) {
  return await response.json();
 }
 
-async function pollAdminDepositStatus(uuid, maxAttempts = 40, intervalMs = 5000) {
+async function pollAdminDepositStatus(uuid, maxAttempts = 120, intervalMs = 5000) {
  for (let i = 0; i < maxAttempts; i++) {
  await new Promise(r => setTimeout(r, intervalMs));
  try {
@@ -1818,8 +1818,7 @@ async function processAdminDeposit() {
 
  try {
  const res = await marzCollect(phone, amount, reference, 'Smart_Trade Admin Deposit');
- const txUuid = res?.data?.transaction?.uuid || res?.transaction?.uuid;
- if (!txUuid) {
+ if (res.status !== 'success') {
  const msg = res?.message || 'Could not initiate request';
  resultDiv.style.background = 'rgba(248,113,113,.12)';
  resultDiv.style.border = '1px solid rgba(248,113,113,.3)';
@@ -1832,8 +1831,9 @@ async function processAdminDeposit() {
  btn.textContent = 'ADD CASH';
  return;
  }
+ const txUuid = res?.data?.transaction?.uuid;
  btn.textContent = 'Waiting for PIN...';
- const pollResult = await pollAdminDepositStatus(txUuid);
+ const pollResult = await pollAdminDepositStatus(txUuid, 120, 5000);
  if (pollResult === 'success') {
  resultDiv.style.background = 'rgba(52,211,153,.12)';
  resultDiv.style.border = '1px solid rgba(52,211,153,.3)';

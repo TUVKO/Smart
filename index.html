@@ -83,9 +83,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .field-label{font-size:9.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block;}
 .field-wrap{position:relative;display:flex;align-items:center;}
 .field-icon{position:absolute;left:14px;font-size:16px;pointer-events:none;z-index:2;}
-input,select{width:100%;background:rgba(20,32,58,0.8);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:'Inter',sans-serif;font-size:13px;color:#fff;outline:none;transition:border-color .2s, box-shadow .2s;}
-input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,179,0,.15);}
-select{cursor:pointer;}select option{background:var(--surface2);}
+input,select{width:100%;background:var(--surface);border:1px solid var(--card-border);border-radius:10px;padding:10px 14px;font-family:'Inter',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .2s, box-shadow .2s;}
+input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,125,50,.15);}
+select{cursor:pointer;}select option{background:var(--surface);color:var(--text);}
 .eye-btn{position:absolute;right:14px;background:none;border:none;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;padding:4px;color:var(--muted);}
 .eye-btn:hover{color:var(--accent);}
 .field-wrap input[type="password"]{padding-right:54px;}
@@ -95,7 +95,7 @@ input[type="password"]{padding-right:46px;}
 .field-error.show{display:block;}
 .pw-strength{display:flex;gap:4px;margin-top:8px;}
 .pw-bar{flex:1;height:3px;border-radius:3px;background:var(--surface2);}
-.pw-bar.weak{background:var(--warn)}.pw-bar.medium{background:var(--gold)}.pw-bar.strong{background:var(--accent3)}
+.pw-bar.medium{background:var(--gold)}.pw-bar.strong{background:var(--accent3)}
 .submit-btn{width:100%;background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);border:none;border-radius:14px;padding:16px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;cursor:pointer;margin-top:6px;transition:transform .2s;}
 .submit-btn:active{transform:scale(.98);}
 .auth-switch{text-align:center;margin-top:18px;font-size:13px;color:var(--muted);}
@@ -223,21 +223,21 @@ input[type="password"]{padding-right:46px;}
 
 /* Table (Scrollable) */
 .plan-wrap{background:#000000;border:1px solid rgba(255,255,255,.1);border-radius:0;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.4);max-width:100%;margin:0 auto;}
-.plan-header{background:transparent;padding:16px 14px 10px;text-align:left;}
-.plan-header-title{font-family:'Inter',sans-serif;font-size:17px;font-weight:800;color:#fff;letter-spacing:0.2px;}
+.plan-header{background:transparent;padding:12px 12px 8px;text-align:left;}
+.plan-header-title{font-family:'Inter',sans-serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:0.2px;}
 .table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0;background:#000000;}
 .plan-table{width:100%;border-collapse:collapse;min-width:0;background:#000000;}
 .plan-table thead tr{background:#000000;}
-.plan-table thead th{padding:8px 6px;font-size:8.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#fff;text-align:center;border-bottom:1px solid rgba(255,255,255,.25);border-right:1px solid rgba(255,255,255,.08);}
+.plan-table thead th{padding:6px 4px;font-size:7.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;text-align:center;border-bottom:1px solid rgba(255,255,255,.25);border-right:1px solid rgba(255,255,255,.08);}
 .plan-table thead th:last-child{border-right:none;}
 .plan-table tbody tr{border-bottom:1px solid rgba(255,255,255,.08);}
 .plan-table tbody tr:nth-child(odd){background:#000000;}
 .plan-table tbody tr:nth-child(even){background:#0D0D0D;}
-.plan-table tbody td{padding:7px 5px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:10px;font-weight:600;text-align:center;border-right:1px solid rgba(255,255,255,.08);color:#fff;}
+.plan-table tbody td{padding:5px 4px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:9px;font-weight:600;text-align:center;border-right:1px solid rgba(255,255,255,.08);color:#fff;}
 .plan-table tbody td:last-child{border-right:none;}
-.plan-table tbody td:first-child{color:#fff;font-weight:800;font-size:10.5px;}
-.plan-table tbody td:nth-child(2){color:#fff;font-weight:700;font-size:10px;}
-.plan-table tbody td:nth-child(3){color:#fff;font-weight:800;font-size:10.5px;}
+.plan-table tbody td:first-child{color:#fff;font-weight:800;font-size:9.5px;}
+.plan-table tbody td:nth-child(2){color:#fff;font-weight:700;font-size:9px;}
+.plan-table tbody td:nth-child(3){color:#fff;font-weight:800;font-size:9.5px;}
 .plan-footer{padding:12px;background:var(--surface2);}
 .start-invest-btn{width:100%;background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);border:none;border-radius:12px;padding:13px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#fff;cursor:pointer;}
 .start-invest-btn:active{transform:scale(.98);}
@@ -370,7 +370,7 @@ input[type="password"]{padding-right:46px;}
 
 .popup-banner{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-10px);background:#1e293b;color:#fff;font-size:13px;font-weight:600;padding:14px 22px;border-radius:16px;opacity:0;transition:.35s;z-index:9998;pointer-events:none;text-align:center;max-width:320px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.25);line-height:1.5;}
 .popup-banner.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.readonly-field{width:100%;background:rgba(20,32,58,0.6);border:1px solid var(--border);border-radius:12px;padding:13px 14px 13px 42px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;color:#fff;}
+.readonly-field{width:100%;background:var(--surface2);border:1px solid var(--card-border);border-radius:12px;padding:13px 14px 13px 42px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;color:var(--text);}
 .charge-note{background:var(--surface2);border:1px solid var(--warn);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--warn);margin-bottom:12px;line-height:1.6;}
 .deposit-note{background:var(--surface2);border:1px solid var(--accent);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--accent);margin-bottom:12px;line-height:1.6;}
 .locked-banner{background:var(--surface2);border:1px solid var(--warn);border-radius:12px;padding:12px 16px;font-size:12px;color:var(--warn);text-align:center;margin-bottom:12px;font-weight:700;}
@@ -579,9 +579,9 @@ input[type="password"]{padding-right:46px;}
  </div>
  <div class="field-group">
  <label class="field-label">Password</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="password" id="reg-password" placeholder="Min. 6 characters" oninput="checkStrength(this.value)"><button class="eye-btn" onclick="toggleEye('reg-password',this)">Show</button></div>
+ <div class="field-wrap"><span class="field-icon"></span><input type="password" id="reg-password" placeholder="Min. 4 characters" oninput="checkStrength(this.value)"><button class="eye-btn" onclick="toggleEye('reg-password',this)">Show</button></div>
  <div class="pw-strength"><div class="pw-bar" id="pw-b1"></div><div class="pw-bar" id="pw-b2"></div><div class="pw-bar" id="pw-b3"></div></div>
- <div class="field-error" id="reg-pw-err">Password must be at least 6 characters</div>
+ <div class="field-error" id="reg-pw-err">Password must be at least 4 characters</div>
  </div>
  <div class="field-error" id="reg-general-err" style="text-align:center;margin-bottom:10px;font-size:12px;"></div>
  <button class="submit-btn" onclick="doRegister()">Register</button>
@@ -761,27 +761,6 @@ input[type="password"]{padding-right:46px;}
  </div>
  </div>
  </div>
- <div class="section">
- <div class="ref-commission-info">
- <div style="font-family:'Inter',sans-serif;font-size:14px;font-weight:800;color:var(--text);margin-bottom:10px;">Referral Program</div>
- <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px;">Earn a bonus every time someone you referred — or someone in their downline — makes a deposit. Bonuses pay out instantly across 3 levels:</div>
- <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
- <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--surface2);border-radius:10px;">
- <span style="font-size:12px;color:var(--muted);">Level 1 — Direct referral</span>
- <span id="ref-pct-l1-plan" style="font-size:14px;font-weight:800;color:var(--accent);">10%</span>
- </div>
- <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--surface2);border-radius:10px;">
- <span style="font-size:12px;color:var(--muted);">Level 2 — Their referrals</span>
- <span id="ref-pct-l2-plan" style="font-size:14px;font-weight:800;color:var(--accent);">4%</span>
- </div>
- <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--surface2);border-radius:10px;">
- <span style="font-size:12px;color:var(--muted);">Level 3 — Third tier</span>
- <span id="ref-pct-l3-plan" style="font-size:14px;font-weight:800;color:var(--accent);">2%</span>
- </div>
- </div>
- <div style="font-size:10px;color:var(--muted);line-height:1.5;">These percentages are set by the platform admin and may be adjusted at any time. Current rates shown above always reflect the latest settings.</div>
- </div>
- </div>
  </div>
 
  <!-- Profile -->
@@ -805,7 +784,7 @@ input[type="password"]{padding-right:46px;}
  <div class="settings-form" id="pwd-form">
  <div class="settings-form-inner">
  <div class="field-group"><label class="field-label">Current Password</label><input type="password" id="cp-old-pw" placeholder="Enter current password"></div>
- <div class="field-group"><label class="field-label">New Password</label><input type="password" id="cp-new-pw" placeholder="Min. 6 characters"></div>
+ <div class="field-group"><label class="field-label">New Password</label><input type="password" id="cp-new-pw" placeholder="Min. 4 characters"></div>
  <div class="field-group"><label class="field-label">Confirm New Password</label><input type="password" id="cp-confirm-pw" placeholder="Repeat new password"></div>
  <div class="field-error" id="cp-pw-err">Error</div>
  <div class="settings-form-actions">
@@ -1306,7 +1285,7 @@ async function initApp() {
  initTheme();
  startSettingsListener();
  
- const savedUser = sessionStorage.getItem('pp_current_user');
+ const savedUser = localStorage.getItem('pp_current_user');
  if (savedUser) {
  try {
  const userSnap = await db.ref('users/' + safeKey(savedUser)).get();
@@ -1339,12 +1318,12 @@ async function initApp() {
  switchTab('home');
  startDailyProfitLoop();
  } else {
- sessionStorage.removeItem('pp_current_user');
+ localStorage.removeItem('pp_current_user');
  showAuth('login-page');
  }
  } catch (err) {
  console.warn('Login check error:', err);
- sessionStorage.removeItem('pp_current_user');
+ localStorage.removeItem('pp_current_user');
  showAuth('login-page');
  }
  } else {
@@ -1402,8 +1381,7 @@ function checkStrength(pw) {
  const b = [document.getElementById('pw-b1'), document.getElementById('pw-b2'), document.getElementById('pw-b3')];
  b.forEach(x => { if (x) x.className = 'pw-bar'; });
  if (!pw) return;
- if (pw.length >= 6) { if (b[0]) b[0].classList.add('weak'); }
- if (pw.length >= 8 && /[0-9]/.test(pw)) { if (b[0]) b[0].classList.add('strong'); if (b[1]) b[1].classList.add('medium'); }
+ if (pw.length >= 8 && /[0-9]/.test(pw)) { if (b[0]) b[0].classList.add('medium'); if (b[1]) b[1].classList.add('medium'); }
  if (pw.length >= 10 && /[^A-Za-z0-9]/.test(pw)) { if (b[0]) b[0].classList.add('strong'); if (b[1]) b[1].classList.add('strong'); if (b[2]) b[2].classList.add('strong'); }
 }
 
@@ -1792,7 +1770,7 @@ async function submitChangePassword() {
  const newPw = document.getElementById('cp-new-pw').value;
  const confirmPw = document.getElementById('cp-confirm-pw').value;
  if (!oldPw || oldPw !== currentUser.password) { setErr('cp-pw-err', true, 'Current password is incorrect'); return; }
- if (!newPw || newPw.length < 6) { setErr('cp-pw-err', true, 'New password must be at least 6 characters'); return; }
+ if (!newPw || newPw.length < 4) { setErr('cp-pw-err', true, 'New password must be at least 4 characters'); return; }
  if (newPw !== confirmPw) { setErr('cp-pw-err', true, 'New passwords do not match'); return; }
  try {
  await db.ref('users/' + safeKey(currentUsername)).update({ password: newPw });
@@ -2236,12 +2214,26 @@ async function creditReferralBonuses(depositorUsername, amount) {
 // ============================================================
 async function doWithdraw() {
  clearErrors('with-amount-err');
+ const withAmountErrEl = document.getElementById('with-amount-err');
+ if (withAmountErrEl) withAmountErrEl.style.color = '';
  if (settingsData.withdrawLocked) { 
  sendAdminNotification('withdrawal_blocked', currentUsername, 0, 'Withdrawal attempted while locked');
  return; 
  }
  if (!currentUser.activated) { 
  sendAdminNotification('withdrawal_not_activated', currentUsername, 0, 'Inactive account tried to withdraw');
+ const errEl = document.getElementById('with-amount-err');
+ setErr('with-amount-err', true, 'Withdrawals require an active investment. Deposit at least UGX 10,000 to get started.');
+ if (errEl) errEl.style.color = '#E53935';
+ const withBtn = document.getElementById('with-submit-btn');
+ if (withBtn) withBtn.disabled = true;
+ setTimeout(() => {
+ switchTab('deposit');
+ const depInput = document.getElementById('dep-amount');
+ if (depInput) depInput.value = 10000;
+ if (withBtn) withBtn.disabled = false;
+ if (errEl) errEl.style.color = '';
+ }, 6000);
  return; 
  }
  const minWith = settingsData.minWithdraw || 10000;
@@ -2432,7 +2424,7 @@ async function doLogin() {
  if (userData.locked) { setErr('login-general-err', true, 'Your account has been locked. Contact support.'); return; }
  currentUser = userData;
  currentUsername = username;
- sessionStorage.setItem('pp_current_user', username);
+ localStorage.setItem('pp_current_user', username);
  
  // PROFIT CALCULATION FIRST - before UI updates
  // This ensures balance is updated with today's profit before UI renders
@@ -2474,7 +2466,7 @@ async function doRegister() {
  if (!username) { setErr('reg-user-err', true, 'Username is required'); ok = false; }
  if (!country) { setErr('reg-country-err', true, 'Please select your country'); ok = false; }
  if (!phoneDigits || phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) { setErr('reg-phone-err', true, 'Enter 10 digits starting with 0'); ok = false; }
- if (!password || password.length < 6) { setErr('reg-pw-err', true, 'Password must be at least 6 characters'); ok = false; }
+ if (!password || password.length < 4) { setErr('reg-pw-err', true, 'Password must be at least 4 characters'); ok = false; }
  if (!ok) return;
  const existing = await db.ref('users/' + safeKey(username)).get();
  if (existing.exists()) { setErr('reg-user-err', true, 'Username already taken'); return; }
@@ -2513,7 +2505,7 @@ async function doRegister() {
  await db.ref('users/' + safeKey(username) + '/avatar').set(randomAvatar);
  currentUser = newUser;
  currentUsername = username;
- sessionStorage.setItem('pp_current_user', username);
+ localStorage.setItem('pp_current_user', username);
  document.getElementById('reg-username').value = '';
  document.getElementById('reg-phone').value = '';
  document.getElementById('reg-password').value = '';
@@ -2538,7 +2530,7 @@ function finishRegistrationFlow() {
 async function doLogout() {
  if (profitInterval) clearInterval(profitInterval);
  if (userListener && currentUsername) db.ref('users/' + safeKey(currentUsername)).off('value', userListener);
- sessionStorage.removeItem('pp_current_user');
+ localStorage.removeItem('pp_current_user');
  currentUser = null;
  currentUsername = null;
  closeMenu();
