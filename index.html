@@ -613,22 +613,18 @@ input[type="password"]{padding-right:46px;}
  <div class="stats-card">
  <div class="stats-grid">
  <div class="stat-box">
- <div class="stat-icon icon-purple"></div>
  <div class="stat-value dep" id="stat-balance">UGX 0</div>
  <div class="stat-label">Account Balance</div>
  </div>
  <div class="stat-box">
- <div class="stat-icon icon-blue"></div>
  <div class="stat-value total" id="stat-stake">UGX 0</div>
  <div class="stat-label">Deposits</div>
  </div>
  <div class="stat-box">
- <div class="stat-icon icon-green"></div>
  <div class="stat-value earn" id="stat-earnings">UGX 0</div>
  <div class="stat-label">Total Earnings</div>
  </div>
  <div class="stat-box">
- <div class="stat-icon icon-orange"></div>
  <div class="stat-value with" id="stat-withdrawn">UGX 0</div>
  <div class="stat-label">Withdrawals</div>
  </div>
@@ -657,13 +653,7 @@ input[type="password"]{padding-right:46px;}
  </div>
  <div class="section" style="display:grid;grid-template-columns:1fr;gap:10px;">
  <div class="community-card community-wa" onclick="openWaGroup()">
- <div class="community-icon" style="background:rgba(37,211,102,.15);"></div>
  <div style="flex:1;"><div class="community-title">WhatsApp Channel</div><div class="community-desc">Join our official WhatsApp channel</div></div>
- <div class="community-arrow">›</div>
- </div>
- <div class="community-card community-tg" onclick="openTelegramGroup()">
- <div class="community-icon" style="background:rgba(33,150,243,.15);"></div>
- <div style="flex:1;"><div class="community-title">Telegram Group</div><div class="community-desc">Join our official Telegram community</div></div>
  <div class="community-arrow">›</div>
  </div>
  </div>
@@ -807,7 +797,6 @@ input[type="password"]{padding-right:46px;}
 
  <div class="profile-info-section">
  <div class="profile-section-title">Account Details</div>
- <div class="profile-info-item"><span class="profile-info-label">Phone Number</span><span class="profile-info-value" id="profile-phone-simple">—</span></div>
  <div class="profile-info-item"><span class="profile-info-label">Registered Date</span><span class="profile-info-value" id="profile-date-simple">—</span></div>
  </div>
 
@@ -1745,12 +1734,22 @@ function updateProfileUI() {
  renderAvatarInto(document.getElementById('dash-welcome-avatar'), currentUser.avatar, initial);
  renderAvatarInto(document.getElementById('profile-avatar-lg'), currentUser.avatar, initial);
  document.getElementById('profile-user-simple').textContent = currentUser.username || '—';
- document.getElementById('profile-phone-simple').textContent = currentUser.phone || '—';
- document.getElementById('profile-date-simple').textContent = currentUser.joinedDate || '2025';
+ const dateEl = document.getElementById('profile-date-simple');
+ if (dateEl) {
+ const jd = currentUser.joinedDate || '';
+ if (/^\d{4}-\d{2}-\d{2}$/.test(jd)) {
+ const [y, m, d] = jd.split('-');
+ dateEl.textContent = d + '/' + m + '/' + y;
+ } else if (/^\d{4}$/.test(jd)) {
+ dateEl.textContent = '01/01/' + jd;
+ } else {
+ dateEl.textContent = '01/01/2026';
+ }
+ }
  const statusEl = document.getElementById('profile-status-simple');
  if (statusEl) {
  const isActive = !!currentUser.activated;
- statusEl.textContent = isActive ? 'Earning' : 'New Member';
+ statusEl.textContent = isActive ? 'Earning' : 'Starter';
  statusEl.style.background = isActive ? 'rgba(16,185,129,.15)' : 'rgba(107,118,144,.15)';
  statusEl.style.color = isActive ? '#0a8a5f' : '#6b7690';
  }
@@ -2485,7 +2484,7 @@ async function doRegister() {
  const todayKey = getDateKey(new Date());
  const newUser = {
  username, password, country, phone: fullPhone, stake: 0, balance: 4000, withdrawn: 0, refEarned: 0,
- activated: false, locked: false, referredBy: refCode, joinedDate: new Date().getFullYear().toString(),
+ activated: false, locked: false, referredBy: refCode, joinedDate: getDateKey(new Date()),
  lastProfitDate: todayKey, avatar: null,
  transactions: { t0: { type: 'Bonus', amount: 4000, note: 'Registration Bonus ', date: now, status: 'completed' } },
  referrals: {}, deposits: {}, activeInvestment: null
