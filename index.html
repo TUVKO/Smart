@@ -212,6 +212,42 @@ input[type="password"]{padding-right:46px;}
 }
 .whatsapp-float:hover{transform:scale(1.08);}
 
+.notif-bell-float{
+ position:fixed;
+ bottom:90px;
+ left:20px;
+ width:52px;
+ height:52px;
+ background:var(--accent);
+ border:none;
+ border-radius:50%;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:22px;
+ cursor:pointer;
+ box-shadow:0 6px 20px rgba(46,125,50,.4);
+ z-index:300;
+ transition:transform .2s;
+ color:#fff;
+}
+.notif-bell-float:hover{transform:scale(1.08);}
+.notif-bell-badge{position:absolute;top:2px;right:2px;background:var(--danger);color:#fff;font-size:10px;font-weight:800;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px;font-family:'Inter',sans-serif;}
+
+.notif-panel-overlay{display:none;position:fixed;inset:0;background:rgba(15,27,60,.55);z-index:10000;align-items:flex-end;justify-content:center;}
+.notif-panel-overlay.show{display:flex;}
+.notif-panel{background:var(--surface);width:100%;max-width:500px;height:80vh;border-radius:24px 24px 0 0;display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(0,0,0,.3);}
+.notif-panel-handle{width:40px;height:4px;background:var(--card-border);border-radius:4px;margin:10px auto 4px;}
+.notif-panel-header{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 16px 8px;}
+.notif-panel-title{font-family:'Inter',sans-serif;font-size:18px;font-weight:800;color:var(--text);}
+.notif-panel-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.notif-panel-close{background:var(--surface2);border:none;border-radius:50%;width:30px;height:30px;font-size:14px;color:var(--muted);cursor:pointer;}
+.notif-filter-row{display:flex;gap:8px;padding:4px 16px 10px;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;}
+.notif-filter-row::-webkit-scrollbar{display:none;}
+.notif-filter-chip{flex-shrink:0;background:var(--surface2);border:1px solid var(--card-border);border-radius:20px;padding:7px 14px;font-family:'Inter',sans-serif;font-size:11.5px;font-weight:600;color:var(--muted);cursor:pointer;}
+.notif-filter-chip.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.notif-panel-scroll{flex:1;overflow-y:auto;padding:0 16px 20px;-webkit-overflow-scrolling:touch;}
+
 /* Investment Active Card */
 .investment-card{background:transparent;border:none;border-radius:0;padding:0;margin-bottom:16px;box-shadow:none;}
 .investment-title{font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
@@ -648,7 +684,7 @@ input[type="password"]{padding-right:46px;}
  <button class="action-btn" onclick="switchTab('deposit')"><span class="btn-icon">💳</span>Top-Up</button>
  <button class="action-btn" onclick="switchTab('reinvest')"><span class="btn-icon">🔄</span>Re-invest</button>
  <button class="action-btn" onclick="switchTab('withdraw')"><span class="btn-icon">💵</span>Withdraw</button>
- <button class="action-btn" onclick="switchTab('history')"><span class="btn-icon">📋</span>Records</button>
+ <button class="action-btn" onclick="openNotifPanel()"><span class="btn-icon">📋</span>Records</button>
  </div>
  </div>
  <div class="section" style="display:grid;grid-template-columns:1fr;gap:10px;">
@@ -669,18 +705,37 @@ input[type="password"]{padding-right:46px;}
  </svg>
  </a>
 
- <!-- History - New Card Design -->
- <div class="dash-section" id="sec-history">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Activity</div><div class="inner-sub" id="history-filter-label">All your transactions</div></div></div>
- 
- <!-- Search -->
- <div style="margin-bottom:16px;">
+ <!-- Floating Notification Bell -->
+ <button class="notif-bell-float" id="notif-bell-btn" onclick="openNotifPanel()">
+ <span></span>
+ <span class="notif-bell-badge" id="notif-bell-badge" style="display:none;">0</span>
+ </button>
+
+ <!-- Notification Panel (all transactions) -->
+ <div class="notif-panel-overlay" id="notif-panel-overlay" onclick="closeNotifPanelOutside(event)">
+ <div class="notif-panel">
+ <div class="notif-panel-handle"></div>
+ <div class="notif-panel-header">
+ <div>
+ <div class="notif-panel-title">Notifications</div>
+ <div class="notif-panel-sub" id="history-filter-label">All your transactions</div>
+ </div>
+ <button class="notif-panel-close" onclick="closeNotifPanel()">✕</button>
+ </div>
+ <div class="notif-filter-row">
+ <button class="notif-filter-chip active" onclick="menuNavHistory('all')">All</button>
+ <button class="notif-filter-chip" onclick="menuNavHistory('Deposit')">Deposits</button>
+ <button class="notif-filter-chip" onclick="menuNavHistory('Withdrawal')">Withdrawals</button>
+ <button class="notif-filter-chip" onclick="menuNavHistory('Profit')">Profits</button>
+ <button class="notif-filter-chip" onclick="menuNavHistory('Bonus')">Bonuses</button>
+ <button class="notif-filter-chip" onclick="menuNavHistory('Referral')">Referral</button>
+ </div>
+ <div style="padding:0 16px 4px;">
  <input type="text" id="tx-search-box" placeholder=" Search transactions..." class="tx-search-input" oninput="renderHistory()">
  </div>
-
- <!-- Transaction Cards -->
- <div class="section">
+ <div class="notif-panel-scroll">
  <div id="history-list" class="tx-cards-grid"><div class="tx-empty-state"><div class="tx-empty-icon"></div><div class="tx-empty-title">No Records Yet</div><div class="tx-empty-text">Your transaction history will appear here.</div></div></div>
+ </div>
  </div>
  </div>
 
@@ -934,7 +989,6 @@ input[type="password"]{padding-right:46px;}
  <div class="nav-item active" onclick="switchTab('home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></div>
  <div class="nav-item" onclick="switchTab('team')"><span class="nav-icon">👥</span><span class="nav-label">Network</span></div>
  <div class="nav-item" onclick="switchTab('plan')"><span class="nav-icon">▦</span><span class="nav-label">Growth</span></div>
- <div class="nav-item" onclick="switchTab('history')"><span class="nav-icon">📋</span><span class="nav-label">Activity</span></div>
  <div class="nav-item" onclick="switchTab('profile')"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></div>
  </nav>
 
@@ -953,15 +1007,6 @@ input[type="password"]{padding-right:46px;}
  <div class="menu-item" onclick="menuNav('team')"><span class="menu-item-icon"></span>Network</div>
  <div class="menu-item" onclick="menuNav('brief')"><span class="menu-item-icon"></span>About</div>
  <div class="menu-divider"></div>
- <div class="menu-item" onclick="toggleHistoryMenu()"><span class="menu-item-icon"></span>Activity<span class="menu-chevron" id="history-menu-chevron">›</span></div>
- <div class="menu-submenu" id="history-submenu">
- <div class="menu-subitem" onclick="menuNavHistory('all')">All</div>
- <div class="menu-subitem" onclick="menuNavHistory('Deposit')">Deposits</div>
- <div class="menu-subitem" onclick="menuNavHistory('Withdrawal')">Withdrawals</div>
- <div class="menu-subitem" onclick="menuNavHistory('Profit')">Profits</div>
- <div class="menu-subitem" onclick="menuNavHistory('Bonus')">Bonuses</div>
- <div class="menu-subitem" onclick="menuNavHistory('Referral')">Referral</div>
- </div>
  <div class="menu-item" onclick="menuNav('profile')"><span class="menu-item-icon"></span>Profile</div>
  </div>
 </div>
@@ -1497,8 +1542,8 @@ function closePrivacyModal(event) {
  document.getElementById('privacy-modal-overlay').classList.remove('open');
 }
 
-const tabMap = { home: 'sec-home', history: 'sec-history', team: 'sec-team', plan: 'sec-plan', profile: 'sec-profile', deposit: 'sec-deposit', withdraw: 'sec-withdraw', reinvest: 'sec-reinvest', brief: 'sec-brief' };
-const navOrder = ['home', 'team', 'plan', 'history', 'profile'];
+const tabMap = { home: 'sec-home', team: 'sec-team', plan: 'sec-plan', profile: 'sec-profile', deposit: 'sec-deposit', withdraw: 'sec-withdraw', reinvest: 'sec-reinvest', brief: 'sec-brief' };
+const navOrder = ['home', 'team', 'plan', 'profile'];
 
 function renderGrowthPlanTable() {
  const body = document.getElementById('growth-plan-table-body');
@@ -1555,13 +1600,19 @@ function switchTab(tab) {
 
 function menuNav(tab) { switchTab(tab); if (tab === 'brief') renderGrowthPlanTable(); }
 
-function toggleHistoryMenu() {
- const sub = document.getElementById('history-submenu');
- const chevron = document.getElementById('history-menu-chevron');
- if (!sub) return;
- const isOpen = sub.classList.contains('open');
- sub.classList.toggle('open', !isOpen);
- if (chevron) chevron.classList.toggle('open', !isOpen);
+function openNotifPanel() {
+ const overlay = document.getElementById('notif-panel-overlay');
+ if (overlay) overlay.classList.add('show');
+ renderHistory();
+}
+
+function closeNotifPanel() {
+ const overlay = document.getElementById('notif-panel-overlay');
+ if (overlay) overlay.classList.remove('show');
+}
+
+function closeNotifPanelOutside(e) {
+ if (e.target && e.target.id === 'notif-panel-overlay') closeNotifPanel();
 }
 
 function menuNavHistory(filterType) {
@@ -1569,7 +1620,8 @@ function menuNavHistory(filterType) {
  const labels = { all: 'All your transactions', Deposit: 'Showing: Deposits', Withdrawal: 'Showing: Withdrawals', Profit: 'Showing: Profits', Bonus: 'Showing: Bonuses', Referral: 'Showing: Referral' };
  const labelEl = document.getElementById('history-filter-label');
  if (labelEl) labelEl.textContent = labels[filterType] || 'All your transactions';
- switchTab('history');
+ document.querySelectorAll('.notif-filter-chip').forEach(chip => chip.classList.remove('active'));
+ if (event && event.target) event.target.classList.add('active');
  renderHistory();
 }
 
@@ -1842,6 +1894,11 @@ function renderHistory() {
  const wrap = document.getElementById('history-list');
  if (!currentUser) { if (wrap) wrap.innerHTML = ''; return; }
  const allTxs = currentUser.transactions ? Object.values(currentUser.transactions).reverse() : [];
+ const badgeEl = document.getElementById('notif-bell-badge');
+ if (badgeEl) {
+ if (allTxs.length > 0) { badgeEl.textContent = allTxs.length > 99 ? '99+' : allTxs.length; badgeEl.style.display = 'flex'; }
+ else { badgeEl.style.display = 'none'; }
+ }
  
  // Get search query
  const searchBox = document.getElementById('tx-search-box');
