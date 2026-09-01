@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2E7D32">
 <link rel="apple-touch-icon" href="icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
  --bg:#E8F5E9;
@@ -473,6 +473,28 @@ input[type="password"]{padding-right:46px;}
 
 /* Referral Page */
 .ref-new-container{display:flex;flex-direction:column;gap:16px;}
+
+.net-compact-card{background:var(--surface);border:1px solid var(--card-border);border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(46,125,50,.08);margin-bottom:14px;}
+.net-ring-row{display:flex;align-items:center;gap:12px;padding:16px 16px 14px;border-bottom:1px solid var(--card-border);}
+.net-you-mini{width:50px;height:50px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;flex-shrink:0;}
+.net-level-mini-list{flex:1;display:flex;flex-direction:column;gap:2px;}
+.net-level-mini-row{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);padding:3px 0;}
+.net-level-mini-row b{color:var(--text);font-weight:800;font-size:12px;}
+.net-stat-row-compact{display:flex;border-bottom:1px solid var(--card-border);}
+.net-stat-cell{flex:1;padding:14px 16px;}
+.net-stat-cell:first-child{border-right:1px solid var(--card-border);}
+.net-stat-cell-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:700;margin-bottom:4px;}
+.net-stat-cell-val{font-size:16px;font-weight:800;color:var(--text);}
+.net-ref-compact{padding:14px 16px;border-bottom:1px solid var(--card-border);}
+.net-ref-compact-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.net-ref-compact-row{display:flex;gap:6px;}
+.net-ref-compact-input{flex:1;background:var(--surface2);border:1px solid var(--card-border);border-radius:6px;padding:8px 10px;font-size:10.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:'Inter',sans-serif;}
+.net-ref-compact-copy{background:var(--accent);border:none;color:#fff;font-size:10.5px;font-weight:700;padding:8px 14px;border-radius:6px;cursor:pointer;}
+.net-levels-compact{padding:12px 16px 14px;}
+.net-levels-compact-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.net-level-line-c{display:flex;justify-content:space-between;padding:6px 0;font-size:11.5px;}
+.net-level-line-c span:first-child{color:var(--muted);}
+.net-level-line-c span:last-child{font-weight:800;color:var(--accent);}
 .ref-stat-box{background:var(--card);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:16px;padding:18px 16px;display:flex;flex-direction:column;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.2);}
 .ref-bonus-box{border-left:4px solid var(--accent);}
 .ref-team-box{border-left:4px solid var(--teal);}
@@ -496,6 +518,39 @@ input[type="password"]{padding-right:46px;}
 .ref-empty-emoji{font-size:48px;margin-bottom:12px;}
 .ref-empty-msg{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;}
 .ref-empty-hint{font-size:12px;color:var(--muted);}
+
+/* Terminal Mode — Network tab dark theme */
+body.terminal-mode{background:#0B120C;}
+body.terminal-mode .topbar{background:#0F1810;border-bottom:1px solid #1c2b1d;}
+body.terminal-mode .menu-btn{background:#111c12;border-color:#22321f;}
+body.terminal-mode .menu-btn span{background:#4ADE80;}
+body.terminal-mode .brand-name{color:#4ADE80;font-family:'JetBrains Mono',monospace;}
+body.terminal-mode .bottom-nav{background:#0F1810;border-top:1px solid #1c2b1d;}
+body.terminal-mode .nav-icon{filter:grayscale(1) opacity(.4);}
+body.terminal-mode .nav-item.active .nav-icon{filter:none;}
+body.terminal-mode .nav-label{color:#4a5a4a;}
+body.terminal-mode .nav-item.active .nav-label{color:#4ADE80;}
+body.terminal-mode #sec-team .inner-title{color:#4ADE80;font-family:'JetBrains Mono',monospace;}
+body.terminal-mode #sec-team .inner-sub{color:#5a7a5a;font-family:'JetBrains Mono',monospace;}
+body.terminal-mode .net-compact-card{background:#0F1810;border:1px solid #1c2b1d;box-shadow:none;}
+body.terminal-mode .net-ring-row{border-bottom:1px solid #1c2b1d;}
+body.terminal-mode .net-you-mini{background:#111c12;border:2px solid #4ADE80;color:#4ADE80;font-family:'JetBrains Mono',monospace;}
+body.terminal-mode .net-level-mini-row{color:#5a7a5a;font-family:'JetBrains Mono',monospace;}
+body.terminal-mode .net-level-mini-row b{color:#4ADE80;}
+body.terminal-mode .net-stat-row-compact{border-bottom:1px solid #1c2b1d;}
+body.terminal-mode .net-stat-cell:first-child{border-right:1px solid #1c2b1d;}
+body.terminal-mode .net-stat-cell-label{color:#5a7a5a;font-family:'JetBrains Mono',monospace;}
+body.terminal-mode .net-stat-cell-val{color:#4ADE80;font-family:'JetBrains Mono',monospace;}
+body.terminal-mode .net-ref-compact{border-bottom:1px solid #1c2b1d;}
+body.terminal-mode .net-ref-compact-title{color:#d8f0d8;font-family:'JetBrains Mono',monospace;}
+body.terminal-mode .net-ref-compact-input{background:#0B120C;border:1px solid #22321f;color:#d8f0d8;font-family:'JetBrains Mono',monospace;}
+body.terminal-mode .net-ref-compact-copy{background:#4ADE80;color:#0B120C;}
+body.terminal-mode .net-levels-compact-title{color:#d8f0d8;font-family:'JetBrains Mono',monospace;}
+body.terminal-mode .net-level-line-c{font-family:'JetBrains Mono',monospace;border-bottom:1px dashed #1c2b1d;}
+body.terminal-mode .net-level-line-c span:first-child{color:#5a7a5a;}
+body.terminal-mode .net-level-line-c span:last-child{color:#4ADE80;}
+body.terminal-mode .ref-empty-msg{color:#d8f0d8;font-family:'JetBrains Mono',monospace;}
+body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',monospace;}
 .ref-members-list{display:flex;flex-direction:column;gap:10px;background:var(--card);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:16px;padding:16px;margin-top:16px;box-shadow:0 8px 24px rgba(0,0,0,.2);}
 
 /* Network Rings hero */
@@ -513,6 +568,14 @@ input[type="password"]{padding-right:46px;}
 
 /* Richer member rows */
 .ref-member-item2{display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;}
+.ref-member-row3{display:flex;align-items:center;gap:8px;padding:10px 10px;background:var(--surface2);border:1px solid var(--card-border);border-radius:10px;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;}
+.ref-member-row3::-webkit-scrollbar{display:none;}
+.ref-member-row3 .ref-member-avatar{width:28px;height:28px;font-size:12px;flex-shrink:0;}
+.rm3-phone{font-size:11px;color:var(--text);font-weight:600;flex-shrink:0;font-variant-numeric:tabular-nums;}
+.rm3-invested{font-size:11px;font-weight:700;color:var(--text);flex-shrink:0;font-variant-numeric:tabular-nums;}
+.rm3-bonus{font-size:11px;font-weight:800;color:#E09600;flex-shrink:0;font-variant-numeric:tabular-nums;}
+.rm3-status{font-size:10px;font-weight:700;color:var(--muted);flex-shrink:0;}
+.rm3-status.earning{color:#0d9488;}
 .ref-member-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;font-weight:700;flex-shrink:0;overflow:hidden;}
 .ref-member-avatar img{width:100%;height:100%;object-fit:cover;}
 .ref-member-body{flex:1;min-width:0;}
@@ -743,40 +806,34 @@ input[type="password"]{padding-right:46px;}
  <div class="dash-section" id="sec-team">
  <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Network</div><div class="inner-sub">Grow your network & earn</div></div></div>
  <div class="section">
- <div class="ref-new-container">
- <div class="rings-hero">
- <div class="ring ring1"></div>
- <div class="ring ring2"></div>
- <div class="ring ring3"></div>
- <div class="ring-center">YOU</div>
- <div class="ring-tag tag-l1">L1 <span class="pct" id="ref-ring-l1">10%</span></div>
- <div class="ring-tag tag-l2">L2 <span class="pct" id="ref-ring-l2">4%</span></div>
- <div class="ring-tag tag-l3">L3 <span class="pct" id="ref-ring-l3">2%</span></div>
+ <div class="net-compact-card">
+ <div class="net-ring-row">
+ <div class="net-you-mini">YOU</div>
+ <div class="net-level-mini-list">
+ <div class="net-level-mini-row"><span>Level 1 — Direct</span><b id="ref-ring-l1">10%</b></div>
+ <div class="net-level-mini-row"><span>Level 2 — Their refs</span><b id="ref-ring-l2">4%</b></div>
+ <div class="net-level-mini-row"><span>Level 3 — Third tier</span><b id="ref-ring-l3">2%</b></div>
  </div>
- <div class="ref-stat-box ref-bonus-box">
- <div class="ref-stat-top">Bonuses Earned</div>
- <div class="ref-stat-amount" id="total-ref-earned-new">UGX 0</div>
  </div>
- <div class="ref-stat-box ref-team-box">
- <div class="ref-stat-top">Team Size</div>
- <div class="ref-stat-amount" id="ref-team-count">0</div>
+ <div class="net-stat-row-compact">
+ <div class="net-stat-cell"><div class="net-stat-cell-label">Referral Earnings</div><div class="net-stat-cell-val" id="total-ref-earned-new">UGX 0</div></div>
+ <div class="net-stat-cell"><div class="net-stat-cell-label">Network Size</div><div class="net-stat-cell-val" id="ref-team-count">0</div></div>
  </div>
- <div class="ref-link-section">
- <div class="ref-link-label">Your Referral Code</div>
- <div class="ref-link-box">
- <input type="text" class="ref-link-input" id="ref-url-new" readonly>
- <button class="ref-copy-btn" onclick="copyRef()">Copy</button>
+ <div class="net-ref-compact">
+ <div class="net-ref-compact-title">Your Referral Code</div>
+ <div class="net-ref-compact-row">
+ <input type="text" class="net-ref-compact-input" id="ref-url-new" readonly>
+ <button class="net-ref-compact-copy" onclick="copyRef()">Copy</button>
  </div>
- <div class="ref-link-hint">Share this link to invite friends</div>
  </div>
- <div class="ref-commission-info">
- <div class="ref-commission-title">Earn on 3 Levels</div>
- <div class="ref-commission-item"><span class="ref-level">L1</span><span class="ref-pct" id="ref-pct-l1-new">10%</span><span class="ref-desc">Direct referrals</span></div>
- <div class="ref-commission-item"><span class="ref-level">L2</span><span class="ref-pct" id="ref-pct-l2-new">4%</span><span class="ref-desc">Their referrals</span></div>
- <div class="ref-commission-item"><span class="ref-level">L3</span><span class="ref-pct" id="ref-pct-l3-new">2%</span><span class="ref-desc">3rd level</span></div>
+ <div class="net-levels-compact">
+ <div class="net-levels-compact-title">Earn on 3 Levels</div>
+ <div class="net-level-line-c"><span>Direct referrals</span><span id="ref-pct-l1-new">10%</span></div>
+ <div class="net-level-line-c"><span>Their referrals</span><span id="ref-pct-l2-new">4%</span></div>
+ <div class="net-level-line-c"><span>Third level</span><span id="ref-pct-l3-new">2%</span></div>
+ </div>
  </div>
  <div id="ref-members-new"><div class="ref-empty-state"><div class="ref-empty-emoji"></div><div class="ref-empty-msg">No team members yet</div><div class="ref-empty-hint">Invite friends to start earning</div></div></div>
- </div>
  </div>
  </div>
 
@@ -1594,6 +1651,7 @@ function switchTab(tab) {
  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
  const idx = navOrder.indexOf(tab);
  if (idx >= 0) document.querySelectorAll('.nav-item')[idx].classList.add('active');
+ document.body.classList.toggle('terminal-mode', tab === 'team');
  closeMenu();
  pushNavState({ view: 'dashboard', tab: tab }, tab);
 }
@@ -1956,7 +2014,7 @@ function renderHistory() {
  }
 }
 
-function renderTeam() {
+async function renderTeam() {
  if (!currentUser) return;
  let totalRefBonus = 0;
  if (currentUser.transactions) {
@@ -1981,28 +2039,23 @@ function renderTeam() {
  if (membersWrap) membersWrap.innerHTML = '<div class="ref-empty-state"><div class="ref-empty-emoji"></div><div class="ref-empty-msg">No team members yet</div><div class="ref-empty-hint">Invite friends to start earning</div></div>';
  return;
  }
+ const phoneResults = await Promise.all(refs.map(r => db.ref('users/' + safeKey(r.username) + '/phone').get().then(s => s.val()).catch(() => null)));
  if (membersWrap) {
- membersWrap.innerHTML = '<div class="ref-members-list">' + refs.map((r) => {
+ membersWrap.innerHTML = '<div class="ref-members-list">' + refs.map((r, i) => {
  const invested = r.invested || 0;
  const isActive = invested > 0;
  const rate = r.level === 1 ? pctL1 : r.level === 2 ? pctL2 : pctL3;
  const bonus = Math.floor(invested * (rate / 100));
  const initial = (r.username || '?').charAt(0).toUpperCase();
  const lvlClass = 'rlvl-' + (r.level || 1);
- return `<div class="ref-member-item2">
+ const phone = phoneResults[i] || '—';
+ return `<div class="ref-member-row3">
  <div class="ref-member-avatar">${initial}</div>
- <div class="ref-member-body">
- <div class="ref-member-name">${r.username}</div>
- <div class="ref-member-meta">
+ <div class="rm3-phone">${phone}</div>
+ <div class="rm3-invested">${fmt(invested)}</div>
+ <div class="rm3-bonus">${bonus > 0 ? '+' + fmt(bonus) : fmt(0)}</div>
+ <span class="rm3-status ${isActive ? 'earning' : ''}">${isActive ? 'Investor' : 'Learner'}</span>
  <span class="ref-member-level2 ${lvlClass}">L${r.level}</span>
- <span class="ref-member-status2 ${isActive ? 'earning' : ''}">${isActive ? 'Earning' : 'New Member'}</span>
- </div>
- </div>
- <div class="ref-member-right">
- <div class="ref-member-invested">${fmt(invested)}</div>
- <div class="ref-member-invested-label">Invested</div>
- <div class="ref-member-bonus">${bonus > 0 ? '+ ' + fmt(bonus) : fmt(0)}</div>
- </div>
  </div>`;
  }).join('') + '</div>';
  }
