@@ -126,8 +126,8 @@ input[type="password"]{padding-right:46px;}
 .username-top{background:var(--navy);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;text-transform:uppercase;flex-shrink:0;cursor:pointer;}
 .menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;opacity:0;pointer-events:none;transition:opacity .3s;}
 .menu-overlay.open{opacity:1;pointer-events:all;}
-.side-menu{position:fixed;top:0;left:-280px;width:270px;height:100vh;background:rgba(15,29,58,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-right:1px solid var(--card-border);z-index:600;transition:left .35s;display:flex;flex-direction:column;overflow-y:auto;}
-.side-menu.open{left:0;}
+.side-menu{position:fixed;top:0;right:-280px;width:270px;height:100vh;background:rgba(15,29,58,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-left:1px solid var(--card-border);z-index:600;transition:right .35s;display:flex;flex-direction:column;overflow-y:auto;}
+.side-menu.open{right:0;}
 .side-menu-header{display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid var(--border);}
 .side-menu-brand{font-family:'Inter',sans-serif;font-size:18px;font-weight:800;color:var(--accent);}
 .close-menu{width:32px;height:32px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:18px;cursor:pointer;display:grid;place-items:center;}
@@ -745,8 +745,10 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
 <div class="dashboard-page" id="dashboard-page">
  <div class="topbar">
  <div class="topbar-left">
- <div class="menu-btn" onclick="openMenu()"><span></span><span></span><span></span></div>
  <div class="brand"><div class="brand-icon"><img src="logo.png" alt="Smart_Trade"></div><div class="brand-name">Smart_Trade</div></div>
+ </div>
+ <div class="topbar-right">
+ <div class="menu-btn" onclick="openMenu()"><span></span><span></span><span></span></div>
  </div>
  </div>
 
@@ -1058,42 +1060,6 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  </div>
  </div>
 
- <div class="dash-section" id="sec-brief">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Brief</div><div class="inner-sub">How Smart_Trade works</div></div></div>
- <div class="section">
- <div class="action-card" style="line-height:1.7;font-size:14px;color:var(--text);">
- <p style="font-weight:800;font-size:17px;margin-bottom:12px;">Smart_Trade — Grow Your Wealth, One Day at a Time 💚</p>
- <p style="margin-bottom:14px;">Smart_Trade was built on a simple idea: your money should work as hard as you do — every single day, without you having to lift a finger.</p>
- <p style="margin-bottom:14px;">Here's the journey. The moment you join, we welcome you with a free UGX 4,000 bonus — no deposit required, just our way of saying thank you for trusting us. When you're ready to grow further, you can invest anywhere from UGX 10,000 up to UGX 2,350,000, and the instant you do, you receive 10% of that amount back immediately as a welcome profit — before the real magic even begins.</p>
- <p style="margin-bottom:14px;">From there, your investment goes to work quietly in the background. Every day, for 65 days, 10% of your active stake is added straight to your balance — automatically, reliably, day after day. By the end of the full cycle, an investment can return up to 650% of what you put in. No charts to watch, no manual claiming, no stress — just steady, compounding growth happening for you around the clock.</p>
- <p style="margin-bottom:14px;">And it doesn't stop there. Smart_Trade also believes in the power of community. Share your referral link with friends and family, and you'll earn 10% from anyone you personally bring in, 4% from their referrals, and 2% from the level after that — three layers deep, rewarding you for building a network, not just for going it alone.</p>
- <p style="margin-bottom:14px;">When you're ready to enjoy your earnings, withdrawing is simple and fast, sent directly to your mobile money — a small 10% service charge keeps the platform running smoothly for everyone.</p>
- <p style="margin-bottom:18px;">Whether you're investing UGX 10,000 or UGX 100 million, the promise is the same: consistency, transparency, and a little bit of extra love in your pocket every single day. Welcome to Smart_Trade — where patience truly pays.</p>
-
- <div style="border-radius:14px;overflow:hidden;margin-bottom:18px;box-shadow:0 8px 24px rgba(0,0,0,.15);">
- <div style="background:linear-gradient(135deg,#FFB300,#F9A825);color:#1A2E1A;text-align:center;font-weight:800;font-size:14px;padding:14px 12px;line-height:1.4;">
- Smart_Trade Growth Plan — 10% Daily × 65 Days = 650% Total Return
- </div>
- <div style="overflow-x:auto;">
- <table style="width:100%;border-collapse:collapse;background:#16301B;font-family:'Inter',sans-serif;">
- <thead>
- <tr style="background:#1C3A22;">
- <th style="color:#FFB300;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;padding:12px 10px;text-align:left;white-space:nowrap;">Deposit (UGX)</th>
- <th style="color:#FFB300;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;padding:12px 10px;text-align:left;white-space:nowrap;">Daily Profit (10%)</th>
- <th style="color:#FFB300;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;padding:12px 10px;text-align:left;white-space:nowrap;">65-Day Total (UGX)</th>
- </tr>
- </thead>
- <tbody id="growth-plan-table-body"></tbody>
- </table>
- </div>
- </div>
-
- <div style="border-top:1px solid var(--border);padding-top:14px;font-size:13px;color:var(--muted);">
- Headquartered in Kenya 🇰🇪, with our Uganda 🇺🇬 office opening in November 2026.
- </div>
- </div>
- </div>
- </div>
 
  <nav class="bottom-nav">
  <div class="nav-item active" onclick="switchTab('home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></div>
@@ -1115,7 +1081,6 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <div class="menu-item" onclick="menuNav('withdraw')"><span class="menu-item-icon"></span>Withdraw</div>
  <div class="menu-item" onclick="menuNav('reinvest')"><span class="menu-item-icon"></span>Re-invest</div>
  <div class="menu-item" onclick="menuNav('team')"><span class="menu-item-icon"></span>Network</div>
- <div class="menu-item" onclick="menuNav('brief')"><span class="menu-item-icon"></span>About</div>
  <div class="menu-divider"></div>
  <div class="menu-item" onclick="menuNav('profile')"><span class="menu-item-icon"></span>Profile</div>
  </div>
@@ -1652,14 +1617,8 @@ function closePrivacyModal(event) {
  document.getElementById('privacy-modal-overlay').classList.remove('open');
 }
 
-const tabMap = { home: 'sec-home', team: 'sec-team', plan: 'sec-plan', profile: 'sec-profile', deposit: 'sec-deposit', withdraw: 'sec-withdraw', reinvest: 'sec-reinvest', brief: 'sec-brief' };
+const tabMap = { home: 'sec-home', team: 'sec-team', plan: 'sec-plan', profile: 'sec-profile', deposit: 'sec-deposit', withdraw: 'sec-withdraw', reinvest: 'sec-reinvest' };
 const navOrder = ['home', 'team', 'plan', 'profile'];
-
-function renderGrowthPlanTable() {
- const body = document.getElementById('growth-plan-table-body');
- if (!body) return;
- body.innerHTML = buildGrowthPlanRows();
-}
 
 function renderAuthPlanTable() {
  const body = document.getElementById('auth-plan-table-body');
@@ -1709,7 +1668,7 @@ function switchTab(tab) {
  pushNavState({ view: 'dashboard', tab: tab }, tab);
 }
 
-function menuNav(tab) { switchTab(tab); if (tab === 'brief') renderGrowthPlanTable(); }
+function menuNav(tab) { switchTab(tab); }
 
 function openNotifPanel() {
  const overlay = document.getElementById('notif-panel-overlay');
@@ -2031,7 +1990,7 @@ function renderHistory() {
  }
  
  if (!txs.length) {
- if (wrap) wrap.innerHTML = '<div class="tx-empty-state"><div class="tx-empty-icon"></div><div class="tx-empty-title">No Records Found</div><div class="tx-empty-text">Try adjusting your filters or search.</div></div>';
+ if (wrap) wrap.innerHTML = '<div class="tx-empty-state"><div class="tx-empty-icon"></div><div class="tx-empty-title">nothing_matches</div><div class="tx-empty-text">no entries found for this filter or search term</div></div>';
  return;
  }
  
