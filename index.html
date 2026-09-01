@@ -237,6 +237,20 @@ input[type="password"]{padding-right:46px;}
 
 .notif-panel-overlay{display:none;position:fixed;inset:0;background:rgba(15,27,60,.55);z-index:10000;align-items:flex-end;justify-content:center;}
 .notif-panel-overlay.show{display:flex;}
+
+/* Welcome Guidance Popup */
+.welcome-modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,27,60,.55);z-index:10500;align-items:center;justify-content:center;padding:20px;}
+.welcome-modal-overlay.show{display:flex;}
+.welcome-modal{background:#fff;width:100%;max-width:400px;border-radius:22px;padding:26px 22px 20px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3);font-family:'Inter',sans-serif;}
+.welcome-modal-close{position:absolute;top:14px;right:14px;background:#F1F8E9;border:none;border-radius:50%;width:28px;height:28px;font-size:13px;color:#5C7A5C;cursor:pointer;}
+.welcome-modal-title{font-size:19px;font-weight:800;color:#1A2E1A;margin-bottom:12px;padding-right:20px;}
+.welcome-modal-body{font-size:13px;line-height:1.6;color:#3d4f3d;margin-bottom:20px;}
+.welcome-modal-actions{display:flex;gap:8px;}
+.welcome-action-btn{flex:1;border:none;border-radius:12px;padding:13px 4px;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer;transition:transform .15s, filter .15s;}
+.welcome-action-btn:active{transform:scale(.96);filter:brightness(1.1);}
+.welcome-action-btn.wa-group{background:#25D366;}
+.welcome-action-btn.invest{background:#2E7D32;}
+.welcome-action-btn.support{background:#F9A825;color:#1A2E1A;}
 .notif-panel{background:#fdfcf8;width:100%;max-width:500px;height:80vh;border-radius:24px 24px 0 0;display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(0,0,0,.3);font-family:'JetBrains Mono',monospace;}
 .notif-panel-handle{width:40px;height:4px;background:#ccc;border-radius:4px;margin:10px auto 4px;}
 .notif-panel-header{padding:14px 16px 12px;text-align:center;border-bottom:2px dashed #ccc;position:relative;}
@@ -830,6 +844,20 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <span></span>
  <span class="notif-bell-badge" id="notif-bell-badge" style="display:none;">0</span>
  </button>
+
+ <!-- Welcome Guidance Popup -->
+ <div class="welcome-modal-overlay" id="welcome-modal-overlay" onclick="closeWelcomeModalOutside(event)">
+ <div class="welcome-modal">
+ <button class="welcome-modal-close" onclick="closeWelcomeModal()">✕</button>
+ <div class="welcome-modal-title">Welcome, <span id="welcome-modal-username">Investor</span> 👋</div>
+ <div class="welcome-modal-body">Welcome to Smart_Trade. Once you make a deposit, your funds are placed into our automated trading system, where algorithmic trading strategies work around the clock to generate consistent daily returns — credited directly to your balance every day. Beyond trading, you can grow your income further by inviting others to join through your referral link, earning commissions across three levels of your network. If you ever need assistance, our support team is available to help at any time.</div>
+ <div class="welcome-modal-actions">
+ <button class="welcome-action-btn wa-group" onclick="welcomeModalAction('group')">Group</button>
+ <button class="welcome-action-btn invest" onclick="welcomeModalAction('invest')">Invest</button>
+ <button class="welcome-action-btn support" onclick="welcomeModalAction('support')">Support</button>
+ </div>
+ </div>
+ </div>
 
  <!-- Notification Panel (all transactions) -->
  <div class="notif-panel-overlay" id="notif-panel-overlay" onclick="closeNotifPanelOutside(event)">
@@ -1575,6 +1603,38 @@ function showDashboard() {
  document.getElementById('dashboard-page').style.display = 'block';
  document.getElementById('dashboard-page').classList.add('active');
  pushNavState({ view: 'dashboard', tab: 'home' }, 'home');
+ openWelcomeModal();
+}
+
+function openWelcomeModal() {
+ const overlay = document.getElementById('welcome-modal-overlay');
+ const nameEl = document.getElementById('welcome-modal-username');
+ if (nameEl && currentUser) nameEl.textContent = currentUser.username || 'Investor';
+ if (overlay) overlay.classList.add('show');
+}
+
+function closeWelcomeModal() {
+ const overlay = document.getElementById('welcome-modal-overlay');
+ if (overlay) overlay.classList.remove('show');
+}
+
+function closeWelcomeModalOutside(e) {
+ if (e.target && e.target.id === 'welcome-modal-overlay') closeWelcomeModal();
+}
+
+function welcomeModalAction(action) {
+ closeWelcomeModal();
+ if (action === 'group') {
+ openWaGroup();
+ } else if (action === 'invest') {
+ switchTab('deposit');
+ } else if (action === 'support') {
+ const phone = settingsData.waNumber;
+ if (phone) {
+ const message = `Hey! ${currentUser ? currentUser.username : ''} here 😊 Quick help needed with my Smart_Trade account, please!`;
+ window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+ }
+ }
 }
 
 function openMenu() {
