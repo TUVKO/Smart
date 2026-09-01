@@ -187,7 +187,8 @@ input[type="password"]{padding-right:46px;}
 .action-btn{border:none;border-radius:12px;padding:14px 2px;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--surface);color:var(--text);transition:transform .2s, filter .2s;box-shadow:0 4px 14px rgba(46,125,50,.08);border:1px solid var(--card-border);}
 .action-btn[disabled]{opacity:.4;pointer-events:none;box-shadow:none;}
 .action-btn:active{transform:scale(.95);filter:brightness(1.15);}
-.btn-icon{font-size:17px;}
+.btn-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--accent);}
+.btn-icon svg{width:100%;height:100%;}
 
 
 /* Floating WhatsApp Icon */
@@ -379,9 +380,10 @@ input[type="password"]{padding-right:46px;}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:#1C3A22;display:flex;align-items:center;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:200;height:58px;box-sizing:content-box;}
 .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;padding:4px 2px;border-radius:10px;transition:transform .15s;background:transparent;flex:1;min-width:0;}
 .nav-item:active{transform:scale(.92);}
-.nav-icon{font-size:20px;line-height:1;filter:grayscale(1) opacity(.55);transition:filter .2s;}
+.nav-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:#8a93a6;opacity:.65;transition:color .2s, opacity .2s;}
+.nav-icon svg{width:100%;height:100%;}
 .nav-label{font-size:9.5px;font-weight:600;letter-spacing:0.1px;color:#8a93a6;white-space:nowrap;transition:color .2s;}
-.nav-item.active .nav-icon{filter:none;}
+.nav-item.active .nav-icon{opacity:1;color:#FFB300;}
 .nav-item.active .nav-label{color:#FFB300;font-weight:800;}
 
 
@@ -531,8 +533,8 @@ body.terminal-mode .menu-btn{background:#111c12;border-color:#22321f;}
 body.terminal-mode .menu-btn span{background:#4ADE80;}
 body.terminal-mode .brand-name{color:#4ADE80;font-family:'JetBrains Mono',monospace;}
 body.terminal-mode .bottom-nav{background:#0F1810;border-top:1px solid #1c2b1d;}
-body.terminal-mode .nav-icon{filter:grayscale(1) opacity(.4);}
-body.terminal-mode .nav-item.active .nav-icon{filter:none;}
+body.terminal-mode .nav-icon{color:#4a5a4a;opacity:1;}
+body.terminal-mode .nav-item.active .nav-icon{color:#4ADE80;opacity:1;}
 body.terminal-mode .nav-label{color:#4a5a4a;}
 body.terminal-mode .nav-item.active .nav-label{color:#4ADE80;}
 body.terminal-mode #sec-team .inner-title{color:#4ADE80;font-family:'JetBrains Mono',monospace;}
@@ -799,10 +801,10 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
 
  <div class="section">
  <div class="action-grid">
- <button class="action-btn" onclick="switchTab('deposit')"><span class="btn-icon">💳</span>Top-Up</button>
- <button class="action-btn" onclick="switchTab('reinvest')"><span class="btn-icon">🔄</span>Re-invest</button>
- <button class="action-btn" onclick="switchTab('withdraw')"><span class="btn-icon">💵</span>Withdraw</button>
- <button class="action-btn" onclick="openNotifPanel()"><span class="btn-icon">📋</span>Records</button>
+ <button class="action-btn" onclick="switchTab('deposit')"><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"></rect><line x1="2" y1="10" x2="22" y2="10"></line><line x1="12" y1="14.5" x2="12" y2="17.5"></line><line x1="10.5" y1="16" x2="13.5" y2="16"></line></svg></span>Top-Up</button>
+ <button class="action-btn" onclick="switchTab('reinvest')"><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.3-6.4L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-15.3 6.4L3 16"></path><path d="M3 21v-5h5"></path></svg></span>Re-invest</button>
+ <button class="action-btn" onclick="switchTab('withdraw')"><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2.5"></rect><path d="M2 10h20"></path><circle cx="17" cy="14.5" r="1.4" fill="currentColor" stroke="none"></circle></svg></span>Withdraw</button>
+ <button class="action-btn" onclick="openNotifPanel()"><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path><path d="M14 3v4h4"></path><line x1="8.5" y1="12" x2="15.5" y2="12"></line><line x1="8.5" y1="15.5" x2="15.5" y2="15.5"></line></svg></span>Records</button>
  </div>
  </div>
  <div class="section" style="display:grid;grid-template-columns:1fr;gap:10px;">
@@ -1062,10 +1064,10 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
 
 
  <nav class="bottom-nav">
- <div class="nav-item active" onclick="switchTab('home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></div>
- <div class="nav-item" onclick="switchTab('team')"><span class="nav-icon">👥</span><span class="nav-label">Network</span></div>
- <div class="nav-item" onclick="switchTab('plan')"><span class="nav-icon">▦</span><span class="nav-label">Growth</span></div>
- <div class="nav-item" onclick="switchTab('profile')"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></div>
+ <div class="nav-item active" onclick="switchTab('home')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5L12 4l9 7.5"></path><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"></path></svg></span><span class="nav-label">Home</span></div>
+ <div class="nav-item" onclick="switchTab('team')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8" r="3"></circle><circle cx="16" cy="9.5" r="2.4"></circle><path d="M2.5 19.5c0-3 2.7-5.4 6-5.4s6 2.4 6 5.4"></path><path d="M14.5 14.6c2.6.3 4.5 2.3 4.5 4.9"></path></svg></span><span class="nav-label">Network</span></div>
+ <div class="nav-item" onclick="switchTab('plan')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="20" x2="5" y2="12"></line><line x1="12" y1="20" x2="12" y2="7"></line><line x1="19" y1="20" x2="19" y2="15"></line><path d="M4 9l5-5 4 4 6-6"></path><path d="M15 2h4v4"></path></svg></span><span class="nav-label">Growth</span></div>
+ <div class="nav-item" onclick="switchTab('profile')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.5 20c0-3.6 3.4-6.5 7.5-6.5s7.5 2.9 7.5 6.5"></path></svg></span><span class="nav-label">Profile</span></div>
  </nav>
 
 
