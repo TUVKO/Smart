@@ -331,9 +331,9 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  </div>
  <table>
  <thead>
- <tr><th>Username</th><th>Phone</th><th>Password</th><th>STAKE</th><th>BALANCE</th><th>Withdrawn</th><th>Referrals</th><th>Status</th><th>Actions</th></tr>
+ <tr><th>Username</th><th>Phone</th><th>Password</th><th>STAKE</th><th>BALANCE</th><th>Withdrawn</th><th>Referrals</th><th>Referrer</th><th>Earned</th><th>Status</th><th>Actions</th></tr>
  </thead>
- <tbody id="users-table-body"><tr class="empty-row"><td colspan="9">Loading...</td></tr></tbody>
+ <tbody id="users-table-body"><tr class="empty-row"><td colspan="11">Loading...</td></tr></tbody>
  </table>
  </div>
  </div>
@@ -603,7 +603,8 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
 </div>
 
 <!-- MODALS -->
-<div class="modal-ov" id="edit-modal" style="position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:none;align-items:center;justify-content:center;padding:24px;"><div class="modal-box" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;width:100%;max-width:440px;"><div class="modal-title" style="font-family:'Playfair Display',serif;font-size:17px;font-weight:800;margin-bottom:18px;color:var(--accent);">Edit User</div><input type="hidden" id="edit-username"><div class="modal-row" style="margin-bottom:14px;"><label class="modal-label" style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block;">Password</label><input type="text" class="modal-input" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;" id="edit-password"></div><div class="modal-row" style="margin-bottom:14px;"><label class="modal-label">Phone Number</label><input type="text" class="modal-input" id="edit-phone-modal" placeholder="+256..."></div><div class="modal-row" style="margin-bottom:14px;"><label class="modal-label">STAKE (UGX)</label><input type="number" class="modal-input" id="edit-stake" min="0"></div><div class="modal-row" style="margin-bottom:14px;"><label class="modal-label">BALANCE (UGX)</label><input type="number" class="modal-input" id="edit-balance" min="0"></div><div class="modal-actions" style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end;"><button class="modal-cancel" style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;" onclick="closeEditModal()">Cancel</button><button class="btn btn-save" onclick="saveEditUser()">Save Changes</button></div></div></div>
+<div class="modal-ov" id="view-modal" style="position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:none;align-items:center;justify-content:center;padding:24px;" onclick="if(event.target===this)closeViewModal()"><div class="modal-box" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;width:100%;max-width:440px;max-height:85vh;overflow-y:auto;"><div class="modal-title" style="font-family:'Playfair Display',serif;font-size:17px;font-weight:800;margin-bottom:14px;color:var(--accent);">User Account</div><div id="view-modal-body" style="font-size:13px;"></div><div style="display:flex;justify-content:flex-end;margin-top:18px;"><button class="modal-cancel" style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;" onclick="closeViewModal()">Close</button></div></div></div>
+<div class="modal-ov" id="edit-modal" style="position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:none;align-items:center;justify-content:center;padding:24px;"><div class="modal-box" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;width:100%;max-width:440px;"><div class="modal-title" style="font-family:'Playfair Display',serif;font-size:17px;font-weight:800;margin-bottom:18px;color:var(--accent);">Edit User</div><input type="hidden" id="edit-username"><div class="modal-row" style="margin-bottom:14px;"><label class="modal-label" style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block;">Password</label><input type="text" class="modal-input" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;" id="edit-password"></div><div class="modal-row" style="margin-bottom:14px;"><label class="modal-label">Phone Number</label><input type="text" class="modal-input" id="edit-phone-modal" placeholder="+256..."></div><div class="modal-row" style="margin-bottom:14px;"><label class="modal-label">STAKE (UGX)</label><input type="number" class="modal-input" id="edit-stake" min="0"></div><div class="modal-row" style="margin-bottom:14px;"><label class="modal-label">BALANCE (UGX)</label><input type="number" class="modal-input" id="edit-balance" min="0"></div><div class="modal-row" style="margin-bottom:14px;"><label class="modal-label">TOTAL EARNED (UGX, all time)</label><input type="number" class="modal-input" id="edit-total-earned" min="0"></div><div class="modal-actions" style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end;"><button class="modal-cancel" style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;" onclick="closeEditModal()">Cancel</button><button class="btn btn-save" onclick="saveEditUser()">Save Changes</button></div></div></div>
 
 <div class="toast" id="toast" style="position:fixed;top:24px;right:24px;background:var(--accent3);color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;padding:12px 24px;border-radius:12px;opacity:0;transition:.3s;z-index:9999;pointer-events:none;transform:translateY(-10px);"></div>
 <div class="notif-overlay" id="notif-overlay" onclick="closeNotifDrawer()"></div>
@@ -745,6 +746,21 @@ let withdrawalsUnsubscribe = null;
 let adminTxUnsubscribe = null;
 let cleanupInterval = null;
 
+// Sum of earnings still in the (auto-trimmed) history list
+function histEarned(u) {
+ let t = 0;
+ if (u && u.transactions) {
+ Object.values(u.transactions).forEach(tx => {
+ if (tx && (tx.type === 'Bonus' || tx.type === 'Profit' || tx.type === 'Referral')) t += Number(tx.amount) || 0;
+ });
+ }
+ return t;
+}
+// Permanent all-time earnings; falls back to history only until the counter exists
+function baseEarned(u) {
+ return (u && typeof u.totalEarned === 'number') ? u.totalEarned : histEarned(u);
+}
+function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function fmt(n) { return 'UGX ' + Number(n || 0).toLocaleString(); }
 function dateStr() { const d = new Date(); return d.toLocaleDateString('en-UG', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + d.toLocaleTimeString('en-UG', { hour: '2-digit', minute: '2-digit' }); }
 function safeKey(u) { return (u || '').replace(/[.#$\[\]]/g, '_'); }
@@ -925,18 +941,20 @@ function renderUsersTable() {
  const users = Object.values(allUsers);
  const filtered = searchFilter ? users.filter(u => u.username && u.username.toLowerCase().includes(searchFilter.toLowerCase())) : users;
  const tbody = document.getElementById('users-table-body');
- if (!filtered.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No users found<\/tr>'; return; }
+ if (!filtered.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="11">No users found<\/tr>'; return; }
  tbody.innerHTML = filtered.map(u => {
  const sk = safeKey(u.username || '');
  const refCount = u.referrals ? Object.keys(u.referrals).length : 0;
  return `<tr>
- <td><strong>${u.username || '—'}</strong></td>
+ <td><strong>${u.username || '—'}</strong> <button class="btn btn-edit" style="padding:2px 8px;font-size:10px;margin-left:4px;" onclick="openViewModal('${u.username}')">View</button></td>
  <td class="mono">${u.phone || '—'}</td>
  <td><div class="pw-cell" id="pwcell_${sk}"><span class="pw-val" onclick="editPw('${sk}')">${u.password || '—'}</span></div></td>
  <td class="mono" style="color:var(--gold)">${fmt(u.stake)}</td>
  <td class="mono" style="color:var(--success);font-weight:700">${fmt(u.balance)}</td>
  <td class="mono" style="color:var(--warn);">${fmt(u.withdrawn)}</td>
  <td class="mono">${refCount}</td>
+ <td class="mono">${u.referredBy ? esc(u.referredBy) : '—'}</td>
+ <td class="mono" style="color:var(--success);">${fmt(baseEarned(u))}</td>
  <td><span class="badge ${u.locked ? 'badge-locked' : 'badge-active'}">${u.locked ? 'Locked' : 'Active'}</span></td>
  <td style="display:flex;gap:6px;flex-wrap:wrap;">
  <button class="btn btn-edit" onclick="openEditModal('${u.username}')">Edit</button>
@@ -977,8 +995,35 @@ function openEditModal(username) {
  document.getElementById('edit-phone-modal').value = u.phone || '';
  document.getElementById('edit-stake').value = u.stake || 0;
  document.getElementById('edit-balance').value = u.balance || 0;
+ document.getElementById('edit-total-earned').value = baseEarned(u);
  document.getElementById('edit-modal').style.display = 'flex';
 }
+
+function openViewModal(username) {
+ const u = allUsers[safeKey(username)];
+ if (!u) return;
+ const row = (k, v) => `<div style="display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);font-weight:700;font-size:11px;letter-spacing:.5px;text-transform:uppercase;">${k}</span><span style="text-align:right;word-break:break-word;">${v}</span></div>`;
+ const refs = u.referrals ? Object.values(u.referrals) : [];
+ const txs = u.transactions ? Object.values(u.transactions).slice(-8).reverse() : [];
+ let html = '';
+ html += row('Username', esc(u.username));
+ html += row('Phone', esc(u.phone || '—'));
+ html += row('Country', esc(u.country || '—'));
+ html += row('Referrer', u.referredBy ? esc(u.referredBy) : '—');
+ html += row('Joined', esc(u.joinedDate || '—'));
+ html += row('Status', u.locked ? 'Locked' : 'Active');
+ html += row('Stake', fmt(u.stake));
+ html += row('Balance', fmt(u.balance));
+ html += row('Total earned (all time)', fmt(baseEarned(u)));
+ html += row('Withdrawn', fmt(u.withdrawn));
+ html += row('Referrals', refs.length + (refs.length ? ' (' + refs.map(r => esc(r.username)).join(', ') + ')' : ''));
+ html += '<div style="margin-top:14px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);">Recent activity</div>';
+ html += txs.length ? txs.map(t => row(esc(t.type || ''), fmt(t.amount) + ' <span style="color:var(--muted);font-size:11px;">' + esc(t.date || '') + '</span>')).join('') : '<div style="padding:8px 0;color:var(--muted);">No recent activity</div>';
+ document.getElementById('view-modal-body').innerHTML = html;
+ document.getElementById('view-modal').style.display = 'flex';
+}
+
+function closeViewModal() { document.getElementById('view-modal').style.display = 'none'; }
 
 function closeEditModal() { document.getElementById('edit-modal').style.display = 'none'; }
 
@@ -1003,6 +1048,7 @@ async function creditReferralBonusesAdmin(depositorUsername, amount) {
  const updates = {
  balance: (upline.balance || 0) + bonus,
  refEarned: (upline.refEarned || 0) + bonus,
+ totalEarned: baseEarned(upline) + bonus,
  [`transactions/${txKey}`]: {
  type: 'Referral',
  amount: bonus,
@@ -1025,16 +1071,20 @@ async function saveEditUser() {
  const newPhone = document.getElementById('edit-phone-modal').value;
  const newStake = parseInt(document.getElementById('edit-stake').value) || 0;
  const newBalance = parseInt(document.getElementById('edit-balance').value) || 0;
+ const earnedInput = parseInt(document.getElementById('edit-total-earned').value);
  
  const sk = safeKey(username);
  const user = allUsers[sk];
  if (!user) return;
  
+ // Total earned: keep the saved all-time value unless the admin typed a different one
+ const earnedBase = (!isNaN(earnedInput) && earnedInput >= 0 && earnedInput !== baseEarned(user)) ? earnedInput : baseEarned(user);
  const updates = {
  password: newPassword,
  phone: newPhone,
  stake: newStake,
  balance: newBalance,
+ totalEarned: earnedBase,
  activated: newStake > 0
  };
  
@@ -1042,6 +1092,7 @@ async function saveEditUser() {
  const addedAmount = newStake - (user.stake || 0);
  const instantProfit = Math.floor(addedAmount * 0.10);
  updates.balance = newBalance + instantProfit;
+ updates.totalEarned = earnedBase + instantProfit;
  const todayKey = new Date().toISOString().slice(0, 10);
  updates.lastProfitDate = todayKey;
  const depKey = 'dep_' + Date.now();
@@ -1503,10 +1554,12 @@ async function obliterateUserData() {
  const confirmed = await confirmAction('OBLITERATE ALL FINANCIAL DATA?', 'Delete ALL financial data for ' + sogTargetUser.username + '? STAKE, BALANCE, WITHDRAWN, transactions, and active investment will be reset to zero. Account will become brand new. THIS CANNOT BE UNDONE.');
  if (confirmed) {
  const todayKey = new Date().toISOString().slice(0, 10);
+ const targetUser = allUsers[safeKey(sogTargetUser.username)] || sogTargetUser;
  const updates = {
  stake: 0,
  balance: 0,
  withdrawn: 0,
+ totalEarned: baseEarned(targetUser),
  activated: false,
  activeInvestment: null,
  lastProfitDate: todayKey,

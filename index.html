@@ -150,12 +150,6 @@ input[type="password"]{padding-right:46px;}
 .section{padding:0 16px;margin-bottom:14px;}
 .dash-section{display:none;}
 .dash-section.active{display:block;}
-.welcome-card{background:#fff;border:1.5px solid var(--accent);border-radius:16px;padding:20px 18px;box-shadow:0 4px 14px rgba(46,125,50,.08);position:relative;}
-.welcome-text{flex:1;}
-.welcome-greeting{font-family:'Inter',sans-serif;font-size:17px;font-weight:600;color:var(--text);margin-bottom:14px;}
-.welcome-greeting span{font-weight:800;color:var(--accent);}
-.welcome-copy-link{background:var(--accent);border:none;border-radius:9px;color:#fff;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:.2px;cursor:pointer;display:flex;align-items:center;gap:6px;padding:10px 18px;}
-.welcome-copy-link:active{transform:scale(.96);}
 .stats-card{background:transparent;border:none;padding:0;}
 .stat-box{background:var(--surface);border-radius:14px;padding:14px 6px;text-align:center;box-shadow:0 4px 14px rgba(46,125,50,.10);border:1px solid var(--card-border);}
 .stat-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto 8px;}
@@ -771,15 +765,6 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <!-- HOME / DASHBOARD -->
  <div class="dash-section active" id="sec-home">
  <div class="section" style="padding-top:14px;">
- <div class="welcome-card">
- <span class="investor-pill" id="investor-pill">Investor</span>
- <div class="welcome-text">
- <div class="welcome-greeting">Ready to grow, <span id="dash-username">—</span></div>
- <button class="welcome-copy-link" onclick="copyRef()"><span></span>Copy</button>
- </div>
- </div>
- </div>
- <div class="section">
  <div class="stats-card">
  <div class="stats-grid">
  <div class="stat-box">
@@ -790,13 +775,9 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <div class="stat-value total" id="stat-stake">UGX 0</div>
  <div class="stat-label">Deposits</div>
  </div>
- <div class="stat-box">
+ <div class="stat-box" style="grid-column:1/-1;">
  <div class="stat-value earn" id="stat-earnings">UGX 0</div>
  <div class="stat-label">Total Earnings</div>
- </div>
- <div class="stat-box">
- <div class="stat-value with" id="stat-withdrawn">UGX 0</div>
- <div class="stat-label">Withdrawals</div>
  </div>
  </div>
  </div>
@@ -1405,6 +1386,7 @@ async function calculateAndPayDailyProfits() {
  const txKey = 'tx_dailyprofit_' + Date.now();
  const updates = {
  balance: newBalance,
+ totalEarned: baseEarned(userData) + totalProfit,
  lastProfitDate: todayKey,
  activeInvestment: updatedActiveInvestment,
  [`transactions/${txKey}`]: {
@@ -1824,6 +1806,22 @@ function updateWithdrawPreview() {
  }
 }
 
+let earnedBackfillStarted = false;
+// Sum of earnings still present in the (auto-trimmed) history list
+function histEarned(u) {
+ let t = 0;
+ if (u && u.transactions) {
+ Object.values(u.transactions).forEach(tx => {
+ if (tx && (tx.type === 'Bonus' || tx.type === 'Profit' || tx.type === 'Referral')) t += Number(tx.amount) || 0;
+ });
+ }
+ return t;
+}
+// Permanent all-time earnings; falls back to history only until the counter exists
+function baseEarned(u) {
+ return (u && typeof u.totalEarned === 'number') ? u.totalEarned : histEarned(u);
+}
+
 function updateBalanceUI() {
  if (!currentUser) return;
  const stake = currentUser.stake || 0;
@@ -1831,20 +1829,18 @@ function updateBalanceUI() {
  const withdrawn = currentUser.withdrawn || 0;
  document.getElementById('stat-stake').textContent = fmt(stake);
  document.getElementById('stat-balance').textContent = fmt(balance);
- document.getElementById('stat-withdrawn').textContent = fmt(withdrawn);
+ const withEl = document.getElementById('stat-withdrawn');
+ if (withEl) withEl.textContent = fmt(withdrawn);
  document.getElementById('reinvest-balance-display').textContent = fmt(balance);
 
- // Total Earnings = registration Bonus + all Profit payouts + all Referral bonuses
- let totalEarnings = 0;
- if (currentUser.transactions) {
- Object.values(currentUser.transactions).forEach(tx => {
- if (tx.type === 'Bonus' || tx.type === 'Profit' || tx.type === 'Referral') {
- totalEarnings += tx.amount;
- }
- });
- }
+ // Total Earnings = permanent all-time counter saved on the account (never reduced by history clearing)
  const earnEl = document.getElementById('stat-earnings');
- if (earnEl) earnEl.textContent = fmt(totalEarnings);
+ if (earnEl) earnEl.textContent = fmt(baseEarned(currentUser));
+ if (typeof currentUser.totalEarned !== 'number' && !earnedBackfillStarted && currentUsername) {
+ earnedBackfillStarted = true;
+ const hist = histEarned(currentUser);
+ db.ref('users/' + safeKey(currentUsername) + '/totalEarned').transaction(v => (v === null ? hist : undefined)).catch(e => console.warn('Earnings backfill error:', e));
+ }
 
  updateActiveInvestmentDisplay();
 }
@@ -1890,7 +1886,8 @@ function renderAvatarInto(el, avatarValue, fallbackInitial) {
 
 function updateProfileUI() {
  if (!currentUser) return;
- document.getElementById('dash-username').textContent = currentUser.username;
+ const dashUserEl = document.getElementById('dash-username');
+ if (dashUserEl) dashUserEl.textContent = currentUser.username;
  const initial = (currentUser.username || '?').charAt(0).toUpperCase();
  renderAvatarInto(document.getElementById('dash-avatar'), currentUser.avatar, initial);
  renderAvatarInto(document.getElementById('dash-welcome-avatar'), currentUser.avatar, initial);
@@ -2316,7 +2313,7 @@ async function doDeposit() {
  newActiveInvestment.amount = newStake;
  }
  const updates = {
- stake: newStake, balance: newBalance, activated: true, activeInvestment: newActiveInvestment, lastProfitDate: todayKey,
+ stake: newStake, balance: newBalance, totalEarned: baseEarned(currentUser) + profit, activated: true, activeInvestment: newActiveInvestment, lastProfitDate: todayKey,
  [`deposits/dep_${Date.now()}`]: { amount: amount, taxPaid: totalAmount - amount, startDate: Date.now(), daysRun: 0, lastPaidDate: todayKey },
  [`transactions/tx_dep_${Date.now()}`]: { type: 'Deposit', amount: amount, note: 'Deposit confirmed (URA Tax: ' + fmt(totalAmount - amount) + ')', date: dateStr(), status: 'completed' },
  [`transactions/tx_profit_${Date.now()}`]: { type: 'Profit', amount: profit, note: '10% instant profit on deposit', date: dateStr(), status: 'completed' }
@@ -2371,6 +2368,7 @@ async function creditReferralBonuses(depositorUsername, amount) {
  const updates = {
  balance: newBalance,
  refEarned: (upline.refEarned || 0) + bonus,
+ totalEarned: baseEarned(upline) + bonus,
  [`transactions/${txKey}`]: {
  type: 'Referral',
  amount: bonus,
@@ -2572,7 +2570,7 @@ async function doReinvest() {
  newActiveInvestment.amount = newStake;
  }
  const updates = {
- stake: newStake, balance: newBalance, activated: true, activeInvestment: newActiveInvestment, lastProfitDate: todayKey,
+ stake: newStake, balance: newBalance, totalEarned: baseEarned(currentUser) + profit, activated: true, activeInvestment: newActiveInvestment, lastProfitDate: todayKey,
  [`deposits/dep_reinvest_${Date.now()}`]: { amount, startDate: Date.now(), daysRun: 0, lastPaidDate: todayKey },
  [`transactions/tx_reinvest_a_${Date.now()}`]: { type: 'Re-Invest', amount: -amount, note: 'Moved from BALANCE to STAKE', date: now, status: 'completed' },
  [`transactions/tx_reinvest_b_${Date.now()}`]: { type: 'Profit', amount: profit, note: '10% instant profit on re-invest', date: now, status: 'completed' }
@@ -2653,7 +2651,7 @@ async function doRegister() {
  const now = dateStr();
  const todayKey = getDateKey(new Date());
  const newUser = {
- username, password, country, phone: fullPhone, stake: 0, balance: 4000, withdrawn: 0, refEarned: 0,
+ username, password, country, phone: fullPhone, stake: 0, balance: 4000, withdrawn: 0, refEarned: 0, totalEarned: 4000,
  activated: false, locked: false, referredBy: refCode, joinedDate: getDateKey(new Date()),
  lastProfitDate: todayKey, avatar: null,
  transactions: { t0: { type: 'Bonus', amount: 4000, note: 'Registration Bonus ', date: now, status: 'completed' } },
