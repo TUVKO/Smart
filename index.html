@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
 <meta property="og:title" content="Smart_Trade — Smart Investment Platform">
-<meta property="og:description" content="Grow your money with 10% daily profit over 65 days. Trusted by thousands. Register free today.">
+<meta property="og:description" content="Daily profits, instant referrals, trusted by thousands. Join today.">
 <meta property="og:image" content="https://tuvko.github.io/Smart/logo.png">
-<meta property="og:url" content="https://tuvko.github.io/Nexo/">
+<meta property="og:url" content="https://tuvko.github.io/Smart/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://tuvko.github.io/Smart/logo.png">
@@ -124,6 +124,25 @@ input[type="password"]{padding-right:46px;}
 .auth-page .field-error{color:#F87171;font-size:12px;}
 .auth-page .pw-bar{background:#2A3650;}
 .auth-page .submit-btn{background:#10B981;border-radius:12px;padding:18px;font-size:17px;font-weight:800;color:#0B1220;margin-top:6px;}
+
+/* compact sizing so Login / Register fit one phone screen */
+.auth-shell{margin:36px 16px 16px;padding:20px 16px 18px;border-radius:20px;}
+.auth-logo-box{width:52px;height:52px;border-radius:12px;margin:0 auto 8px;}
+.auth-page .auth-brand{font-size:24px;margin-bottom:3px;}
+.auth-page .auth-tagline{font-size:12.5px;margin-bottom:14px;}
+.auth-tabs{margin-bottom:14px;}
+.auth-tab{padding:10px 0;font-size:15px;}
+.auth-note{font-size:12px;margin:-2px 0 12px;}
+.auth-ref-box{padding:8px;font-size:12.5px;margin-bottom:12px;}
+.auth-page .field-group{margin-bottom:10px;}
+.auth-page .field-label{font-size:13px;margin-bottom:5px;}
+.auth-page input,.auth-page select{padding:11px 12px;font-size:14px;border-radius:10px;}
+.auth-page .eye-btn{right:12px;font-size:10.5px;}
+.auth-page .field-hint{font-size:11px;margin-top:3px;}
+.auth-page .pw-strength{margin-top:6px;}
+.auth-page .submit-btn{padding:13px;font-size:15px;border-radius:10px;margin-top:4px;}
+.auth-row{display:grid;grid-template-columns:104px 1fr;gap:10px;}
+.auth-row .field-group{min-width:0;}
 
 
 /* Phone Prefix */
@@ -725,7 +744,6 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
 
 <!-- REGISTER -->
 <div class="auth-page" id="register-page">
- <button class="auth-plan-btn" onclick="openAuthPlanModal()">Plan</button>
  <div class="auth-shell">
  <div class="auth-logo-box"><img src="logo.png" alt="Smart_Trade"></div>
  <div class="auth-brand">Smart_Trade</div>
@@ -734,18 +752,19 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <a class="auth-tab" onclick="showAuth('login-page')">Login</a>
  <a class="auth-tab active" onclick="showAuth('register-page')">Register</a>
  </div>
- <div class="auth-note">Get UGX 4,000 registration bonus</div>
+ <div class="auth-note">Join Smart_Trade and start earning daily</div>
  <div id="reg-referrer-display" class="auth-ref-box"></div>
  <div class="field-group">
  <label class="field-label">Username</label>
  <div class="field-wrap"><input type="text" id="reg-username" placeholder="Choose a username"></div>
  <div class="field-error" id="reg-user-err">Username is required</div>
  </div>
+ <div class="auth-row">
  <div class="field-group">
  <label class="field-label">Country</label>
  <div class="field-wrap">
  <select id="reg-country" onchange="updateRegPrefix()">
- <option value="">Select your country</option>
+ <option value="">Code</option>
  <option value="UG">+256</option>
  <option value="KE">+254</option>
  </select>
@@ -757,6 +776,7 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <div class="field-wrap"><input type="tel" id="reg-phone" placeholder="0700012345" maxlength="10" oninput="regPhoneInput(this)"></div>
  <div class="field-hint">10 digits starting with 0</div>
  <div class="field-error" id="reg-phone-err">Enter 10 digits starting with 0</div>
+ </div>
  </div>
  <div class="field-group">
  <label class="field-label">Password</label>
