@@ -1209,6 +1209,25 @@ function isRunningStandalone() {
 // Side menu "App": start the install, or show how-to steps when the phone cannot start it directly
 function menuInstallApp() {
  closeMenu();
+ // A link set by the admin comes first (only web links are opened)
+ const adminLink = settingsData.appLink;
+ if (typeof adminLink === 'string' && /^https?:\/\//i.test(adminLink)) {
+ // Direct app files (APK / GitHub release) download straight away without leaving the app
+ const isDirectFile = /\.(apk|aab|zip)(\?|#|$)/i.test(adminLink) || /\/releases\/download\//i.test(adminLink);
+ if (isDirectFile) {
+ const a = document.createElement('a');
+ a.href = adminLink;
+ a.download = '';
+ a.rel = 'noopener';
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+ showToast('Downloading app...');
+ } else {
+ window.open(adminLink, '_blank', 'noopener');
+ }
+ return;
+ }
  if (isRunningStandalone()) { showToast('App already installed'); return; }
  if (deferredInstallPrompt) { installApp(); return; }
  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);

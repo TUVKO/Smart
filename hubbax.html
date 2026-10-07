@@ -499,6 +499,15 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  </div>
 
  <div class="settings-section">
+ <div class="settings-title">App Link</div>
+ <div class="settings-row" style="display:block;">
+ <span class="settings-label" style="display:block;margin-bottom:8px;">Web address users open from the "App" menu (leave empty to install the web app instead)</span>
+ <input type="url" class="ugx-input" id="app-link-input" placeholder="https://..." style="width:100%;max-width:none;">
+ </div>
+ <div class="settings-row"><span class="settings-label" id="app-link-status">No link set</span><div style="display:flex;gap:8px;"><button class="btn btn-edit" onclick="clearAppLink()">Clear</button><button class="btn btn-save" onclick="saveAppLink()">Save</button></div></div>
+ </div>
+
+ <div class="settings-section">
  <div class="settings-title">Deposit & Withdrawal Settings</div>
  <div class="settings-row"><span class="settings-label">Minimum Deposit (UGX)</span><div class="ugx-group"><span class="ugx-label">UGX</span><input type="number" class="ugx-input" id="min-deposit-input" min="500" step="500" placeholder="10000"></div><button class="btn btn-save" onclick="saveMinDeposit()">Save</button></div>
  <div class="settings-row"><span class="settings-label">Maximum Deposit (UGX)</span><div class="ugx-group"><span class="ugx-label">UGX</span><input type="number" class="ugx-input" id="max-deposit-input" min="10000" step="1000" placeholder="2350000"></div><button class="btn btn-save" onclick="saveMaxDeposit()">Save</button></div>
@@ -1593,6 +1602,8 @@ function loadSettingsUI() {
  document.getElementById('daily-percent-input').value = curPct;
  document.getElementById('daily-percent-date').value = s.dailyPercentDate || localDateKey();
  document.getElementById('daily-percent-status').textContent = 'Current: ' + curPct + '% daily' + (s.dailyPercentDate ? ' (from ' + s.dailyPercentDate + ')' : '');
+ document.getElementById('app-link-input').value = s.appLink || '';
+ document.getElementById('app-link-status').textContent = s.appLink ? 'Link is live' : 'No link set';
  document.getElementById('max-deposit-input').value = s.maxDeposit || 2350000;
  document.getElementById('min-withdraw-input').value = s.minWithdraw || 10000;
  
@@ -1664,6 +1675,22 @@ async function saveUraTax() {
  if (v < 0) { toast('Tax cannot be negative', '#f87171'); return; }
  await db.ref('settings/uraTax').set(v);
  toast('URA Tax updated to ' + v + '%');
+}
+
+async function saveAppLink() {
+ const raw = document.getElementById('app-link-input').value.trim();
+ if (!raw) { toast('Enter a link, or use Clear to remove it', '#f87171'); return; }
+ let ok = false;
+ try { const u = new URL(raw); ok = (u.protocol === 'https:' || u.protocol === 'http:'); } catch (e) { ok = false; }
+ if (!ok) { toast('The link must start with https:// or http://', '#f87171'); return; }
+ await db.ref('settings/appLink').set(raw);
+ toast('App link saved');
+}
+
+async function clearAppLink() {
+ await db.ref('settings/appLink').remove();
+ document.getElementById('app-link-input').value = '';
+ toast('App link cleared');
 }
 
 function localDateKey() {
