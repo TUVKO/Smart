@@ -100,6 +100,31 @@ input[type="password"]{padding-right:46px;}
 .submit-btn:active{transform:scale(.98);}
 .auth-switch{text-align:center;margin-top:18px;font-size:13px;color:var(--muted);}
 .auth-switch a{color:var(--accent);font-weight:700;cursor:pointer;text-decoration:none;}
+/* ===== Login / Register — dark card style ===== */
+.auth-page{background:#0E1628;padding:0;}
+.auth-page .auth-plan-btn{top:14px;right:14px;background:transparent;border:1px solid #10B981;color:#10B981;border-radius:10px;padding:7px 14px;font-size:12px;}
+.auth-shell{background:#1E293B;border:1px solid #2A3650;border-radius:24px;margin:64px 0 24px;padding:30px 24px 28px;}
+.auth-logo-box{width:76px;height:76px;background:#fff;border-radius:16px;overflow:hidden;margin:0 auto 14px;display:grid;place-items:center;}
+.auth-logo-box img{width:100%;height:100%;object-fit:cover;}
+.auth-page .auth-brand{text-align:center;font-size:30px;font-weight:800;color:#fff;letter-spacing:.3px;margin-bottom:6px;}
+.auth-page .auth-tagline{text-align:center;font-size:14px;color:#8E9BB3;text-transform:none;letter-spacing:0;margin-bottom:26px;}
+.auth-tabs{display:flex;border-bottom:1px solid #2A3650;margin-bottom:24px;}
+.auth-tab{flex:1;text-align:center;padding:14px 0;font-size:17px;font-weight:700;color:#8E9BB3;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;text-decoration:none;}
+.auth-tab.active{color:#10B981;border-bottom-color:#10B981;}
+.auth-note{text-align:center;font-size:13px;color:#8E9BB3;margin:-6px 0 14px;}
+.auth-ref-box{display:none;border:1px solid #10B981;background:rgba(16,185,129,.12);color:#10B981;border-radius:10px;padding:12px;text-align:center;font-size:14px;margin-bottom:16px;}
+.auth-page .field-group{margin-bottom:16px;}
+.auth-page .field-label{font-size:15px;font-weight:600;letter-spacing:0;text-transform:none;color:#9AA6BC;margin-bottom:8px;}
+.auth-page input,.auth-page select{background:#0E1628;border:1px solid #2A3650;border-radius:12px;padding:17px 16px;font-size:16px;color:#fff;}
+.auth-page input::placeholder{color:#5F6B84;}
+.auth-page input:focus,.auth-page select:focus{border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,.18);}
+.auth-page select option{background:#1E293B;color:#fff;}
+.auth-page .eye-btn{color:#9AA6BC;right:16px;}
+.auth-page .field-hint{color:#8E9BB3;font-size:12px;}
+.auth-page .field-error{color:#F87171;font-size:12px;}
+.auth-page .pw-bar{background:#2A3650;}
+.auth-page .submit-btn{background:#10B981;border-radius:12px;padding:18px;font-size:17px;font-weight:800;color:#0B1220;margin-top:6px;}
+
 
 /* Phone Prefix */
 .phone-prefix-wrap{display:flex;align-items:center;background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
@@ -185,27 +210,6 @@ input[type="password"]{padding-right:46px;}
 .btn-icon svg{width:100%;height:100%;}
 
 
-/* Floating WhatsApp Icon */
-.whatsapp-float{
- position:fixed;
- bottom:90px;
- right:20px;
- width:52px;
- height:52px;
- background:var(--navy);
- border-radius:50%;
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:22px;
- cursor:pointer;
- box-shadow:0 6px 20px rgba(46,125,50,.4);
- z-index:300;
- transition:transform .2s;
- color:#fff;
- text-decoration:none;
-}
-.whatsapp-float:hover{transform:scale(1.08);}
 
 .notif-bell-float{
  position:fixed;
@@ -378,34 +382,31 @@ body.terminal-mode .plan-table thead th,body.terminal-mode .plan-table tbody tr{
 .logout-btn-new:active{transform:scale(.98);}
 
 /* Style 5 — Bold Blocks (Account/Details page only) */
-#sec-profile{background:#fff;padding-bottom:0;}
-#sec-profile .inner-header{background:#1A1A1A;padding:26px 20px 22px;margin:0;display:block;gap:0;}
-#sec-profile .inner-header .inner-title{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8CFF6B;font-weight:800;margin-bottom:8px;}
-#sec-profile .inner-header .inner-sub{display:none;}
-#sec-profile .inner-header::after{content:'ACCOUNT';display:block;font-size:32px;font-weight:900;color:#fff;letter-spacing:.5px;margin-top:2px;}
-#sec-profile .section{padding:0;}
-#sec-profile .profile-compact-row{display:flex;align-items:center;gap:0;background:#8CFF6B;border:none;border-radius:0;padding:22px 20px;margin-bottom:0;box-shadow:none;}
-#sec-profile .profile-compact-avatar{display:none;}
-#sec-profile .profile-compact-name{font-size:22px;font-weight:900;color:#1A1A1A;margin-bottom:8px;}
-#sec-profile .profile-compact-status{background:#fff;color:#1A1A1A;border-radius:0;font-size:10px;letter-spacing:1px;padding:4px 10px;}
-#sec-profile .profile-info-section{background:#fff;border:none;border-radius:0;margin-bottom:0;}
-#sec-profile .profile-section-title{font-size:11px;letter-spacing:1.5px;color:#1A1A1A;font-weight:800;background:#fff;border-bottom:none;padding:22px 20px 12px;}
-#sec-profile .profile-info-item{padding:15px 20px;border-bottom:3px solid #1A1A1A;}
-#sec-profile .profile-info-label{font-size:11.5px;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
-#sec-profile .profile-info-value{font-size:16px;font-weight:900;color:#1A1A1A;}
-#sec-profile .settings-list{background:#fff;border:none;border-radius:0;margin-top:6px;margin-bottom:0;}
-#sec-profile .settings-row{padding:18px 20px;border-bottom:2px solid #EDEDED;transition:.15s;}
-#sec-profile .settings-row:hover{background:#1A1A1A;}
-#sec-profile .settings-row:hover .settings-row-label, #sec-profile .settings-row:hover .settings-chevron{color:#8CFF6B;}
-#sec-profile .settings-row-label{font-size:14.5px;font-weight:800;color:#1A1A1A;transition:.15s;}
-#sec-profile .settings-chevron{color:#1A1A1A;font-weight:900;transition:.15s;}
-#sec-profile .logout-btn-new{width:calc(100% - 40px);min-width:0;margin:26px 20px 30px;background:#1A1A1A;border-radius:0;color:#8CFF6B;padding:16px;font-size:13px;letter-spacing:1px;transition:.2s;}
-#sec-profile .logout-btn-new:hover{background:#8CFF6B;color:#1A1A1A;}
+#sec-profile{background:transparent;padding-bottom:0;}
+body.prof-dark{background:#0E1628;}
+body.prof-dark .dashboard-page{background:#0E1628;}
+body.prof-dark .topbar{background:#162036;border-bottom:1px solid #263250;}
+.prof-page{padding-top:22px;}
+.prof-title{font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:18px;}
+.prof-card{background:#1E293B;border:1px solid #2A3650;border-radius:20px;padding:26px 24px;}
+.prof-label{font-size:15px;color:#8E9BB3;}
+.prof-value{font-size:22px;font-weight:700;color:#fff;margin:4px 0 20px;word-break:break-all;}
+.prof-logout{width:100%;background:#EF4444;border:none;border-radius:12px;color:#fff;padding:18px;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;cursor:pointer;}
+.prof-logout:active{transform:scale(.98);}
 
 /* Bottom Nav */
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:#1C3A22;display:flex;align-items:center;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:200;height:58px;box-sizing:content-box;}
-.nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;padding:4px 2px;border-radius:10px;transition:transform .15s;background:transparent;flex:1;min-width:0;}
+.nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;padding:4px 0;border-radius:10px;transition:transform .15s;background:transparent;flex:1;min-width:0;}
 .nav-item:active{transform:scale(.92);}
+.signout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10600;align-items:center;justify-content:center;padding:24px;}
+.signout-overlay.show{display:flex;}
+.signout-box{background:#fff;width:100%;max-width:320px;border-radius:20px;padding:24px 20px 18px;text-align:center;}
+.signout-title{font-size:18px;font-weight:800;color:#1A2E1A;margin-bottom:6px;}
+.signout-text{font-size:13px;color:#5C7A5C;margin-bottom:18px;}
+.signout-actions{display:flex;gap:10px;}
+.signout-actions button{flex:1;border:none;border-radius:12px;padding:13px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+.signout-cancel{background:#F1F8E9;color:#2E7D32;}
+.signout-ok{background:#EF4444;color:#fff;}
 .nav-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:#8a93a6;opacity:.65;transition:color .2s, opacity .2s;}
 .nav-icon svg{width:100%;height:100%;}
 .nav-label{font-size:9.5px;font-weight:600;letter-spacing:0.1px;color:#8a93a6;white-space:nowrap;transition:color .2s;}
@@ -699,50 +700,50 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
 
 <!-- LOGIN -->
 <div class="auth-page" id="login-page">
- <div class="auth-corner-logo"><img src="logo.png" alt="Smart_Trade"></div>
- <div class="auth-hero">
+ <div class="auth-shell">
+ <div class="auth-logo-box"><img src="logo.png" alt="Smart_Trade"></div>
  <div class="auth-brand">Smart_Trade</div>
- <div class="auth-tagline">Grow Your Wealth Daily</div>
+ <div class="auth-tagline">Grow Your Wealth - Invest &amp; Earn</div>
+ <div class="auth-tabs">
+ <a class="auth-tab active" onclick="showAuth('login-page')">Login</a>
+ <a class="auth-tab" onclick="showAuth('register-page')">Register</a>
  </div>
- <div class="auth-card">
- <div class="auth-title">Welcome Back</div>
- <div class="auth-subtitle">Sign in to your investment account</div>
  <div class="field-group">
  <label class="field-label">Username</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="text" id="login-username" placeholder="Enter your username"></div>
+ <div class="field-wrap"><input type="text" id="login-username" placeholder="Enter your username"></div>
  <div class="field-error" id="login-user-err">Please enter your username</div>
  </div>
  <div class="field-group">
  <label class="field-label">Password</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="password" id="login-password" placeholder="Enter password"><button class="eye-btn" onclick="toggleEye('login-password',this)">Show</button></div>
+ <div class="field-wrap"><input type="password" id="login-password" placeholder="Enter password"><button class="eye-btn" onclick="toggleEye('login-password',this)">Show</button></div>
  <div class="field-error" id="login-pw-err">Please enter your password</div>
  </div>
  <div class="field-error" id="login-general-err" style="text-align:center;margin-bottom:10px;font-size:12px;"></div>
- <button class="submit-btn" onclick="doLogin()">Login</button>
- <div class="auth-switch">Don't have an account? <a onclick="showAuth('register-page')">Register Now</a></div>
+ <button class="submit-btn" onclick="doLogin()">Log In</button>
  </div>
 </div>
 
 <!-- REGISTER -->
 <div class="auth-page" id="register-page">
- <div class="auth-corner-logo"><img src="logo.png" alt="Smart_Trade"></div>
  <button class="auth-plan-btn" onclick="openAuthPlanModal()">Plan</button>
- <div class="auth-hero">
+ <div class="auth-shell">
+ <div class="auth-logo-box"><img src="logo.png" alt="Smart_Trade"></div>
  <div class="auth-brand">Smart_Trade</div>
- <div class="auth-tagline">Start Earning Today</div>
- <div id="reg-referrer-display" style="display:none;font-size:11px;color:var(--accent);font-weight:700;margin-top:10px;text-align:center;"></div>
+ <div class="auth-tagline">Grow Your Wealth - Invest &amp; Earn</div>
+ <div class="auth-tabs">
+ <a class="auth-tab" onclick="showAuth('login-page')">Login</a>
+ <a class="auth-tab active" onclick="showAuth('register-page')">Register</a>
  </div>
- <div class="auth-card">
- <div class="auth-title">Create Account</div>
- <div class="auth-subtitle">Get UGX 4,000 registration bonus</div>
+ <div class="auth-note">Get UGX 4,000 registration bonus</div>
+ <div id="reg-referrer-display" class="auth-ref-box"></div>
  <div class="field-group">
  <label class="field-label">Username</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="text" id="reg-username" placeholder="Choose a username"></div>
+ <div class="field-wrap"><input type="text" id="reg-username" placeholder="Choose a username"></div>
  <div class="field-error" id="reg-user-err">Username is required</div>
  </div>
  <div class="field-group">
  <label class="field-label">Country</label>
- <div class="field-wrap"><span class="field-icon"></span>
+ <div class="field-wrap">
  <select id="reg-country" onchange="updateRegPrefix()">
  <option value="">Select your country</option>
  <option value="UG">+256</option>
@@ -753,19 +754,18 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  </div>
  <div class="field-group">
  <label class="field-label">Phone Number</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="tel" id="reg-phone" placeholder="0700012345" maxlength="10" oninput="regPhoneInput(this)"></div>
+ <div class="field-wrap"><input type="tel" id="reg-phone" placeholder="0700012345" maxlength="10" oninput="regPhoneInput(this)"></div>
  <div class="field-hint">10 digits starting with 0</div>
  <div class="field-error" id="reg-phone-err">Enter 10 digits starting with 0</div>
  </div>
  <div class="field-group">
  <label class="field-label">Password</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="password" id="reg-password" placeholder="Min. 4 characters" oninput="checkStrength(this.value)"><button class="eye-btn" onclick="toggleEye('reg-password',this)">Show</button></div>
+ <div class="field-wrap"><input type="password" id="reg-password" placeholder="Min. 4 characters" oninput="checkStrength(this.value)"><button class="eye-btn" onclick="toggleEye('reg-password',this)">Show</button></div>
  <div class="pw-strength"><div class="pw-bar" id="pw-b1"></div><div class="pw-bar" id="pw-b2"></div><div class="pw-bar" id="pw-b3"></div></div>
  <div class="field-error" id="reg-pw-err">Password must be at least 4 characters</div>
  </div>
  <div class="field-error" id="reg-general-err" style="text-align:center;margin-bottom:10px;font-size:12px;"></div>
- <button class="submit-btn" onclick="doRegister()">Register</button>
- <div class="auth-switch">Already have an account? <a onclick="showAuth('login-page')">Sign In</a></div>
+ <button class="submit-btn" onclick="doRegister()">Register Account</button>
  </div>
 </div>
 
@@ -837,21 +837,23 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  </div>
  </div>
 
- <!-- Floating WhatsApp Icon -->
- <a href="#" id="whatsapp-float-btn" class="whatsapp-float" target="_blank">
- <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
- <path d="M4 13v-2a8 8 0 0116 0v2" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
- <path d="M4 13a2 2 0 012-2h1a1 1 0 011 1v4a1 1 0 01-1 1H6a2 2 0 01-2-2v-2z" fill="#fff"/>
- <path d="M20 13a2 2 0 00-2-2h-1a1 1 0 00-1 1v4a1 1 0 001 1h1a2 2 0 002-2v-2z" fill="#fff"/>
- <path d="M18 17v1a2 2 0 01-2 2h-3" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
- </svg>
- </a>
-
  <!-- Floating Notification Bell -->
  <button class="notif-bell-float" id="notif-bell-btn" onclick="openNotifPanel()">
  <span></span>
  <span class="notif-bell-badge" id="notif-bell-badge" style="display:none;">0</span>
  </button>
+
+ <!-- Sign out confirmation -->
+ <div class="signout-overlay" id="signout-overlay" onclick="if(event.target===this)closeSignoutConfirm()">
+ <div class="signout-box">
+ <div class="signout-title">Sign out?</div>
+ <div class="signout-text">You will need to log in again.</div>
+ <div class="signout-actions">
+ <button class="signout-cancel" onclick="closeSignoutConfirm()">Cancel</button>
+ <button class="signout-ok" onclick="closeSignoutConfirm();doLogout()">Sign out</button>
+ </div>
+ </div>
+ </div>
 
  <!-- Notification Panel (all transactions) -->
  <div class="notif-panel-overlay" id="notif-panel-overlay" onclick="closeNotifPanelOutside(event)">
@@ -897,8 +899,7 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
 
  <!-- Returns Plan -->
  <div class="dash-section" id="sec-plan">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Growth</div><div class="inner-sub" id="plan-sub">10% daily for 65 days (650% total)</div></div></div>
- <div class="section">
+ <div class="section" style="padding-top:14px;">
  <div class="plan-wrap">
  <div class="plan-header"><div class="plan-header-title">Investment Returns</div></div>
  <div class="table-wrapper">
@@ -913,66 +914,15 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
 
  <!-- Profile -->
  <div class="dash-section" id="sec-profile">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Account</div><div class="inner-sub">Manage your profile</div></div></div>
- <div class="section">
- <div class="profile-compact-row">
- <div>
- <div class="profile-compact-name" id="profile-user-simple">—</div>
- <span class="profile-compact-status" id="profile-status-simple">—</span>
+ <div class="section prof-page">
+ <div class="prof-title">Account Profile</div>
+ <div class="prof-card">
+ <div class="prof-label">Username:</div>
+ <div class="prof-value" id="profile-user-simple">—</div>
+ <div class="prof-label">Phone Number:</div>
+ <div class="prof-value" id="profile-phone-simple">—</div>
+ <button class="prof-logout" onclick="doLogout()">Log Out of Account</button>
  </div>
- </div>
-
- <div class="profile-info-section">
- <div class="profile-section-title">Account Details</div>
- <div class="profile-info-item"><span class="profile-info-label">Registered Date</span><span class="profile-info-value" id="profile-date-simple">—</span></div>
- </div>
-
- <div class="settings-list">
- <div class="settings-row" onclick="toggleSettingsForm('pwd')"><span class="settings-row-label">Change Password</span><span class="settings-chevron" id="pwd-chevron">›</span></div>
- <div class="settings-form" id="pwd-form">
- <div class="settings-form-inner">
- <div class="field-group"><label class="field-label">Current Password</label><input type="password" id="cp-old-pw" placeholder="Enter current password"></div>
- <div class="field-group"><label class="field-label">New Password</label><input type="password" id="cp-new-pw" placeholder="Min. 4 characters"></div>
- <div class="field-group"><label class="field-label">Confirm New Password</label><input type="password" id="cp-confirm-pw" placeholder="Repeat new password"></div>
- <div class="field-error" id="cp-pw-err">Error</div>
- <div class="settings-form-actions">
- <button class="settings-btn-cancel" onclick="toggleSettingsForm('pwd')">Cancel</button>
- <button class="settings-btn-save" onclick="submitChangePassword()">Save</button>
- </div>
- </div>
- </div>
-
- <div class="settings-row" onclick="toggleSettingsForm('phone')"><span class="settings-row-label">Change Phone Number</span><span class="settings-chevron" id="phone-chevron">›</span></div>
- <div class="settings-form" id="phone-form">
- <div class="settings-form-inner">
- <div class="field-group"><label class="field-label">New Phone Number</label><input type="tel" id="cp-new-phone" placeholder="0700012345" maxlength="10" oninput="regPhoneInput(this)"></div>
- <div class="field-hint">10 digits starting with 0</div>
- <div class="field-error" id="cp-phone-err">Error</div>
- <div class="settings-form-actions">
- <button class="settings-btn-cancel" onclick="toggleSettingsForm('phone')">Cancel</button>
- <button class="settings-btn-save" onclick="submitChangePhone()">Save</button>
- </div>
- </div>
- </div>
-
- <div class="settings-row" onclick="toggleSettingsForm('info')"><span class="settings-row-label">Edit Info</span><span class="settings-chevron" id="info-chevron">›</span></div>
- <div class="settings-form" id="info-form">
- <div class="settings-form-inner">
- <div class="field-group"><label class="field-label">Country</label>
- <select id="cp-country">
- <option value="UG">+256</option>
- <option value="KE">+254</option>
- </select>
- </div>
- <div class="settings-form-actions">
- <button class="settings-btn-cancel" onclick="toggleSettingsForm('info')">Cancel</button>
- <button class="settings-btn-save" onclick="submitEditInfo()">Save</button>
- </div>
- </div>
- </div>
- </div>
-
- <button class="logout-btn-new" onclick="doLogout()">Sign Out</button>
  </div>
  </div>
 
@@ -1045,8 +995,10 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <nav class="bottom-nav">
  <div class="nav-item active" onclick="switchTab('home')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5L12 4l9 7.5"></path><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"></path></svg></span><span class="nav-label">Home</span></div>
  <div class="nav-item" onclick="switchTab('team')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8" r="3"></circle><circle cx="16" cy="9.5" r="2.4"></circle><path d="M2.5 19.5c0-3 2.7-5.4 6-5.4s6 2.4 6 5.4"></path><path d="M14.5 14.6c2.6.3 4.5 2.3 4.5 4.9"></path></svg></span><span class="nav-label">Network</span></div>
+ <div class="nav-item" onclick="openSupportChat()"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-2a8 8 0 0116 0v2"/><path d="M4 13a2 2 0 012-2h1a1 1 0 011 1v4a1 1 0 01-1 1H6a2 2 0 01-2-2v-2z"/><path d="M20 13a2 2 0 00-2-2h-1a1 1 0 00-1 1v4a1 1 0 001 1h1a2 2 0 002-2v-2z"/><path d="M18 17v1a2 2 0 01-2 2h-3"/></svg></span><span class="nav-label">Help</span></div>
  <div class="nav-item" onclick="switchTab('plan')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="20" x2="5" y2="12"></line><line x1="12" y1="20" x2="12" y2="7"></line><line x1="19" y1="20" x2="19" y2="15"></line><path d="M4 9l5-5 4 4 6-6"></path><path d="M15 2h4v4"></path></svg></span><span class="nav-label">Growth</span></div>
  <div class="nav-item" onclick="switchTab('profile')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.5 20c0-3.6 3.4-6.5 7.5-6.5s7.5 2.9 7.5 6.5"></path></svg></span><span class="nav-label">Profile</span></div>
+ <div class="nav-item" onclick="confirmSignout()"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span><span class="nav-label">Signout</span></div>
  </nav>
 
 
@@ -1546,6 +1498,7 @@ function pushNavState(state, hash) {
 }
 
 function showAuth(id) {
+ document.body.classList.remove('prof-dark', 'terminal-mode');
  document.querySelectorAll('.auth-page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
  const t = document.getElementById(id);
  if (t) { t.style.display = 'flex'; t.classList.add('active'); }
@@ -1554,7 +1507,7 @@ function showAuth(id) {
  const refCode = urlParams.get('ref') || null;
  const refDisplay = document.getElementById('reg-referrer-display');
  if (refDisplay) {
- if (refCode) { refDisplay.textContent = "You're being referred by " + refCode; refDisplay.style.display = 'block'; }
+ if (refCode) { refDisplay.textContent = '🎁 Referred by ' + refCode; refDisplay.style.display = 'block'; }
  else { refDisplay.textContent = ''; refDisplay.style.display = 'none'; }
  }
  }
@@ -1611,7 +1564,7 @@ function closePrivacyModal(event) {
 }
 
 const tabMap = { home: 'sec-home', team: 'sec-team', plan: 'sec-plan', profile: 'sec-profile', deposit: 'sec-deposit', withdraw: 'sec-withdraw', reinvest: 'sec-reinvest' };
-const navOrder = ['home', 'team', 'plan', 'profile'];
+const navOrder = ['home', 'team', 'help', 'plan', 'profile'];
 
 function renderAuthPlanTable() {
  const body = document.getElementById('auth-plan-table-body');
@@ -1690,6 +1643,7 @@ function switchTab(tab) {
  const idx = navOrder.indexOf(tab);
  if (idx >= 0) document.querySelectorAll('.nav-item')[idx].classList.add('active');
  document.body.classList.toggle('terminal-mode', tab === 'team');
+ document.body.classList.toggle('prof-dark', tab === 'profile');
  closeMenu();
  pushNavState({ view: 'dashboard', tab: tab }, tab);
 }
@@ -1874,26 +1828,10 @@ function updateProfileUI() {
  renderAvatarInto(document.getElementById('dash-avatar'), currentUser.avatar, initial);
  renderAvatarInto(document.getElementById('dash-welcome-avatar'), currentUser.avatar, initial);
  renderAvatarInto(document.getElementById('profile-avatar-lg'), currentUser.avatar, initial);
- document.getElementById('profile-user-simple').textContent = currentUser.username || '—';
- const dateEl = document.getElementById('profile-date-simple');
- if (dateEl) {
- const jd = currentUser.joinedDate || '';
- if (/^\d{4}-\d{2}-\d{2}$/.test(jd)) {
- const [y, m, d] = jd.split('-');
- dateEl.textContent = d + '/' + m + '/' + y;
- } else if (/^\d{4}$/.test(jd)) {
- dateEl.textContent = '01/01/' + jd;
- } else {
- dateEl.textContent = '01/01/2026';
- }
- }
- const statusEl = document.getElementById('profile-status-simple');
- if (statusEl) {
- const isActive = !!currentUser.activated;
- statusEl.textContent = isActive ? 'Earning' : 'Starter';
- statusEl.style.background = isActive ? 'rgba(16,185,129,.15)' : 'rgba(107,118,144,.15)';
- statusEl.style.color = isActive ? '#0a8a5f' : '#6b7690';
- }
+ const profUserEl = document.getElementById('profile-user-simple');
+ if (profUserEl) profUserEl.textContent = currentUser.username || '—';
+ const profPhoneEl = document.getElementById('profile-phone-simple');
+ if (profPhoneEl) profPhoneEl.textContent = currentUser.phone || '—';
  const investorPillEl = document.getElementById('investor-pill');
  if (investorPillEl) investorPillEl.classList.toggle('show', !!currentUser.activated);
  document.getElementById('with-phone-display').textContent = currentUser.phone || '—';
@@ -1981,17 +1919,18 @@ async function submitEditInfo() {
 }
 
 function updateWhatsAppButton() {
- const waBtn = document.getElementById('whatsapp-float-btn');
- if (!waBtn || !currentUser) return;
- const phone = settingsData.waNumber;
- if (!phone) {
- waBtn.style.display = 'none';
- return;
- }
- waBtn.style.display = '';
- const message = `Hey! ${currentUser.username} here 😊 Quick help needed with my Smart_Trade account, please!`;
- waBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+ // Support now lives in the Help tab; nothing floats on screen any more
 }
+
+function openSupportChat() {
+ const phone = settingsData.waNumber;
+ if (!phone) { showToast('Support is not available right now'); return; }
+ const message = `Hey! ${currentUser ? currentUser.username : ''} here 😊 Quick help needed with my Smart_Trade account, please!`;
+ window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+}
+
+function confirmSignout() { document.getElementById('signout-overlay').classList.add('show'); }
+function closeSignoutConfirm() { document.getElementById('signout-overlay').classList.remove('show'); }
 
 let currentHistoryFilter = 'all';
 function setTxFilter(type, btnEl) {
