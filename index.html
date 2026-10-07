@@ -232,19 +232,12 @@ input[type="password"]{padding-right:46px;}
 .notif-panel-overlay{display:none;position:fixed;inset:0;background:rgba(15,27,60,.55);z-index:10000;align-items:flex-end;justify-content:center;}
 .notif-panel-overlay.show{display:flex;}
 
-/* Welcome Guidance Popup */
-.welcome-modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,27,60,.55);z-index:10500;align-items:center;justify-content:center;padding:20px;}
-.welcome-modal-overlay.show{display:flex;}
-.welcome-modal{background:#fff;width:100%;max-width:400px;border-radius:22px;padding:26px 22px 20px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3);font-family:'Inter',sans-serif;}
-.welcome-modal-close{position:absolute;top:14px;right:14px;background:#F1F8E9;border:none;border-radius:50%;width:28px;height:28px;font-size:13px;color:#5C7A5C;cursor:pointer;}
-.welcome-modal-title{font-size:19px;font-weight:800;color:#1A2E1A;margin-bottom:12px;padding-right:20px;}
-.welcome-modal-body{font-size:13px;line-height:1.6;color:#3d4f3d;margin-bottom:20px;}
-.welcome-modal-actions{display:flex;gap:8px;}
-.welcome-action-btn{flex:1;border:none;border-radius:12px;padding:13px 4px;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer;transition:transform .15s, filter .15s;}
-.welcome-action-btn:active{transform:scale(.96);filter:brightness(1.1);}
-.welcome-action-btn.wa-group{background:#25D366;}
-.welcome-action-btn.invest{background:#2E7D32;}
-.welcome-action-btn.support{background:#F9A825;color:#1A2E1A;}
+.welcome-card{background:#fff;border:1.5px solid var(--accent);border-radius:16px;padding:20px 18px;box-shadow:0 4px 14px rgba(46,125,50,.08);position:relative;}
+.welcome-text{flex:1;}
+.welcome-greeting{font-family:'Inter',sans-serif;font-size:17px;font-weight:600;color:var(--text);margin-bottom:14px;}
+.welcome-greeting span{font-weight:800;color:var(--accent);}
+.welcome-copy-link{background:var(--accent);border:none;border-radius:9px;color:#fff;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:.2px;cursor:pointer;display:flex;align-items:center;gap:6px;padding:10px 18px;}
+.welcome-copy-link:active{transform:scale(.96);}
 .notif-panel{background:#fdfcf8;width:100%;max-width:500px;height:80vh;border-radius:24px 24px 0 0;display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(0,0,0,.3);font-family:'JetBrains Mono',monospace;}
 .notif-panel-handle{width:40px;height:4px;background:#ccc;border-radius:4px;margin:10px auto 4px;}
 .notif-panel-header{padding:14px 16px 12px;text-align:center;border-bottom:2px dashed #ccc;position:relative;}
@@ -269,22 +262,47 @@ input[type="password"]{padding-right:46px;}
 .investment-status{font-size:10px;color:var(--accent3);margin-top:8px;}
 
 /* Table (Scrollable) */
-.plan-wrap{background:#000000;border:1px solid rgba(255,255,255,.1);border-radius:0;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.4);max-width:100%;margin:0 auto;}
-.plan-header{background:transparent;padding:12px 12px 8px;text-align:left;}
-.plan-header-title{font-family:'Inter',sans-serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:0.2px;}
-.table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0;background:#000000;}
-.plan-table{width:100%;border-collapse:collapse;min-width:0;background:#000000;}
-.plan-table thead tr{background:#000000;}
-.plan-table thead th{padding:6px 4px;font-size:7.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;text-align:center;border-bottom:1px solid rgba(255,255,255,.25);border-right:1px solid rgba(255,255,255,.08);}
-.plan-table thead th:last-child{border-right:none;}
-.plan-table tbody tr{border-bottom:1px solid rgba(255,255,255,.08);}
-.plan-table tbody tr:nth-child(odd){background:#000000;}
-.plan-table tbody tr:nth-child(even){background:#0D0D0D;}
-.plan-table tbody td{padding:5px 4px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:9px;font-weight:600;text-align:center;border-right:1px solid rgba(255,255,255,.08);color:#fff;}
-.plan-table tbody td:last-child{border-right:none;}
-.plan-table tbody td:first-child{color:#fff;font-weight:800;font-size:9.5px;}
-.plan-table tbody td:nth-child(2){color:#fff;font-weight:700;font-size:9px;}
-.plan-table tbody td:nth-child(3){color:#fff;font-weight:800;font-size:9.5px;}
+/* My Team page */
+.team-page{padding-top:16px;}
+.team-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:18px;}
+.team-title{display:flex;align-items:center;gap:10px;font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:var(--text);}
+.team-sub{font-size:13px;color:var(--muted);margin-top:8px;}
+.team-head-ico{color:var(--muted);margin-top:6px;}
+.lvl-card{margin-bottom:22px;}
+.lvl-head{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.lvl-ico{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted);}
+.lvl-ico-1{background:#DCEBE6;color:#2A8A76;}
+.lvl-ico-3{background:#FBE6DA;color:#E8743B;}
+.lvl-meta{flex:1;min-width:0;}
+.lvl-name{font-size:17px;font-weight:800;color:var(--text);}
+.lvl-sub{font-size:13px;color:var(--muted);margin-top:2px;}
+.lvl-pill{font-size:14px;font-weight:800;padding:7px 14px;border-radius:20px;color:var(--muted);white-space:nowrap;}
+.lvl-pill-1{background:#DCEBE6;color:#2A8A76;}
+.lvl-pill-3{background:#FBE6DA;color:#E8743B;}
+.lvl-body{background:#F0F2F5;border-radius:18px;box-shadow:0 4px 14px rgba(0,0,0,.06);padding:14px;min-height:150px;}
+.lvl-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:38px 0;color:var(--muted);font-size:14px;}
+.lvl-empty svg{color:#7b8494;}
+body.terminal-mode .lvl-body{background:#0F1810;box-shadow:none;}
+body.terminal-mode .lvl-name,body.terminal-mode .team-title{color:#d8f0d8;}
+body.terminal-mode .lvl-sub,body.terminal-mode .team-sub,body.terminal-mode .lvl-empty{color:#5a7a5a;}
+.plan-wrap{background:var(--surface);border:1px solid var(--card-border);border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(46,125,50,.08);max-width:100%;margin:0 auto;}
+.plan-header{background:transparent;padding:14px 14px 6px;text-align:left;}
+.plan-header-title{font-family:'Inter',sans-serif;font-size:15px;font-weight:800;color:var(--text);letter-spacing:0.2px;}
+.table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0;background:transparent;}
+.plan-table{width:100%;border-collapse:collapse;min-width:0;background:transparent;}
+.plan-table thead tr{background:transparent;}
+.plan-table thead th{padding:10px 4px;font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);text-align:center;border-bottom:1.5px solid var(--card-border-hover);}
+.plan-table tbody tr{border-bottom:1px solid var(--card-border);background:transparent;}
+.plan-table tbody tr:last-child{border-bottom:none;}
+.plan-table tbody td{padding:10px 4px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:12px;font-weight:600;text-align:center;color:var(--text);background:transparent;}
+.plan-table tbody td:first-child{font-weight:800;}
+.plan-table tbody td:nth-child(2){color:var(--muted);font-weight:700;}
+.plan-table tbody td:nth-child(3){color:var(--accent);font-weight:800;}
+body.terminal-mode .plan-wrap{background:#0F1810;border-color:#1c2b1d;box-shadow:none;}
+body.terminal-mode .plan-header-title,body.terminal-mode .plan-table tbody td{color:#d8f0d8;}
+body.terminal-mode .plan-table thead th,body.terminal-mode .plan-table tbody td:nth-child(3){color:#4ADE80;}
+body.terminal-mode .plan-table tbody td:nth-child(2){color:#8fb08f;}
+body.terminal-mode .plan-table thead th,body.terminal-mode .plan-table tbody tr{border-color:#1c2b1d;}
 .plan-footer{padding:12px;background:var(--surface2);}
 .start-invest-btn{width:100%;background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);border:none;border-radius:12px;padding:13px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#fff;cursor:pointer;}
 .start-invest-btn:active{transform:scale(.98);}
@@ -765,6 +783,15 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <!-- HOME / DASHBOARD -->
  <div class="dash-section active" id="sec-home">
  <div class="section" style="padding-top:14px;">
+ <div class="welcome-card">
+ <span class="investor-pill" id="investor-pill">Investor</span>
+ <div class="welcome-text">
+ <div class="welcome-greeting">Ready to grow, <span id="dash-username">—</span></div>
+ <button class="welcome-copy-link" onclick="copyRef()"><span></span>Copy</button>
+ </div>
+ </div>
+ </div>
+ <div class="section">
  <div class="stats-card">
  <div class="stats-grid">
  <div class="stat-box">
@@ -826,20 +853,6 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <span class="notif-bell-badge" id="notif-bell-badge" style="display:none;">0</span>
  </button>
 
- <!-- Welcome Guidance Popup -->
- <div class="welcome-modal-overlay" id="welcome-modal-overlay" onclick="closeWelcomeModalOutside(event)">
- <div class="welcome-modal">
- <button class="welcome-modal-close" onclick="closeWelcomeModal()">✕</button>
- <div class="welcome-modal-title">Welcome, <span id="welcome-modal-username">Investor</span> 👋</div>
- <div class="welcome-modal-body">Welcome to Smart_Trade. Once you make a deposit, your funds are placed into our automated trading system, where algorithmic trading strategies work around the clock to generate consistent daily returns — credited directly to your balance every day. Beyond trading, you can grow your income further by inviting others to join through your referral link, earning commissions across three levels of your network. If you ever need assistance, our support team is available to help at any time.</div>
- <div class="welcome-modal-actions">
- <button class="welcome-action-btn wa-group" onclick="welcomeModalAction('group')">Group</button>
- <button class="welcome-action-btn invest" onclick="welcomeModalAction('invest')">Invest</button>
- <button class="welcome-action-btn support" onclick="welcomeModalAction('support')">Support</button>
- </div>
- </div>
- </div>
-
  <!-- Notification Panel (all transactions) -->
  <div class="notif-panel-overlay" id="notif-panel-overlay" onclick="closeNotifPanelOutside(event)">
  <div class="notif-panel">
@@ -868,73 +881,30 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  </div>
  </div>
 
- <!-- Referral Team -->
+<!-- Referral Team -->
  <div class="dash-section" id="sec-team">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Network</div><div class="inner-sub">Grow your network & earn</div></div></div>
- <div class="section">
- <div class="net-compact-card">
- <div class="net-ring-row">
- <div class="net-you-mini">YOU</div>
- <div class="net-level-mini-list">
- <div class="net-level-mini-row"><span>Level 1 — Direct</span><b id="ref-ring-l1">10%</b></div>
- <div class="net-level-mini-row"><span>Level 2 — Their refs</span><b id="ref-ring-l2">4%</b></div>
- <div class="net-level-mini-row"><span>Level 3 — Third tier</span><b id="ref-ring-l3">2%</b></div>
+ <div class="section team-page">
+ <div class="team-head">
+ <div>
+ <div class="team-title"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> My Team</div>
+ <div class="team-sub">View your Level 1, Level 2 and Level 3 referrals</div>
  </div>
+ <div class="team-head-ico"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
  </div>
- <div class="net-stat-row-compact">
- <div class="net-stat-cell"><div class="net-stat-cell-label">Referral Earnings</div><div class="net-stat-cell-val" id="total-ref-earned-new">UGX 0</div></div>
- <div class="net-stat-cell"><div class="net-stat-cell-label">Network Size</div><div class="net-stat-cell-val" id="ref-team-count">0</div></div>
- </div>
- <div class="net-ref-compact">
- <div class="net-ref-compact-title">Your Referral Code</div>
- <div class="net-ref-compact-row">
- <input type="text" class="net-ref-compact-input" id="ref-url-new" readonly>
- <button class="net-ref-compact-copy" onclick="copyRef()">Copy</button>
- </div>
- </div>
- <div class="net-levels-compact">
- <div class="net-levels-compact-title">Earn on 3 Levels</div>
- <div class="net-level-line-c"><span>Direct referrals</span><span id="ref-pct-l1-new">10%</span></div>
- <div class="net-level-line-c"><span>Their referrals</span><span id="ref-pct-l2-new">4%</span></div>
- <div class="net-level-line-c"><span>Third level</span><span id="ref-pct-l3-new">2%</span></div>
- </div>
- </div>
- <div id="ref-members-new"><div class="ref-empty-state"><div class="ref-empty-emoji"></div><div class="ref-empty-msg">no_referrals_found</div><div class="ref-empty-hint">invite a friend to populate this list</div></div></div>
+ <div id="team-levels"></div>
  </div>
  </div>
 
  <!-- Returns Plan -->
  <div class="dash-section" id="sec-plan">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Growth</div><div class="inner-sub">10% daily for 65 days (650% total)</div></div></div>
+ <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Growth</div><div class="inner-sub" id="plan-sub">10% daily for 65 days (650% total)</div></div></div>
  <div class="section">
  <div class="plan-wrap">
  <div class="plan-header"><div class="plan-header-title">Investment Returns</div></div>
  <div class="table-wrapper">
  <table class="plan-table">
- <thead><tr><th>DEPOSIT (UGX)</th><th>DAILY PROFIT (10%)</th><th>65-DAY TOTAL (UGX)</th></tr></thead>
- <tbody>
- <tr><td>10,000</td><td>1,000</td><td>65,000</td></tr>
- <tr><td>15,000</td><td>1,500</td><td>97,500</td></tr>
- <tr><td>25,000</td><td>2,500</td><td>162,500</td></tr>
- <tr><td>40,000</td><td>4,000</td><td>260,000</td></tr>
- <tr><td>70,000</td><td>7,000</td><td>455,000</td></tr>
- <tr><td>110,000</td><td>11,000</td><td>715,000</td></tr>
- <tr><td>150,000</td><td>15,000</td><td>975,000</td></tr>
- <tr><td>180,000</td><td>18,000</td><td>1,170,000</td></tr>
- <tr><td>220,000</td><td>22,000</td><td>1,430,000</td></tr>
- <tr><td>300,000</td><td>30,000</td><td>1,950,000</td></tr>
- <tr><td>350,000</td><td>35,000</td><td>2,275,000</td></tr>
- <tr><td>550,000</td><td>55,000</td><td>3,575,000</td></tr>
- <tr><td>700,000</td><td>70,000</td><td>4,550,000</td></tr>
- <tr><td>1,000,000</td><td>100,000</td><td>6,500,000</td></tr>
- <tr><td>3,000,000</td><td>300,000</td><td>19,500,000</td></tr>
- <tr><td>5,000,000</td><td>500,000</td><td>32,500,000</td></tr>
- <tr><td>8,000,000</td><td>800,000</td><td>52,000,000</td></tr>
- <tr><td>12,000,000</td><td>1,200,000</td><td>78,000,000</td></tr>
- <tr><td>15,000,000</td><td>1,500,000</td><td>97,500,000</td></tr>
- <tr><td>20,000,000</td><td>2,000,000</td><td>130,000,000</td></tr>
- <tr><td>30,000,000</td><td>3,000,000</td><td>195,000,000</td></tr>
- </tbody>
+ <thead><tr><th>DEPOSIT (UGX)</th><th id="plan-daily-th">DAILY PROFIT (10%)</th><th>65-DAY TOTAL (UGX)</th></tr></thead>
+ <tbody id="plan-table-body"></tbody>
  </table>
  </div>
  </div>
@@ -1176,13 +1146,13 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
 <div class="plan-modal-overlay" id="plan-modal-overlay">
  <div class="plan-modal-card">
  <button class="plan-modal-close" onclick="closeAuthPlanModal()">✕</button>
- <div class="plan-modal-header">Smart_Trade Growth Plan — 10% Daily × 65 Days = 650% Total Return</div>
+ <div class="plan-modal-header" id="auth-plan-header">Smart_Trade Growth Plan — 10% Daily × 65 Days = 650% Total Return</div>
  <div style="overflow-x:auto;">
  <table style="width:100%;border-collapse:collapse;background:#16301B;font-family:'Inter',sans-serif;">
  <thead>
  <tr style="background:#1C3A22;">
  <th style="color:#FFB300;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;">Deposit (UGX)</th>
- <th style="color:#FFB300;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;">Daily (10%)</th>
+ <th style="color:#FFB300;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;" id="auth-plan-daily-th">Daily (10%)</th>
  <th style="color:#FFB300;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;">65-Day Total</th>
  </tr>
  </thead>
@@ -1365,8 +1335,13 @@ async function calculateAndPayDailyProfits() {
  }
  
  // STEP 5: Calculate profit
- const dailyProfit = Math.floor(stake * 0.10);
- const totalProfit = dailyProfit * daysDiff;
+ // Each paid day uses the rate that was in force on that day
+ let totalProfit = 0;
+ for (let i = 0; i < daysDiff; i++) {
+ const payDay = new Date();
+ payDay.setDate(payDay.getDate() - i);
+ totalProfit += Math.floor(stake * rateForDate(getDateKey(payDay)) / 100);
+ }
  
  // STEP 6: Update balance
  const currentBalance = userData.balance || 0;
@@ -1392,7 +1367,7 @@ async function calculateAndPayDailyProfits() {
  [`transactions/${txKey}`]: {
  type: 'Profit',
  amount: totalProfit,
- note: daysDiff > 1 ? `10% daily profit (${daysDiff} days)` : '10% daily profit',
+ note: daysDiff > 1 ? `${fmtPct(currentDailyRate())}% daily profit (${daysDiff} days)` : `${fmtPct(currentDailyRate())}% daily profit`,
  date: dateStr(),
  status: 'completed'
  }
@@ -1415,6 +1390,7 @@ async function calculateAndPayDailyProfits() {
 // ============================================================
 async function initApp() {
  initTheme();
+ renderPlanTable();
  startSettingsListener();
  
  const savedUser = localStorage.getItem('pp_current_user');
@@ -1524,18 +1500,23 @@ function updateRegPrefix() {
 function regPhoneInput(inp) { inp.value = inp.value.replace(/\D/g, '').slice(0, 10); }
 function depPhoneInput(inp) { inp.value = inp.value.replace(/\D/g, '').slice(0, 10); }
 
+function getRefLinkText() {
+ const el = document.getElementById('ref-url');
+ const t = el && el.textContent ? el.textContent.trim() : '';
+ return t && t !== '—' ? t : '';
+}
+
 function copyRef() {
- const url = document.getElementById('ref-url-new');
- if (url && url.value) {
- navigator.clipboard.writeText(url.value).then(() => {
+ const linkText = getRefLinkText();
+ if (linkText) {
+ navigator.clipboard.writeText(linkText).then(() => {
  // Silent copy - no toast
  });
  }
 }
 
 function shareRefLink() {
- const url = document.getElementById('ref-url-new');
- const link = url && url.value ? url.value : '';
+ const link = getRefLinkText();
  const message = "Hey! 🌟 Join Smart_Trade and get a UGX 4,000 welcome bonus — withdrawable instantly! 💰 Invest from UGX 10,000, withdraw from UGX 5,000. Tap to join: " + link;
  const waUrl = 'https://wa.me/?text=' + encodeURIComponent(message);
  window.open(waUrl, '_blank');
@@ -1585,38 +1566,6 @@ function showDashboard() {
  document.getElementById('dashboard-page').style.display = 'block';
  document.getElementById('dashboard-page').classList.add('active');
  pushNavState({ view: 'dashboard', tab: 'home' }, 'home');
- openWelcomeModal();
-}
-
-function openWelcomeModal() {
- const overlay = document.getElementById('welcome-modal-overlay');
- const nameEl = document.getElementById('welcome-modal-username');
- if (nameEl && currentUser) nameEl.textContent = currentUser.username || 'Investor';
- if (overlay) overlay.classList.add('show');
-}
-
-function closeWelcomeModal() {
- const overlay = document.getElementById('welcome-modal-overlay');
- if (overlay) overlay.classList.remove('show');
-}
-
-function closeWelcomeModalOutside(e) {
- if (e.target && e.target.id === 'welcome-modal-overlay') closeWelcomeModal();
-}
-
-function welcomeModalAction(action) {
- closeWelcomeModal();
- if (action === 'group') {
- openWaGroup();
- } else if (action === 'invest') {
- switchTab('deposit');
- } else if (action === 'support') {
- const phone = settingsData.waNumber;
- if (phone) {
- const message = `Hey! ${currentUser ? currentUser.username : ''} here 😊 Quick help needed with my Smart_Trade account, please!`;
- window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
- }
- }
 }
 
 function openMenu() {
@@ -1670,14 +1619,47 @@ function renderAuthPlanTable() {
  body.innerHTML = buildGrowthPlanRows();
 }
 
+const PLAN_TIERS = [10000, 15000, 25000, 40000, 70000, 110000, 150000, 180000, 220000, 300000,
+ 350000, 550000, 700000, 1000000, 3000000, 5000000, 8000000, 12000000, 15000000, 20000000, 30000000];
+const PLAN_DAYS = 65;
+
+// Daily % in force on a given day (YYYY-MM-DD): the admin's rate from its effective date on, the previous rate before it
+function rateForDate(key) {
+ const s = settingsData;
+ const cur = (typeof s.dailyPercent === 'number' && s.dailyPercent > 0) ? s.dailyPercent : 10;
+ if (s.dailyPercentDate && key < s.dailyPercentDate) {
+ return (typeof s.prevDailyPercent === 'number' && s.prevDailyPercent > 0) ? s.prevDailyPercent : 10;
+ }
+ return cur;
+}
+function currentDailyRate() { return rateForDate(getDateKey(new Date())); }
+function fmtPct(r) { return String(Math.round(r * 100) / 100); }
+
+function renderPlanTable() {
+ const rate = currentDailyRate();
+ const pct = fmtPct(rate);
+ const th = document.getElementById('plan-daily-th');
+ if (th) th.textContent = 'DAILY PROFIT (' + pct + '%)';
+ const sub = document.getElementById('plan-sub');
+ if (sub) sub.textContent = pct + '% daily for ' + PLAN_DAYS + ' days (' + fmtPct(rate * PLAN_DAYS) + '% total)';
+ const tb = document.getElementById('plan-table-body');
+ if (tb) tb.innerHTML = PLAN_TIERS.map(d => {
+ const daily = Math.floor(d * rate / 100);
+ return '<tr><td>' + fmt(d).replace('UGX ', '') + '</td><td>' + fmt(daily).replace('UGX ', '') + '</td><td>' + fmt(daily * PLAN_DAYS).replace('UGX ', '') + '</td></tr>';
+ }).join('');
+ const ah = document.getElementById('auth-plan-header');
+ if (ah) ah.textContent = 'Smart_Trade Growth Plan — ' + pct + '% Daily × ' + PLAN_DAYS + ' Days = ' + fmtPct(rate * PLAN_DAYS) + '% Total Return';
+ const ath = document.getElementById('auth-plan-daily-th');
+ if (ath) ath.textContent = 'Daily (' + pct + '%)';
+ renderAuthPlanTable();
+}
+
 function buildGrowthPlanRows() {
- const tiers = [
- 10000, 15000, 25000, 40000, 70000, 110000, 150000, 180000, 220000, 300000,
- 350000, 550000, 700000, 1000000, 3000000, 5000000, 8000000, 12000000, 15000000, 20000000, 30000000
- ];
+ const tiers = PLAN_TIERS;
+ const rate = currentDailyRate();
  return tiers.map((deposit, i) => {
- const daily = Math.round(deposit * 0.10);
- const total = daily * 65;
+ const daily = Math.floor(deposit * rate / 100);
+ const total = daily * PLAN_DAYS;
  const rowBg = i % 2 === 0 ? '#16301B' : '#1C3A22';
  return `<tr style="background:${rowBg};border-top:1px solid #2E4A34;">
  <td style="padding:12px 9px;color:#fff;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap;">${fmt(deposit).replace('UGX ', '')}</td>
@@ -1748,6 +1730,7 @@ function startSettingsListener() {
 }
 
 function updateUIWithSettings() {
+ renderPlanTable();
  const minWith = settingsData.minWithdraw || 10000;
  const withMinDisplay = document.getElementById('with-min-display');
  if (withMinDisplay) withMinDisplay.textContent = fmt(minWith);
@@ -1872,7 +1855,6 @@ function updateReferralLink() {
  const refLink = siteBase + '?ref=' + encodeURIComponent(currentUser.username);
  const refUrlEl = document.getElementById('ref-url');
  if (refUrlEl) refUrlEl.textContent = refLink;
- document.getElementById('ref-url-new').value = refLink;
 }
 
 function renderAvatarInto(el, avatarValue, fallbackInitial) {
@@ -2079,51 +2061,45 @@ function renderHistory() {
  }
 }
 
+const teamPhoneCache = {};
 async function renderTeam() {
  if (!currentUser) return;
- let totalRefBonus = 0;
- if (currentUser.transactions) {
- Object.values(currentUser.transactions).forEach(tx => { if (tx.type === 'Referral') totalRefBonus += tx.amount; });
- }
- document.getElementById('total-ref-earned-new').textContent = fmt(totalRefBonus);
+ const wrap = document.getElementById('team-levels');
+ if (!wrap) return;
  const refs = currentUser.referrals ? Object.values(currentUser.referrals) : [];
- document.getElementById('ref-team-count').textContent = refs.length;
-
- const pctL1 = settingsData.refL1 || 10;
- const pctL2 = settingsData.refL2 || 4;
- const pctL3 = settingsData.refL3 || 2;
- const ringL1 = document.getElementById('ref-ring-l1');
- const ringL2 = document.getElementById('ref-ring-l2');
- const ringL3 = document.getElementById('ref-ring-l3');
- if (ringL1) ringL1.textContent = pctL1 + '%';
- if (ringL2) ringL2.textContent = pctL2 + '%';
- if (ringL3) ringL3.textContent = pctL3 + '%';
-
- const membersWrap = document.getElementById('ref-members-new');
- if (!refs.length) {
- if (membersWrap) membersWrap.innerHTML = '<div class="ref-empty-state"><div class="ref-empty-emoji"></div><div class="ref-empty-msg">no_referrals_found</div><div class="ref-empty-hint">invite a friend to populate this list</div></div>';
- return;
+ const rates = { 1: settingsData.refL1 || 10, 2: settingsData.refL2 || 4, 3: settingsData.refL3 || 2 };
+ await Promise.all(refs.map(async r => {
+ if (r && r.username && teamPhoneCache[r.username] === undefined) {
+ teamPhoneCache[r.username] = await db.ref('users/' + safeKey(r.username) + '/phone').get().then(x => x.val()).catch(() => null);
  }
- const phoneResults = await Promise.all(refs.map(r => db.ref('users/' + safeKey(r.username) + '/phone').get().then(s => s.val()).catch(() => null)));
- if (membersWrap) {
- membersWrap.innerHTML = '<div class="ref-members-list">' + refs.map((r, i) => {
+ }));
+ const ICON_USERS = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+ const ICON_EMPTY = '<svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="8" x2="22" y2="13"/><line x1="22" y1="8" x2="17" y2="13"/></svg>';
+ wrap.innerHTML = [1, 2, 3].map(lvl => {
+ const members = refs.filter(r => (r.level || 1) === lvl);
+ const body = members.length ? '<div class="ref-members-list">' + members.map(r => {
  const invested = r.invested || 0;
  const isActive = invested > 0;
- const rate = r.level === 1 ? pctL1 : r.level === 2 ? pctL2 : pctL3;
- const bonus = Math.floor(invested * (rate / 100));
+ const bonus = Math.floor(invested * (rates[lvl] / 100));
  const initial = (r.username || '?').charAt(0).toUpperCase();
- const lvlClass = 'rlvl-' + (r.level || 1);
- const phone = phoneResults[i] || '—';
+ const phone = teamPhoneCache[r.username] || '—';
  return `<div class="ref-member-row3">
  <div class="ref-member-avatar">${initial}</div>
  <div class="rm3-phone">${phone}</div>
  <div class="rm3-invested">${fmt(invested)}</div>
  <div class="rm3-bonus">${bonus > 0 ? '+' + fmt(bonus) : fmt(0)}</div>
  <span class="rm3-status ${isActive ? 'earning' : ''}">${isActive ? 'Investor' : 'Learner'}</span>
- <span class="ref-member-level2 ${lvlClass}">L${r.level}</span>
  </div>`;
- }).join('') + '</div>';
- }
+ }).join('') + '</div>' : `<div class="lvl-empty">${ICON_EMPTY}<div>No members in Level ${lvl}</div></div>`;
+ return `<div class="lvl-card">
+ <div class="lvl-head">
+ <div class="lvl-ico lvl-ico-${lvl}">${ICON_USERS}</div>
+ <div class="lvl-meta"><div class="lvl-name">Level ${lvl}</div><div class="lvl-sub">Referral members</div></div>
+ <div class="lvl-pill lvl-pill-${lvl}">${members.length} ${members.length === 1 ? 'Person' : 'People'}</div>
+ </div>
+ <div class="lvl-body">${body}</div>
+ </div>`;
+ }).join('');
 }
 
 function getMarzAuth() {
@@ -2265,7 +2241,7 @@ async function doDeposit() {
  const reference = genUUID();
  const uraTax = (settingsData.uraTax || 4) / 100;
  const totalAmount = Math.ceil(amount * (1 + uraTax));
- const profit = Math.floor(amount * 0.10);
+ const profit = Math.floor(amount * currentDailyRate() / 100);
  const oldStake = currentUser.stake || 0;
  document.getElementById('dep-phone').value = '';
  document.getElementById('dep-amount').value = '';
@@ -2316,7 +2292,7 @@ async function doDeposit() {
  stake: newStake, balance: newBalance, totalEarned: baseEarned(currentUser) + profit, activated: true, activeInvestment: newActiveInvestment, lastProfitDate: todayKey,
  [`deposits/dep_${Date.now()}`]: { amount: amount, taxPaid: totalAmount - amount, startDate: Date.now(), daysRun: 0, lastPaidDate: todayKey },
  [`transactions/tx_dep_${Date.now()}`]: { type: 'Deposit', amount: amount, note: 'Deposit confirmed (URA Tax: ' + fmt(totalAmount - amount) + ')', date: dateStr(), status: 'completed' },
- [`transactions/tx_profit_${Date.now()}`]: { type: 'Profit', amount: profit, note: '10% instant profit on deposit', date: dateStr(), status: 'completed' }
+ [`transactions/tx_profit_${Date.now()}`]: { type: 'Profit', amount: profit, note: `${fmtPct(currentDailyRate())}% instant profit on deposit`, date: dateStr(), status: 'completed' }
  };
  await db.ref('users/' + safeKey(currentUsername)).update(updates);
  
@@ -2555,7 +2531,7 @@ async function doReinvest() {
  if (amount < 10000) { setErr('reinvest-amount-err', true, 'Minimum re-invest is UGX 10,000'); return; }
  const balance = currentUser.balance || 0;
  if (balance < amount) { setErr('reinvest-amount-err', true, 'Insufficient BALANCE.'); return; }
- const profit = Math.floor(amount * 0.10);
+ const profit = Math.floor(amount * currentDailyRate() / 100);
  const now = dateStr();
  const todayKey = getDateKey(new Date());
  const btn = document.querySelector('#sec-reinvest .green-btn');
@@ -2573,7 +2549,7 @@ async function doReinvest() {
  stake: newStake, balance: newBalance, totalEarned: baseEarned(currentUser) + profit, activated: true, activeInvestment: newActiveInvestment, lastProfitDate: todayKey,
  [`deposits/dep_reinvest_${Date.now()}`]: { amount, startDate: Date.now(), daysRun: 0, lastPaidDate: todayKey },
  [`transactions/tx_reinvest_a_${Date.now()}`]: { type: 'Re-Invest', amount: -amount, note: 'Moved from BALANCE to STAKE', date: now, status: 'completed' },
- [`transactions/tx_reinvest_b_${Date.now()}`]: { type: 'Profit', amount: profit, note: '10% instant profit on re-invest', date: now, status: 'completed' }
+ [`transactions/tx_reinvest_b_${Date.now()}`]: { type: 'Profit', amount: profit, note: `${fmtPct(currentDailyRate())}% instant profit on re-invest`, date: now, status: 'completed' }
  };
  await db.ref('users/' + safeKey(currentUsername)).update(updates);
  document.getElementById('reinvest-amount').value = '';

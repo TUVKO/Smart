@@ -492,6 +492,13 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
 
  <!-- Deposit & Withdrawal Settings -->
  <div class="settings-section">
+ <div class="settings-title">Daily Profit Plan</div>
+ <div class="settings-row"><span class="settings-label">Daily Percentage (%)</span><div style="display:flex;align-items:center;gap:8px;"><input type="number" class="pct-input" id="daily-percent-input" min="0.1" max="100" step="0.1" placeholder="10"><span class="pct-label">%</span></div></div>
+ <div class="settings-row"><span class="settings-label">Effective Date</span><input type="date" class="ugx-input" id="daily-percent-date" style="max-width:170px;"></div>
+ <div class="settings-row"><span class="settings-label" id="daily-percent-status">Current: 10% daily</span><button class="btn btn-save" onclick="saveDailyPercent()">Save</button></div>
+ </div>
+
+ <div class="settings-section">
  <div class="settings-title">Deposit & Withdrawal Settings</div>
  <div class="settings-row"><span class="settings-label">Minimum Deposit (UGX)</span><div class="ugx-group"><span class="ugx-label">UGX</span><input type="number" class="ugx-input" id="min-deposit-input" min="500" step="500" placeholder="10000"></div><button class="btn btn-save" onclick="saveMinDeposit()">Save</button></div>
  <div class="settings-row"><span class="settings-label">Maximum Deposit (UGX)</span><div class="ugx-group"><span class="ugx-label">UGX</span><input type="number" class="ugx-input" id="max-deposit-input" min="10000" step="1000" placeholder="2350000"></div><button class="btn btn-save" onclick="saveMaxDeposit()">Save</button></div>
@@ -1582,6 +1589,10 @@ function loadSettingsUI() {
  document.getElementById('ref-l2-input').value = s.refL2 || 4;
  document.getElementById('ref-l3-input').value = s.refL3 || 2;
  document.getElementById('min-deposit-input').value = s.minDeposit || 10000;
+ const curPct = (typeof s.dailyPercent === 'number' && s.dailyPercent > 0) ? s.dailyPercent : 10;
+ document.getElementById('daily-percent-input').value = curPct;
+ document.getElementById('daily-percent-date').value = s.dailyPercentDate || localDateKey();
+ document.getElementById('daily-percent-status').textContent = 'Current: ' + curPct + '% daily' + (s.dailyPercentDate ? ' (from ' + s.dailyPercentDate + ')' : '');
  document.getElementById('max-deposit-input').value = s.maxDeposit || 2350000;
  document.getElementById('min-withdraw-input').value = s.minWithdraw || 10000;
  
@@ -1653,6 +1664,28 @@ async function saveUraTax() {
  if (v < 0) { toast('Tax cannot be negative', '#f87171'); return; }
  await db.ref('settings/uraTax').set(v);
  toast('URA Tax updated to ' + v + '%');
+}
+
+function localDateKey() {
+ const d = new Date();
+ return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+async function saveDailyPercent() {
+ const pct = parseFloat(document.getElementById('daily-percent-input').value);
+ const dateVal = document.getElementById('daily-percent-date').value;
+ if (isNaN(pct) || pct <= 0 || pct > 100) { toast('Enter a daily percentage between 0.1 and 100', '#f87171'); return; }
+ if (!dateVal) { toast('Pick the effective date', '#f87171'); return; }
+ const s = allSettings;
+ const cur = (typeof s.dailyPercent === 'number' && s.dailyPercent > 0) ? s.dailyPercent : 10;
+ const oldPrev = (typeof s.prevDailyPercent === 'number' && s.prevDailyPercent > 0) ? s.prevDailyPercent : 10;
+ // The rate in force today becomes the "before" rate; re-saving the same date keeps the existing one
+ let prev;
+ if (s.dailyPercentDate && s.dailyPercentDate === dateVal) prev = oldPrev;
+ else if (s.dailyPercentDate && localDateKey() < s.dailyPercentDate) prev = oldPrev;
+ else prev = cur;
+ await db.ref('settings').update({ dailyPercent: pct, dailyPercentDate: dateVal, prevDailyPercent: prev });
+ toast('Daily profit set to ' + pct + '% from ' + dateVal);
 }
 
 async function saveMinDeposit() {
