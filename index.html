@@ -14,6 +14,9 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2E7D32">
 <link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Smart_Trade">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -863,6 +866,15 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <span class="notif-bell-badge" id="notif-bell-badge" style="display:none;">0</span>
  </button>
 
+  <!-- Install app help -->
+ <div class="signout-overlay" id="install-overlay" onclick="if(event.target===this)closeInstallHelp()">
+ <div class="signout-box" style="text-align:left;">
+ <div class="signout-title" style="text-align:center;">Install Smart_Trade</div>
+ <div class="signout-text" id="install-steps" style="color:#2E4A2E;line-height:1.7;margin-bottom:16px;"></div>
+ <div class="signout-actions"><button class="signout-cancel" style="background:#2E7D32;color:#fff;" onclick="closeInstallHelp()">Got it</button></div>
+ </div>
+ </div>
+
  <!-- Sign out confirmation -->
  <div class="signout-overlay" id="signout-overlay" onclick="if(event.target===this)closeSignoutConfirm()">
  <div class="signout-box">
@@ -1036,6 +1048,7 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <div class="menu-item" onclick="menuNav('team')"><span class="menu-item-icon"></span>Network</div>
  <div class="menu-divider"></div>
  <div class="menu-item" onclick="menuNav('profile')"><span class="menu-item-icon"></span>Profile</div>
+ <div class="menu-item" onclick="menuInstallApp()"><span class="menu-item-icon"></span>App</div>
  </div>
 </div>
 
@@ -1186,11 +1199,25 @@ window.addEventListener('beforeinstallprompt', (e) => {
 window.addEventListener('appinstalled', () => {
  deferredInstallPrompt = null;
  disableAppButton();
+ showToast('Smart_Trade installed');
 });
 
 function isRunningStandalone() {
  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 }
+
+// Side menu "App": start the install, or show how-to steps when the phone cannot start it directly
+function menuInstallApp() {
+ closeMenu();
+ if (isRunningStandalone()) { showToast('App already installed'); return; }
+ if (deferredInstallPrompt) { installApp(); return; }
+ const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+ document.getElementById('install-steps').innerHTML = isIOS
+ ? '1. Tap the <b>Share</b> button at the bottom of Safari.<br>2. Tap <b>Add to Home Screen</b>.<br>3. Tap <b>Add</b>.'
+ : '1. Tap the browser menu <b>(⋮)</b>.<br>2. Tap <b>Install app</b> or <b>Add to Home screen</b>.<br>3. Tap <b>Install</b>.';
+ document.getElementById('install-overlay').classList.add('show');
+}
+function closeInstallHelp() { document.getElementById('install-overlay').classList.remove('show'); }
 
 async function installApp() {
  if (!deferredInstallPrompt) return; // button is disabled in this state; no-op safeguard
