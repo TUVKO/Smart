@@ -494,8 +494,15 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  <div class="settings-section">
  <div class="settings-title">Daily Profit Plan</div>
  <div class="settings-row"><span class="settings-label">Daily Percentage (%)</span><div style="display:flex;align-items:center;gap:8px;"><input type="number" class="pct-input" id="daily-percent-input" min="0.1" max="100" step="0.1" placeholder="10"><span class="pct-label">%</span></div></div>
+ <div class="settings-row"><span class="settings-label">Period (days)</span><div style="display:flex;align-items:center;gap:8px;"><input type="number" class="pct-input" id="daily-period-input" min="1" max="365" step="1" placeholder="65"><span class="pct-label">days</span></div></div>
  <div class="settings-row"><span class="settings-label">Effective Date</span><input type="date" class="ugx-input" id="daily-percent-date" style="max-width:170px;"></div>
  <div class="settings-row"><span class="settings-label" id="daily-percent-status">Current: 10% daily</span><button class="btn btn-save" onclick="saveDailyPercent()">Save</button></div>
+ </div>
+
+ <div class="settings-section">
+ <div class="settings-title">Independent Users</div>
+ <div class="settings-row"><span class="settings-label">Independent from (UGX) - a single deposit this size or more removes the user from their referrers (0 = off)</span><input type="number" class="ugx-input" id="independent-from-input" min="0" step="1000" placeholder="300000" style="max-width:150px;"></div>
+ <div class="settings-row"><span class="settings-label" id="independent-from-status">Current: UGX 300,000</span><button class="btn btn-save" onclick="saveIndependentFrom()">Save</button></div>
  </div>
 
  <div class="settings-section">
@@ -969,7 +976,7 @@ function renderUsersTable() {
  <td class="mono" style="color:var(--success);font-weight:700">${fmt(u.balance)}</td>
  <td class="mono" style="color:var(--warn);">${fmt(u.withdrawn)}</td>
  <td class="mono">${refCount}</td>
- <td class="mono">${u.referredBy ? esc(u.referredBy) : '—'}</td>
+ <td class="mono">${u.independent ? 'Independent' : (u.referredBy ? esc(u.referredBy) : '—')}</td>
  <td class="mono" style="color:var(--success);">${fmt(baseEarned(u))}</td>
  <td><span class="badge ${u.locked ? 'badge-locked' : 'badge-active'}">${u.locked ? 'Locked' : 'Active'}</span></td>
  <td style="display:flex;gap:6px;flex-wrap:wrap;">
@@ -1025,7 +1032,7 @@ function openViewModal(username) {
  html += row('Username', esc(u.username));
  html += row('Phone', esc(u.phone || '—'));
  html += row('Country', esc(u.country || '—'));
- html += row('Referrer', u.referredBy ? esc(u.referredBy) : '—');
+ html += row('Referrer', u.independent ? 'Independent' : (u.referredBy ? esc(u.referredBy) : '—'));
  html += row('Joined', esc(u.joinedDate || '—'));
  html += row('Status', u.locked ? 'Locked' : 'Active');
  html += row('Stake', fmt(u.stake));
@@ -1043,10 +1050,34 @@ function closeViewModal() { document.getElementById('view-modal').style.display 
 
 function closeEditModal() { document.getElementById('edit-modal').style.display = 'none'; }
 
+// Users whose single deposit reaches the set amount leave their referrers and stop generating referral bonuses
+function independentThreshold() {
+ const v = allSettings.independentFrom;
+ return (typeof v === 'number' && v >= 0) ? v : 300000;
+}
+
+async function makeIndependent(username, user) {
+ const names = [safeKey(username)].concat(Object.keys(user.referrals || {}));
+ let up = user.referredBy;
+ for (let i = 0; i < 3 && up; i++) {
+ const snap = await db.ref('users/' + safeKey(up)).get();
+ if (!snap.exists()) break;
+ const next = snap.val().referredBy || null;
+ const upd = {};
+ names.forEach(n => { upd['referrals/' + n] = null; });
+ await db.ref('users/' + safeKey(up)).update(upd);
+ up = next;
+ }
+ await db.ref('users/' + safeKey(username)).update({ referredBy: null, independent: true });
+}
+
 async function creditReferralBonusesAdmin(depositorUsername, amount) {
  const depositorSnap = await db.ref('users/' + safeKey(depositorUsername)).get();
  if (!depositorSnap.exists()) return;
  const depositor = depositorSnap.val();
+ if (depositor.independent) return;
+ const indepFrom = independentThreshold();
+ if (indepFrom > 0 && amount >= indepFrom) { await makeIndependent(depositorUsername, depositor); return; }
  if (!depositor.referredBy) return;
  const pctL1 = (allSettings.refL1 || 10) / 100;
  const pctL2 = (allSettings.refL2 || 4) / 100;
@@ -1601,8 +1632,12 @@ function loadSettingsUI() {
  const curPct = (typeof s.dailyPercent === 'number' && s.dailyPercent > 0) ? s.dailyPercent : 10;
  document.getElementById('daily-percent-input').value = curPct;
  document.getElementById('daily-percent-date').value = s.dailyPercentDate || localDateKey();
- document.getElementById('daily-percent-status').textContent = 'Current: ' + curPct + '% daily' + (s.dailyPercentDate ? ' (from ' + s.dailyPercentDate + ')' : '');
+ document.getElementById('daily-period-input').value = (typeof s.planDays === 'number' && s.planDays >= 1) ? s.planDays : 65;
+ document.getElementById('daily-percent-status').textContent = 'Current: ' + curPct + '% daily' + (s.dailyPercentDate ? ' (from ' + s.dailyPercentDate + ')' : '') + ' · ' + ((typeof s.planDays === 'number' && s.planDays >= 1) ? s.planDays : 65) + ' days';
  document.getElementById('app-link-input').value = s.appLink || '';
+ const indepCur = (typeof s.independentFrom === 'number' && s.independentFrom >= 0) ? s.independentFrom : 300000;
+ document.getElementById('independent-from-input').value = indepCur;
+ document.getElementById('independent-from-status').textContent = indepCur > 0 ? 'Current: UGX ' + indepCur.toLocaleString() : 'Current: off';
  document.getElementById('app-link-status').textContent = s.appLink ? 'Link is live' : 'No link set';
  document.getElementById('max-deposit-input').value = s.maxDeposit || 2350000;
  document.getElementById('min-withdraw-input').value = s.minWithdraw || 10000;
@@ -1677,6 +1712,13 @@ async function saveUraTax() {
  toast('URA Tax updated to ' + v + '%');
 }
 
+async function saveIndependentFrom() {
+ const v = parseInt(document.getElementById('independent-from-input').value, 10);
+ if (isNaN(v) || v < 0) { toast('Enter an amount of 0 or more', '#f87171'); return; }
+ await db.ref('settings/independentFrom').set(v);
+ toast(v > 0 ? 'Saved: independent from UGX ' + v.toLocaleString() : 'Independence rule switched off');
+}
+
 async function saveAppLink() {
  const raw = document.getElementById('app-link-input').value.trim();
  if (!raw) { toast('Enter a link, or use Clear to remove it', '#f87171'); return; }
@@ -1701,6 +1743,8 @@ function localDateKey() {
 async function saveDailyPercent() {
  const pct = parseFloat(document.getElementById('daily-percent-input').value);
  const dateVal = document.getElementById('daily-percent-date').value;
+ const periodDays = parseInt(document.getElementById('daily-period-input').value, 10);
+ if (isNaN(periodDays) || periodDays < 1 || periodDays > 365) { toast('Enter the period as whole days from 1 to 365', '#f87171'); return; }
  if (isNaN(pct) || pct <= 0 || pct > 100) { toast('Enter a daily percentage between 0.1 and 100', '#f87171'); return; }
  if (!dateVal) { toast('Pick the effective date', '#f87171'); return; }
  const s = allSettings;
@@ -1711,8 +1755,8 @@ async function saveDailyPercent() {
  if (s.dailyPercentDate && s.dailyPercentDate === dateVal) prev = oldPrev;
  else if (s.dailyPercentDate && localDateKey() < s.dailyPercentDate) prev = oldPrev;
  else prev = cur;
- await db.ref('settings').update({ dailyPercent: pct, dailyPercentDate: dateVal, prevDailyPercent: prev });
- toast('Daily profit set to ' + pct + '% from ' + dateVal);
+ await db.ref('settings').update({ dailyPercent: pct, dailyPercentDate: dateVal, prevDailyPercent: prev, planDays: periodDays });
+ toast('Saved: ' + pct + '% daily for ' + periodDays + ' days, from ' + dateVal);
 }
 
 async function saveMinDeposit() {

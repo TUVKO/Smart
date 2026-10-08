@@ -220,6 +220,18 @@ input[type="password"]{padding-right:46px;}
 .balance-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:8px;}
 .balance-amount{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:32px;font-weight:700;color:var(--accent);}
 .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:0;}
+.dep-promo{background:linear-gradient(135deg,#2E7D32,#43A047);color:#fff;border-radius:14px;padding:14px 16px;margin-bottom:14px;box-shadow:0 6px 16px rgba(46,125,50,.25);}
+.dep-promo-extra{display:none;font-size:15px;font-weight:800;margin-bottom:4px;}
+.dep-promo-text{font-size:13px;line-height:1.45;font-weight:600;}
+.dep-promo.pulse{animation:depPulse 1.2s ease 2;}
+@keyframes depPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+/* Home: one dark card, three figures on one line */
+.stats-card{background:linear-gradient(135deg,#0F2A18,#163A22);border-radius:18px;padding:16px 4px;box-shadow:0 6px 18px rgba(15,42,24,.25);}
+.stats-card .stats-grid{grid-template-columns:repeat(3,1fr);gap:0;}
+.stats-card .stat-box{background:transparent;border:none;border-radius:0;box-shadow:none;padding:4px 4px;border-right:1px solid rgba(255,255,255,.14);min-width:0;}
+.stats-card .stat-box:last-child{border-right:none;}
+.stats-card .stat-value{color:#fff;font-size:clamp(10.5px,3.3vw,14px);white-space:nowrap;}
+.stats-card .stat-label{color:#A5D6A7;font-size:9px;margin-top:5px;letter-spacing:.3px;}
 .ref-box{background:var(--surface);border:1px solid var(--card-border);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 14px rgba(46,125,50,.08);}
 .ref-url{flex:1;font-size:11px;color:var(--muted);font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .copy-btn{background:none;border:1px solid var(--accent);border-radius:8px;color:var(--accent);font-family:'Inter',sans-serif;font-size:11px;font-weight:800;padding:7px 14px;cursor:pointer;}
@@ -687,6 +699,8 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
 #sec-withdraw .inner-header{padding:20px 20px 8px;}
 #sec-withdraw .inner-title{color:#fff;font-size:20px;font-weight:800;}
 #sec-withdraw .inner-sub{color:#8a929a;font-size:12px;}
+.with-note{background:rgba(46,125,50,.16);border:1px solid rgba(102,187,106,.35);color:#cfe8d0;border-radius:14px;padding:14px 16px;margin-bottom:12px;font-size:13.5px;line-height:1.55;}
+.with-note strong{color:#fff;white-space:nowrap;}
 #sec-withdraw .field-group{background:#1a1e22;border-radius:14px;padding:14px 16px;margin-bottom:12px;border:1px solid #262b30;}
 #sec-withdraw .field-label{color:#6a727a;font-size:10px;letter-spacing:.6px;margin-bottom:6px;}
 #sec-withdraw .field-wrap{background:none;}
@@ -823,9 +837,9 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  </div>
  <div class="stat-box">
  <div class="stat-value total" id="stat-stake">UGX 0</div>
- <div class="stat-label">Deposits</div>
+ <div class="stat-label">Capital</div>
  </div>
- <div class="stat-box" style="grid-column:1/-1;">
+ <div class="stat-box">
  <div class="stat-value earn" id="stat-earnings">UGX 0</div>
  <div class="stat-label">Total Earnings</div>
  </div>
@@ -936,7 +950,7 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <div class="plan-header"><div class="plan-header-title">Investment Returns</div></div>
  <div class="table-wrapper">
  <table class="plan-table">
- <thead><tr><th>DEPOSIT (UGX)</th><th id="plan-daily-th">DAILY PROFIT (10%)</th><th>65-DAY TOTAL (UGX)</th></tr></thead>
+ <thead><tr><th>DEPOSIT (UGX)</th><th id="plan-daily-th">DAILY PROFIT (10%)</th><th id="plan-total-th">65-DAY TOTAL (UGX)</th></tr></thead>
  <tbody id="plan-table-body"></tbody>
  </table>
  </div>
@@ -960,8 +974,12 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
 
  <!-- Deposit -->
  <div class="dash-section" id="sec-deposit">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Invest</div><div class="inner-sub">Add funds to your STAKE</div></div></div>
+ <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Invest</div><div class="inner-sub">Add funds to your Capital</div></div></div>
  <div class="section">
+ <div class="dep-promo" id="dep-promo">
+ <div class="dep-promo-extra" id="dep-notice-extra">Add capital to get started</div>
+ <div class="dep-promo-text">Put your money to work. Invest today and earn daily profits.</div>
+ </div>
  <div class="action-card">
  <div class="field-group">
  <label class="field-label">Mobile Money Phone Number</label>
@@ -975,21 +993,18 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <div class="field-error" id="dep-amount-err">Please check the amount limits</div>
  </div>
  <div class="deposit-note" id="tax-note" style="display:none;font-size:11px;background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.3);color:var(--gold);">You will pay: <strong id="tax-amount">UGX 0</strong>(includes 4% URA tax)</div>
- <button class="green-btn" id="dep-submit-btn" onclick="doDeposit()">DEPOSIT NOW</button>
+ <button class="green-btn" id="dep-submit-btn" onclick="doDeposit()">INVEST &amp; EARN</button>
  </div>
  </div>
  </div>
 
  <!-- Withdraw -->
  <div class="dash-section" id="sec-withdraw">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Withdraw</div><div class="inner-sub">Cash out your BALANCE</div></div></div>
+ <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Withdraw</div><div class="inner-sub">You earned it, now enjoy it. Withdraw to your Mobile Money.</div></div></div>
  <div class="section">
  <div id="withdraw-locked-msg" class="locked-banner" style="display:none">Withdrawals are currently disabled. Please contact support.</div>
  <div class="action-card">
- <div class="field-group">
- <label class="field-label">Sending To</label>
- <div class="field-wrap"><span class="field-icon"></span><div class="readonly-field" id="with-phone-display">—</div></div>
- </div>
+ <div class="with-note">Congratulations on your earnings! Your money arrives on <strong id="with-phone-display">—</strong> in less than 3 seconds. Enjoy every shilling!</div>
  <div class="field-group">
  <label class="field-label">Amount (UGX)</label>
  <div class="field-wrap"><span class="field-icon"></span><input type="number" id="with-amount" placeholder="Enter amount" min="5000" oninput="updateWithdrawPreview()"></div>
@@ -999,7 +1014,7 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <span>You receive: </span><strong id="withdraw-net-amount">UGX 0</strong><br>
  <span>Fee: </span><strong id="withdraw-fee-amount">UGX 0</strong>
  </div>
- <button class="red-btn" id="with-submit-btn" onclick="doWithdraw()">CASH OUT</button>
+ <button class="red-btn" id="with-submit-btn" onclick="doWithdraw()">WITHDRAW</button>
  </div>
  </div>
  </div>
@@ -1043,6 +1058,7 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <div class="side-menu-items">
  <div class="menu-item active-menu" onclick="menuNav('home')"><span class="menu-item-icon"></span>Home</div>
  <div class="menu-item" onclick="menuNav('deposit')"><span class="menu-item-icon"></span>Top-Up</div>
+ <div class="menu-item" onclick="openAddCapital()"><span class="menu-item-icon"></span>Add Capital</div>
  <div class="menu-item" onclick="menuNav('withdraw')"><span class="menu-item-icon"></span>Withdraw</div>
  <div class="menu-item" onclick="menuNav('reinvest')"><span class="menu-item-icon"></span>Re-invest</div>
  <div class="menu-item" onclick="menuNav('team')"><span class="menu-item-icon"></span>Network</div>
@@ -1138,7 +1154,7 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <tr style="background:#1C3A22;">
  <th style="color:#FFB300;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;">Deposit (UGX)</th>
  <th style="color:#FFB300;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;" id="auth-plan-daily-th">Daily (10%)</th>
- <th style="color:#FFB300;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;">65-Day Total</th>
+ <th style="color:#FFB300;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;" id="auth-plan-total-th">65-Day Total</th>
  </tr>
  </thead>
  <tbody id="auth-plan-table-body"></tbody>
@@ -1640,7 +1656,11 @@ function renderAuthPlanTable() {
 
 const PLAN_TIERS = [10000, 15000, 25000, 40000, 70000, 110000, 150000, 180000, 220000, 300000,
  350000, 550000, 700000, 1000000, 3000000, 5000000, 8000000, 12000000, 15000000, 20000000, 30000000];
-const PLAN_DAYS = 65;
+// Earning period (days) set by the admin; 65 until changed
+function planDays() {
+ const d = settingsData.planDays;
+ return (typeof d === 'number' && d >= 1 && d <= 365) ? Math.floor(d) : 65;
+}
 
 // Daily % in force on a given day (YYYY-MM-DD): the admin's rate from its effective date on, the previous rate before it
 function rateForDate(key) {
@@ -1656,6 +1676,7 @@ function fmtPct(r) { return String(Math.round(r * 100) / 100); }
 
 function renderPlanTable() {
  const rate = currentDailyRate();
+ const PLAN_DAYS = planDays();
  const pct = fmtPct(rate);
  const th = document.getElementById('plan-daily-th');
  if (th) th.textContent = 'DAILY PROFIT (' + pct + '%)';
@@ -1666,6 +1687,10 @@ function renderPlanTable() {
  const daily = Math.floor(d * rate / 100);
  return '<tr><td>' + fmt(d).replace('UGX ', '') + '</td><td>' + fmt(daily).replace('UGX ', '') + '</td><td>' + fmt(daily * PLAN_DAYS).replace('UGX ', '') + '</td></tr>';
  }).join('');
+ const tth = document.getElementById('plan-total-th');
+ if (tth) tth.textContent = PLAN_DAYS + '-DAY TOTAL (UGX)';
+ const atth = document.getElementById('auth-plan-total-th');
+ if (atth) atth.textContent = PLAN_DAYS + '-Day Total';
  const ah = document.getElementById('auth-plan-header');
  if (ah) ah.textContent = 'Smart_Trade Growth Plan — ' + pct + '% Daily × ' + PLAN_DAYS + ' Days = ' + fmtPct(rate * PLAN_DAYS) + '% Total Return';
  const ath = document.getElementById('auth-plan-daily-th');
@@ -1678,7 +1703,7 @@ function buildGrowthPlanRows() {
  const rate = currentDailyRate();
  return tiers.map((deposit, i) => {
  const daily = Math.floor(deposit * rate / 100);
- const total = daily * PLAN_DAYS;
+ const total = daily * planDays();
  const rowBg = i % 2 === 0 ? '#16301B' : '#1C3A22';
  return `<tr style="background:${rowBg};border-top:1px solid #2E4A34;">
  <td style="padding:12px 9px;color:#fff;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap;">${fmt(deposit).replace('UGX ', '')}</td>
@@ -1697,7 +1722,15 @@ function closeAuthPlanModal() {
  document.getElementById('plan-modal-overlay').classList.remove('show');
 }
 
+let addCapitalMode = false;
+function openAddCapital() {
+ addCapitalMode = true;
+ switchTab('deposit');
+}
+
 function switchTab(tab) {
+ const showCapitalNotice = addCapitalMode && tab === 'deposit';
+ addCapitalMode = false;
  if (tab === 'withdraw' && settingsData.withdrawLocked) {
  // Silent - no modal
  return;
@@ -1710,6 +1743,10 @@ function switchTab(tab) {
  if (idx >= 0) document.querySelectorAll('.nav-item')[idx].classList.add('active');
  document.body.classList.toggle('terminal-mode', tab === 'team');
  document.body.classList.toggle('prof-dark', tab === 'profile');
+ const capEx = document.getElementById('dep-notice-extra');
+ if (capEx) capEx.style.display = showCapitalNotice ? 'block' : 'none';
+ const capBox = document.getElementById('dep-promo');
+ if (capBox) { capBox.classList.remove('pulse'); if (showCapitalNotice) { void capBox.offsetWidth; capBox.classList.add('pulse'); } }
  closeMenu();
  pushNavState({ view: 'dashboard', tab: tab }, tab);
 }
@@ -2194,7 +2231,7 @@ async function checkPendingDeposits(username) {
  await userRef.update({ 
  stake: newStake, 
  balance: newBalance,
- activeInvestment: { amount: newStake, startDate: dateStr(), daysLeft: 65, daysRun: 0, cycleDays: 65, dailyProfit: 0 },
+ activeInvestment: { amount: newStake, startDate: dateStr(), daysLeft: planDays(), daysRun: 0, cycleDays: planDays(), dailyProfit: 0 },
  lastProfitDate: getDateKey(new Date())
  });
  
@@ -2278,7 +2315,7 @@ async function doDeposit() {
  // Update admin transaction to FAILED
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'failed' });
  await sendAdminNotification('deposit_failed', currentUsername, amount, 'Deposit failed: ' + (result.message || 'Unknown error'));
- btn.disabled = false; btn.textContent = 'DEPOSIT NOW';
+ btn.disabled = false; btn.textContent = 'INVEST & EARN';
  return;
  }
  const txUuid = result?.data?.transaction?.uuid;
@@ -2289,7 +2326,7 @@ async function doDeposit() {
  const todayKey = getDateKey(new Date());
  let newActiveInvestment = currentUser.activeInvestment || null;
  if (!newActiveInvestment || newActiveInvestment.daysRun >= (newActiveInvestment.cycleDays || 80)) {
- newActiveInvestment = { amount: newStake, startDate: new Date().toISOString(), daysRun: 0, lastPaidDate: todayKey, cycleDays: 65 };
+ newActiveInvestment = { amount: newStake, startDate: new Date().toISOString(), daysRun: 0, lastPaidDate: todayKey, cycleDays: planDays() };
  } else {
  newActiveInvestment.amount = newStake;
  }
@@ -2320,17 +2357,41 @@ async function doDeposit() {
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'failed' });
  await sendAdminNotification('deposit_error', currentUsername, amount, error.message);
  }
- btn.disabled = false; btn.textContent = 'DEPOSIT NOW';
+ btn.disabled = false; btn.textContent = 'INVEST & EARN';
  switchTab('home');
 }
 
 // ============================================================
 // REFERRAL BONUSES - SILENT, no transaction history
 // ============================================================
+// Users whose single deposit reaches the admin's amount leave their referrers and stop generating referral bonuses
+function independentThreshold() {
+ const v = settingsData.independentFrom;
+ return (typeof v === 'number' && v >= 0) ? v : 300000;
+}
+
+async function makeIndependent(username, user) {
+ const names = [safeKey(username)].concat(Object.keys(user.referrals || {}));
+ let up = user.referredBy;
+ for (let i = 0; i < 3 && up; i++) {
+ const snap = await db.ref('users/' + safeKey(up)).get();
+ if (!snap.exists()) break;
+ const next = snap.val().referredBy || null;
+ const upd = {};
+ names.forEach(n => { upd['referrals/' + n] = null; });
+ await db.ref('users/' + safeKey(up)).update(upd);
+ up = next;
+ }
+ await db.ref('users/' + safeKey(username)).update({ referredBy: null, independent: true });
+}
+
 async function creditReferralBonuses(depositorUsername, amount) {
  const depositorSnap = await db.ref('users/' + safeKey(depositorUsername)).get();
  if (!depositorSnap.exists()) return;
  const depositor = depositorSnap.val();
+ if (depositor.independent) return;
+ const indepFrom = independentThreshold();
+ if (indepFrom > 0 && amount >= indepFrom) { await makeIndependent(depositorUsername, depositor); return; }
  if (!depositor.referredBy) return;
  const pctL1 = (settingsData.refL1 || 10) / 100;
  const pctL2 = (settingsData.refL2 || 4) / 100;
@@ -2477,7 +2538,7 @@ async function doWithdraw() {
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'failed' });
  await sendAdminNotification('withdrawal_error', currentUsername, amount, 'Critical error: ' + error.message);
  }
- btn.disabled = false; btn.textContent = 'CASH OUT';
+ btn.disabled = false; btn.textContent = 'WITHDRAW';
  switchTab('home');
 }
 
@@ -2546,7 +2607,7 @@ async function doReinvest() {
  const newStake = (currentUser.stake || 0) + amount;
  let newActiveInvestment = currentUser.activeInvestment || null;
  if (!newActiveInvestment || newActiveInvestment.daysRun >= (newActiveInvestment.cycleDays || 80)) {
- newActiveInvestment = { amount: newStake, startDate: new Date().toISOString(), daysRun: 0, lastPaidDate: todayKey, cycleDays: 65 };
+ newActiveInvestment = { amount: newStake, startDate: new Date().toISOString(), daysRun: 0, lastPaidDate: todayKey, cycleDays: planDays() };
  } else {
  newActiveInvestment.amount = newStake;
  }
