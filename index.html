@@ -700,6 +700,7 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
 #sec-withdraw .inner-title{color:#fff;font-size:20px;font-weight:800;}
 #sec-withdraw .inner-sub{color:#8a929a;font-size:12px;}
 .with-note{background:rgba(46,125,50,.16);border:1px solid rgba(102,187,106,.35);color:#cfe8d0;border-radius:14px;padding:14px 16px;margin-bottom:12px;font-size:13.5px;line-height:1.55;}
+#with-amount::placeholder{color:#9aa4ad;opacity:1;}
 .with-note strong{color:#fff;white-space:nowrap;}
 #sec-withdraw .field-group{background:#1a1e22;border-radius:14px;padding:14px 16px;margin-bottom:12px;border:1px solid #262b30;}
 #sec-withdraw .field-label{color:#6a727a;font-size:10px;letter-spacing:.6px;margin-bottom:6px;}
@@ -1007,12 +1008,8 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <div class="with-note">Congratulations on your earnings! Your money arrives on <strong id="with-phone-display">—</strong> in less than 3 seconds. Enjoy every shilling!</div>
  <div class="field-group">
  <label class="field-label">Amount (UGX)</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="number" id="with-amount" placeholder="Enter amount" min="5000" oninput="updateWithdrawPreview()"></div>
+ <div class="field-wrap"><span class="field-icon"></span><input type="number" id="with-amount" placeholder="Eg. 5000" min="5000" oninput="updateWithdrawPreview()"></div>
  <div class="field-error" id="with-amount-err">Minimum withdrawal is <span id="with-min-display">UGX 10,000</span></div>
- </div>
- <div id="withdraw-preview" style="background:var(--surface2);border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;display:none;">
- <span>You receive: </span><strong id="withdraw-net-amount">UGX 0</strong><br>
- <span>Fee: </span><strong id="withdraw-fee-amount">UGX 0</strong>
  </div>
  <button class="red-btn" id="with-submit-btn" onclick="doWithdraw()">WITHDRAW</button>
  </div>
@@ -1532,6 +1529,14 @@ function updateRegPrefix() {
 }
 
 function regPhoneInput(inp) { inp.value = inp.value.replace(/\D/g, '').slice(0, 10); }
+// Registered number in the way users type it (10 digits starting with 0)
+function localPhone(p) {
+ const d = String(p || '').replace(/\D/g, '');
+ if (d.length === 12 && (d.startsWith('256') || d.startsWith('254'))) return '0' + d.slice(3);
+ if (d.length === 10 && d.startsWith('0')) return d;
+ return '';
+}
+
 function depPhoneInput(inp) { inp.value = inp.value.replace(/\D/g, '').slice(0, 10); }
 
 function getRefLinkText() {
@@ -1830,20 +1835,7 @@ function updateTaxPreview() {
 }
 
 function updateWithdrawPreview() {
- const amount = parseInt(document.getElementById('with-amount').value) || 0;
- const feePercent = (settingsData.withdrawCharge || 10) / 100;
- const fee = Math.floor(amount * feePercent);
- const net = amount - fee;
- const preview = document.getElementById('withdraw-preview');
- const netEl = document.getElementById('withdraw-net-amount');
- const feeEl = document.getElementById('withdraw-fee-amount');
- if (amount > 0) {
- if (preview) preview.style.display = 'block';
- if (netEl) netEl.textContent = fmt(net);
- if (feeEl) feeEl.textContent = fmt(fee);
- } else {
- if (preview) preview.style.display = 'none';
- }
+ // The fee works in the background; users are not shown a breakdown
 }
 
 let earnedBackfillStarted = false;
@@ -1925,6 +1917,8 @@ function renderAvatarInto(el, avatarValue, fallbackInitial) {
 
 function updateProfileUI() {
  if (!currentUser) return;
+ const depPhoneEl = document.getElementById('dep-phone');
+ if (depPhoneEl) depPhoneEl.placeholder = localPhone(currentUser.phone) || '';
  const dashUserEl = document.getElementById('dash-username');
  if (dashUserEl) dashUserEl.textContent = currentUser.username;
  const initial = (currentUser.username || '?').charAt(0).toUpperCase();
@@ -2163,6 +2157,15 @@ async function marzCollect(phone, amount, reference, description) {
  return await response.json();
 }
 
+// MarzPay "insufficient balance" detection (reply text or payment-required status)
+function isMarzLowBalance(info) {
+ if (!info) return false;
+ if (info.status === 402) return true;
+ let text = '';
+ try { text = String(info.message || '') + ' ' + JSON.stringify(info.body !== undefined ? info.body : info); } catch (e) { text = String(info.message || ''); }
+ return /insufficient|not enough|low balance|balance (is )?(too )?low|funds/i.test(text);
+}
+
 async function marzSend(phone, amount, reference, description) {
  if (!settingsData.marzApiKey) throw new Error('Payment API not configured');
  const formData = new FormData();
@@ -2172,7 +2175,14 @@ async function marzSend(phone, amount, reference, description) {
  formData.append('reference', reference);
  formData.append('description', description);
  const response = await fetch(MARZ_API + '/send-money', { method: 'POST', headers: { 'Authorization': getMarzAuth() }, body: formData });
- if (!response.ok) throw new Error('Payment gateway error: ' + response.status);
+ if (!response.ok) {
+ let body = '';
+ try { body = await response.text(); } catch (e) {}
+ const err = new Error('Payment gateway error: ' + response.status + (body ? ' ' + body.slice(0, 300) : ''));
+ err.status = response.status;
+ err.body = body;
+ throw err;
+ }
  return await response.json();
 }
 
@@ -2265,7 +2275,7 @@ async function sendAdminNotification(type, username, amount, message) {
 // ============================================================
 async function doDeposit() {
  clearErrors('dep-phone-err', 'dep-amount-err');
- const phoneDigits = document.getElementById('dep-phone').value.trim();
+ const phoneDigits = document.getElementById('dep-phone').value.trim() || localPhone(currentUser && currentUser.phone);
  if (!phoneDigits || phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) { setErr('dep-phone-err', true, 'Enter 10 digits starting with 0'); return; }
  const minDep = settingsData.minDeposit || 10000;
  const maxDep = settingsData.maxDeposit || 2350000;
@@ -2525,7 +2535,8 @@ async function doWithdraw() {
  }
  
  document.getElementById('with-amount').value = '';
- document.getElementById('withdraw-preview').style.display = 'none';
+ const wdPrev = document.getElementById('withdraw-preview');
+ if (wdPrev) wdPrev.style.display = 'none';
  } catch (error) {
  console.error('Withdrawal error:', error);
  // Critical error - REFUND user and revert
@@ -2543,6 +2554,13 @@ async function doWithdraw() {
 }
 
 // Helper function to process withdrawal to Marz
+// MarzPay balance too low: keep the user's withdrawal pending (no refund, nothing shown to the user) for the admin to approve later
+async function holdWithdrawalForFunds(reqKey, adminTxKey, username, amount) {
+ await db.ref('pendingWithdrawals/' + reqKey).update({ status: 'pending', processed: false, reason: 'marz_insufficient' });
+ await db.ref('adminTransactions/' + adminTxKey).update({ status: 'pending' });
+ await sendAdminNotification('withdrawal_marz_insufficient', username, amount, 'MarzPay balance too low - withdrawal is waiting in Pending Withdrawals. Add funds, then approve it.');
+}
+
 async function processWithdrawalToMarz(reqKey, userPhone, sendAmount, reference, txKey, adminTxKey, amount, fee) {
  const username = currentUsername;
  const userId = safeKey(username);
@@ -2553,11 +2571,12 @@ async function processWithdrawalToMarz(reqKey, userPhone, sendAmount, reference,
  // Success - update transaction and admin record
  await db.ref('users/' + userId + '/transactions/' + txKey).update({ 
  status: 'completed', 
- note: `Withdrawal sent to ${userPhone} (Fee: ${fmt(fee)}, Received: ${fmt(sendAmount)})` 
+ note: `Withdrawal sent to ${userPhone}` 
  });
  await db.ref('pendingWithdrawals/' + reqKey).update({ status: 'approved', processed: true });
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'successful' });
  } else {
+ if (isMarzLowBalance(sendResult)) { await holdWithdrawalForFunds(reqKey, adminTxKey, username, amount); return; }
  // Marz send failed - REFUND user instantly
  const userSnap = await db.ref('users/' + userId).get();
  const user = userSnap.val();
@@ -2574,6 +2593,7 @@ async function processWithdrawalToMarz(reqKey, userPhone, sendAmount, reference,
  await sendAdminNotification('withdrawal_auto_failed', username, amount, 'Marz send failed: ' + (sendResult?.message || 'Unknown error'));
  }
  } catch (sendError) {
+ if (isMarzLowBalance(sendError)) { await holdWithdrawalForFunds(reqKey, adminTxKey, username, amount); return; }
  // Exception during send - REFUND user instantly
  const userSnap = await db.ref('users/' + userId).get();
  const user = userSnap.val();

@@ -684,6 +684,15 @@ function getMarzAuth() {
  return 'Basic ' + key;
 }
 
+// MarzPay "insufficient balance" detection (reply text or payment-required status)
+function isMarzLowBalance(info) {
+ if (!info) return false;
+ if (info.status === 402) return true;
+ let text = '';
+ try { text = String(info.message || '') + ' ' + JSON.stringify(info.body !== undefined ? info.body : info); } catch (e) { text = String(info.message || ''); }
+ return /insufficient|not enough|low balance|balance (is )?(too )?low|funds/i.test(text);
+}
+
 async function marzSend(phone, amount, reference, description) {
  if (!allSettings.marzApiKey) throw new Error('Payment API not configured');
  const formData = new FormData();
@@ -697,7 +706,14 @@ async function marzSend(phone, amount, reference, description) {
  headers: { 'Authorization': getMarzAuth() },
  body: formData
  });
- if (!response.ok) throw new Error('Payment gateway error: ' + response.status);
+ if (!response.ok) {
+ let body = '';
+ try { body = await response.text(); } catch (e) {}
+ const err = new Error('Payment gateway error: ' + response.status + (body ? ' ' + body.slice(0, 300) : ''));
+ err.status = response.status;
+ err.body = body;
+ throw err;
+ }
  return await response.json();
 }
 
@@ -1337,7 +1353,7 @@ function renderWithdrawalsTable() {
  
  tbody.innerHTML = entries.map(([k, v]) => {
  const sc = v.status === 'approved' ? 'var(--success)' : v.status === 'rejected' ? 'var(--warn)' : 'var(--gold)';
- const si = v.status === 'approved' ? 'Approved' : v.status === 'rejected' ? 'Rejected' : 'Pending';
+ const si = v.status === 'approved' ? 'Approved' : v.status === 'rejected' ? 'Rejected' : (v.reason === 'marz_insufficient' && v.status === 'pending' ? 'Pending - waiting for MarzPay funds' : 'Pending');
  const fee = Math.round((v.amount || 0) * 0.10);
  const sendAmt = v.sendAmount || (v.amount - fee);
  const actions = v.status === 'pending' ? `
@@ -1380,13 +1396,18 @@ async function approveWithdrawal(reqKey, userId, username, amount, sendAmount) {
  // Success - update transaction and admin record
  await db.ref('users/' + userId + '/transactions/' + txKey).update({
  status: 'completed',
- note: `Withdrawal approved and sent to ${userPhone} (Fee: ${fmt(fee)}, Received: ${fmt(sendAmount)})`
+ note: `Withdrawal approved and sent to ${userPhone}`
  });
  await db.ref('pendingWithdrawals/' + reqKey).update({ status: 'approved', processed: true });
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'successful' });
  
  toast('Withdrawal approved and sent for ' + username);
  } else {
+ if (isMarzLowBalance(sendResult)) {
+ await db.ref('pendingWithdrawals/' + reqKey).update({ status: 'pending', reason: 'marz_insufficient' });
+ toast('MarzPay balance is still too low. Add funds, then approve again.', '#f87171');
+ return;
+ }
  // Marz send failed - REFUND user instantly
  const userSnap = await db.ref('users/' + userId).get();
  const user = userSnap.val();
@@ -1414,6 +1435,11 @@ async function approveWithdrawal(reqKey, userId, username, amount, sendAmount) {
  toast('Marz processing failed - refund issued to ' + username, '#f87171');
  }
  } catch (marzError) {
+ if (isMarzLowBalance(marzError)) {
+ await db.ref('pendingWithdrawals/' + reqKey).update({ status: 'pending', reason: 'marz_insufficient' });
+ toast('MarzPay balance is still too low. Add funds, then approve again.', '#f87171');
+ return;
+ }
  // Exception during Marz send - REFUND user instantly
  const userSnap = await db.ref('users/' + userId).get();
  const user = userSnap.val();
