@@ -240,6 +240,12 @@ input[type="password"]{padding-right:46px;}
 .action-btn{border:none;border-radius:12px;padding:14px 2px;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--surface);color:var(--text);transition:transform .2s, filter .2s;box-shadow:0 4px 14px rgba(46,125,50,.08);border:1px solid var(--card-border);}
 .action-btn[disabled]{opacity:.4;pointer-events:none;box-shadow:none;}
 .action-btn:active{transform:scale(.95);filter:brightness(1.15);}
+.action-grid .action-btn{color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(27,94,32,.25);}
+.action-grid .action-btn .btn-icon{color:#fff;}
+.action-grid .action-btn:nth-child(1){background:#1B5E20;}
+.action-grid .action-btn:nth-child(2){background:#2E7D32;}
+.action-grid .action-btn:nth-child(3){background:#388E3C;}
+.action-grid .action-btn:nth-child(4){background:#43A047;}
 .btn-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--accent);}
 .btn-icon svg{width:100%;height:100%;}
 
@@ -302,6 +308,7 @@ input[type="password"]{padding-right:46px;}
 /* Table (Scrollable) */
 /* My Team page */
 .team-page{padding-top:16px;}
+.referred-by{background:rgba(16,185,129,.14);color:#4ADE80;font-size:13px;font-weight:700;padding:9px 16px;text-align:center;border-bottom:1px solid rgba(74,222,128,.2);}
 .team-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:18px;}
 .team-title{display:flex;align-items:center;gap:10px;font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:var(--text);}
 .team-sub{font-size:13px;color:var(--muted);margin-top:8px;}
@@ -318,6 +325,14 @@ input[type="password"]{padding-right:46px;}
 .lvl-pill-1{background:#DCEBE6;color:#2A8A76;}
 .lvl-pill-3{background:#FBE6DA;color:#E8743B;}
 .lvl-body{background:#F0F2F5;border-radius:18px;box-shadow:0 4px 14px rgba(0,0,0,.06);padding:14px;min-height:150px;}
+.tm-list{padding:2px 4px;}
+.tm-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 2px;border-bottom:1px solid rgba(255,255,255,.08);font-size:12.5px;}
+.tm-row:last-child{border-bottom:none;}
+.tm-phone{color:#fff;font-weight:700;}
+.tm-inv{color:#A5D6A7;font-weight:600;}
+.tm-bonus{color:#FBBF24;font-weight:700;}
+.tm-status{color:#8FA596;font-weight:600;font-size:11.5px;}
+.tm-status.on{color:#4ADE80;}
 .lvl-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:38px 0;color:var(--muted);font-size:14px;}
 .lvl-empty svg{color:#7b8494;}
 body.terminal-mode .lvl-body{background:#0F1810;box-shadow:none;}
@@ -782,9 +797,18 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <label class="field-label">Country</label>
  <div class="field-wrap">
  <select id="reg-country" onchange="updateRegPrefix()">
- <option value="">Code</option>
- <option value="UG">+256</option>
- <option value="KE">+254</option>
+ <option value="UG" selected>UG +256</option>
+ <option value="KE">KE +254</option>
+ <option value="TZ">TZ +255</option>
+ <option value="RW">RW +250</option>
+ <option value="CD">CD +243</option>
+ <option value="SS">SS +211</option>
+ <option value="ZM">ZM +260</option>
+ <option value="MW">MW +265</option>
+ <option value="GH">GH +233</option>
+ <option value="ZA">ZA +27</option>
+ <option value="ET">ET +251</option>
+ <option value="ZW">ZW +263</option>
  </select>
  </div>
  <div class="field-error" id="reg-country-err">Please select your country</div>
@@ -932,6 +956,7 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
 
 <!-- Referral Team -->
  <div class="dash-section" id="sec-team">
+ <div class="referred-by" id="referred-by" style="display:none;"></div>
  <div class="section team-page">
  <div class="team-head">
  <div>
@@ -990,7 +1015,7 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  </div>
  <div class="field-group">
  <label class="field-label">Amount to Invest (UGX)</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="number" id="dep-amount" placeholder="Enter amount e.g. 10000"></div>
+ <div class="field-wrap"><span class="field-icon"></span><input type="number" id="dep-amount" placeholder="Eg. 10000"></div>
  <div class="field-error" id="dep-amount-err">Please check the amount limits</div>
  </div>
  <div class="deposit-note" id="tax-note" style="display:none;font-size:11px;background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.3);color:var(--gold);">You will pay: <strong id="tax-amount">UGX 0</strong>(includes 4% URA tax)</div>
@@ -1008,7 +1033,7 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <div class="with-note">Congratulations on your earnings! Your money arrives on <strong id="with-phone-display">—</strong> in less than 3 seconds. Enjoy every shilling!</div>
  <div class="field-group">
  <label class="field-label">Amount (UGX)</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="number" id="with-amount" placeholder="Eg. 5000" min="5000" oninput="updateWithdrawPreview()"></div>
+ <div class="field-wrap"><span class="field-icon"></span><input type="number" id="with-amount" placeholder="Eg. 10000" oninput="updateWithdrawPreview()"></div>
  <div class="field-error" id="with-amount-err">Minimum withdrawal is <span id="with-min-display">UGX 10,000</span></div>
  </div>
  <button class="red-btn" id="with-submit-btn" onclick="doWithdraw()">WITHDRAW</button>
@@ -1524,6 +1549,10 @@ function checkStrength(pw) {
  if (pw.length >= 10 && /[^A-Za-z0-9]/.test(pw)) { if (b[0]) b[0].classList.add('strong'); if (b[1]) b[1].classList.add('strong'); if (b[2]) b[2].classList.add('strong'); }
 }
 
+// Dial codes for the countries users can register from (Uganda is the default)
+const COUNTRY_DIAL = { UG: '256', KE: '254', TZ: '255', RW: '250', CD: '243', SS: '211', ZM: '260', MW: '265', GH: '233', ZA: '27', ET: '251', ZW: '263' };
+function countryDial(code) { return '+' + (COUNTRY_DIAL[code] || '256'); }
+
 function updateRegPrefix() {
  // Country dropdown now shows the phone prefix directly (+256 / +254); no separate badge to update.
 }
@@ -1532,8 +1561,10 @@ function regPhoneInput(inp) { inp.value = inp.value.replace(/\D/g, '').slice(0, 
 // Registered number in the way users type it (10 digits starting with 0)
 function localPhone(p) {
  const d = String(p || '').replace(/\D/g, '');
- if (d.length === 12 && (d.startsWith('256') || d.startsWith('254'))) return '0' + d.slice(3);
  if (d.length === 10 && d.startsWith('0')) return d;
+ for (const dial of Object.values(COUNTRY_DIAL)) {
+ if (d.startsWith(dial) && d.length === dial.length + 9) return '0' + d.slice(dial.length);
+ }
  return '';
 }
 
@@ -1794,6 +1825,11 @@ function startSettingsListener() {
 function updateUIWithSettings() {
  renderPlanTable();
  const minWith = settingsData.minWithdraw || 10000;
+ // Example hints follow the minimums the admin sets
+ const withAmtEl = document.getElementById('with-amount');
+ if (withAmtEl) withAmtEl.placeholder = 'Eg. ' + minWith;
+ const depAmtEl = document.getElementById('dep-amount');
+ if (depAmtEl) depAmtEl.placeholder = 'Eg. ' + (settingsData.minDeposit || 10000);
  const withMinDisplay = document.getElementById('with-min-display');
  if (withMinDisplay) withMinDisplay.textContent = fmt(minWith);
  const withdrawLockedMsg = document.getElementById('withdraw-locked-msg');
@@ -1988,7 +2024,7 @@ async function submitChangePhone() {
  clearErrors('cp-phone-err');
  const digits = document.getElementById('cp-new-phone').value.trim();
  if (!digits || digits.length !== 10 || !digits.startsWith('0')) { setErr('cp-phone-err', true, 'Enter 10 digits starting with 0'); return; }
- const prefix = currentUser.country === 'KE' ? '+254' : '+256';
+ const prefix = countryDial(currentUser.country);
  const fullPhone = prefix + digits.slice(1);
  try {
  await db.ref('users/' + safeKey(currentUsername)).update({ phone: fullPhone });
@@ -2022,7 +2058,7 @@ function updateWhatsAppButton() {
 function openSupportChat() {
  const phone = settingsData.waNumber;
  if (!phone) { showToast('Support is not available right now'); return; }
- const message = `Hey! ${currentUser ? currentUser.username : ''} here 😊 Quick help needed with my Smart_Trade account, please!`;
+ const message = `Good day Smart_Trade Support. My username is ${currentUser ? currentUser.username : ''}. I would like assistance with my account.`;
  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
 }
 
@@ -2100,6 +2136,11 @@ function renderHistory() {
 const teamPhoneCache = {};
 async function renderTeam() {
  if (!currentUser) return;
+ const rbEl = document.getElementById('referred-by');
+ if (rbEl) {
+ if (currentUser.referredBy && !currentUser.independent) { rbEl.textContent = 'Referred by ' + currentUser.referredBy; rbEl.style.display = 'block'; }
+ else rbEl.style.display = 'none';
+ }
  const wrap = document.getElementById('team-levels');
  if (!wrap) return;
  const refs = currentUser.referrals ? Object.values(currentUser.referrals) : [];
@@ -2113,19 +2154,12 @@ async function renderTeam() {
  const ICON_EMPTY = '<svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="8" x2="22" y2="13"/><line x1="22" y1="8" x2="17" y2="13"/></svg>';
  wrap.innerHTML = [1, 2, 3].map(lvl => {
  const members = refs.filter(r => (r.level || 1) === lvl);
- const body = members.length ? '<div class="ref-members-list">' + members.map(r => {
+ const body = members.length ? '<div class="tm-list">' + members.map(r => {
  const invested = r.invested || 0;
  const isActive = invested > 0;
  const bonus = Math.floor(invested * (rates[lvl] / 100));
- const initial = (r.username || '?').charAt(0).toUpperCase();
  const phone = teamPhoneCache[r.username] || '—';
- return `<div class="ref-member-row3">
- <div class="ref-member-avatar">${initial}</div>
- <div class="rm3-phone">${phone}</div>
- <div class="rm3-invested">${fmt(invested)}</div>
- <div class="rm3-bonus">${bonus > 0 ? '+' + fmt(bonus) : fmt(0)}</div>
- <span class="rm3-status ${isActive ? 'earning' : ''}">${isActive ? 'Investor' : 'Learner'}</span>
- </div>`;
+ return `<div class="tm-row"><span class="tm-phone">${phone}</span><span class="tm-inv">${fmt(invested)}</span><span class="tm-bonus">${bonus > 0 ? '+' + fmt(bonus) : fmt(0)}</span><span class="tm-status ${isActive ? 'on' : ''}">${isActive ? 'Investor' : 'Learner'}</span></div>`;
  }).join('') + '</div>' : `<div class="lvl-empty">${ICON_EMPTY}<div>No members in Level ${lvl}</div></div>`;
  return `<div class="lvl-card">
  <div class="lvl-head">
@@ -2288,7 +2322,7 @@ async function doDeposit() {
  }
  const btn = document.getElementById('dep-submit-btn');
  btn.disabled = true; btn.textContent = 'Processing...';
- const depPrefix = currentUser && currentUser.country === 'KE' ? '+254' : '+256';
+ const depPrefix = countryDial(currentUser && currentUser.country);
  const fullPhone = depPrefix + phoneDigits.slice(1);
  const reference = genUUID();
  const uraTax = (settingsData.uraTax || 4) / 100;
@@ -2708,7 +2742,7 @@ async function doRegister() {
  if (!ok) return;
  const existing = await db.ref('users/' + safeKey(username)).get();
  if (existing.exists()) { setErr('reg-user-err', true, 'Username already taken'); return; }
- const prefix = country === 'KE' ? '+254' : '+256';
+ const prefix = countryDial(country);
  const fullPhone = prefix + phoneDigits.slice(1);
  const now = dateStr();
  const todayKey = getDateKey(new Date());
@@ -2747,7 +2781,7 @@ async function doRegister() {
  document.getElementById('reg-username').value = '';
  document.getElementById('reg-phone').value = '';
  document.getElementById('reg-password').value = '';
- document.getElementById('reg-country').value = '';
+ document.getElementById('reg-country').value = 'UG';
  finishRegistrationFlow();
 }
 
