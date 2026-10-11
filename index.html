@@ -447,6 +447,17 @@ body.prof-dark .topbar{background:#162036;border-bottom:1px solid #263250;}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:#1C3A22;display:flex;align-items:center;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:200;height:58px;box-sizing:content-box;}
 .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;padding:4px 0;border-radius:10px;transition:transform .15s;background:transparent;flex:1;min-width:0;}
 .nav-item:active{transform:scale(.92);}
+.wc-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10700;align-items:center;justify-content:center;padding:22px;}
+.wc-overlay.show{display:flex;}
+.wc-card{position:relative;background:#fff;width:100%;max-width:340px;border-radius:22px;padding:34px 22px 22px;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.35);}
+.wc-x{position:absolute;top:10px;right:12px;width:34px;height:34px;border:none;border-radius:50%;background:#F1F8E9;color:#2E7D32;font-size:22px;line-height:1;cursor:pointer;}
+.wc-title{font-size:20px;font-weight:800;color:#1B5E20;margin-bottom:10px;}
+.wc-text{font-size:14px;line-height:1.55;color:#33463A;margin-bottom:14px;}
+.wc-tag{font-size:13.5px;font-weight:800;color:#2E7D32;background:#E8F5E9;border-radius:12px;padding:10px 12px;margin-bottom:18px;}
+.wc-actions{display:flex;gap:10px;}
+.wc-btn{flex:1;border:none;border-radius:12px;padding:13px 6px;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:800;color:#fff;cursor:pointer;}
+.wc-group{background:#25D366;}
+.wc-start{background:#2E7D32;}
 .signout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10600;align-items:center;justify-content:center;padding:24px;}
 .signout-overlay.show{display:flex;}
 .signout-box{background:#fff;width:100%;max-width:320px;border-radius:20px;padding:24px 20px 18px;text-align:center;}
@@ -914,6 +925,20 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  </div>
  </div>
 
+ <!-- Welcome card (after login / registration) -->
+ <div class="wc-overlay" id="wc-overlay" onclick="if(event.target===this)closeWelcomeCard()">
+ <div class="wc-card">
+ <button class="wc-x" onclick="closeWelcomeCard()" aria-label="Close">&times;</button>
+ <div class="wc-title">Welcome aboard, <span id="wc-name"></span>!</div>
+ <div class="wc-text">You are now part of the Smart_Trade family. Join our group for tips and support, and start growing your money today.</div>
+ <div class="wc-tag">Sit back and enjoy automatic trading now, free.</div>
+ <div class="wc-actions">
+ <button class="wc-btn wc-group" id="wc-group-btn" onclick="welcomeJoinGroup()">Join Group</button>
+ <button class="wc-btn wc-start" onclick="welcomeStartTrading()">Start Trading Free</button>
+ </div>
+ </div>
+ </div>
+
  <!-- Sign out confirmation -->
  <div class="signout-overlay" id="signout-overlay" onclick="if(event.target===this)closeSignoutConfirm()">
  <div class="signout-box">
@@ -1004,7 +1029,7 @@ body.terminal-mode .ref-empty-hint{color:#5a7a5a;font-family:'JetBrains Mono',mo
  <div class="section">
  <div class="dep-promo" id="dep-promo">
  <div class="dep-promo-extra" id="dep-notice-extra">Add capital to get started</div>
- <div class="dep-promo-text">Put your money to work. Invest today and earn daily profits.</div>
+ <div class="dep-promo-text" id="dep-promo-text">Deposit now and start earning daily for the next 65 days. No more worries, our robots work for you.</div>
  </div>
  <div class="action-card">
  <div class="field-group">
@@ -1632,11 +1657,32 @@ function showAuth(id) {
  pushNavState({ view: 'auth', page: id }, id);
 }
 
+// Welcome card after a real login or registration
+let welcomePending = false;
+function showWelcomeCard() {
+ if (!currentUser) return;
+ const nameEl = document.getElementById('wc-name');
+ if (nameEl) nameEl.textContent = currentUser.username || '';
+ const gBtn = document.getElementById('wc-group-btn');
+ if (gBtn) gBtn.style.display = (typeof settingsData.waGroup === 'string' && /^https?:\/\//i.test(settingsData.waGroup)) ? '' : 'none';
+ document.getElementById('wc-overlay').classList.add('show');
+}
+function closeWelcomeCard() { document.getElementById('wc-overlay').classList.remove('show'); }
+function welcomeJoinGroup() {
+ const link = settingsData.waGroup;
+ if (typeof link === 'string' && /^https?:\/\//i.test(link)) window.open(link, '_blank', 'noopener');
+}
+function welcomeStartTrading() {
+ closeWelcomeCard();
+ switchTab('deposit');
+}
+
 function showDashboard() {
  document.querySelectorAll('.auth-page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
  document.getElementById('dashboard-page').style.display = 'block';
  document.getElementById('dashboard-page').classList.add('active');
  pushNavState({ view: 'dashboard', tab: 'home' }, 'home');
+ if (welcomePending) { welcomePending = false; showWelcomeCard(); }
 }
 
 function openMenu() {
@@ -1825,6 +1871,8 @@ function startSettingsListener() {
 function updateUIWithSettings() {
  renderPlanTable();
  const minWith = settingsData.minWithdraw || 10000;
+ const depPromoEl = document.getElementById('dep-promo-text');
+ if (depPromoEl) depPromoEl.textContent = 'Deposit now and start earning daily for the next ' + planDays() + ' days. No more worries, our robots work for you.';
  // Example hints follow the minimums the admin sets
  const withAmtEl = document.getElementById('with-amount');
  if (withAmtEl) withAmtEl.placeholder = 'Eg. ' + minWith;
@@ -2716,6 +2764,7 @@ async function doLogin() {
  updateReferralLink();
  updateProfileUI();
  updateWhatsAppButton();
+ welcomePending = true;
  showDashboard();
  switchTab('home');
  startDailyProfitLoop();
@@ -2793,6 +2842,7 @@ function finishRegistrationFlow() {
  updateReferralLink();
  updateProfileUI();
  updateWhatsAppButton();
+ welcomePending = true;
  showDashboard();
  switchTab('home');
  startDailyProfitLoop();
