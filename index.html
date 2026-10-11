@@ -2369,7 +2369,7 @@ async function doDeposit() {
  return; 
  }
  const btn = document.getElementById('dep-submit-btn');
- btn.disabled = true; btn.textContent = 'Processing...';
+ btn.disabled = true; btn.textContent = 'Confirm with PIN now...';
  const depPrefix = countryDial(currentUser && currentUser.country);
  const fullPhone = depPrefix + phoneDigits.slice(1);
  const reference = genUUID();
@@ -2556,7 +2556,7 @@ async function doWithdraw() {
  const sendAmount = amount - fee;
  const userPhone = currentUser.phone;
  const btn = document.getElementById('with-submit-btn');
- btn.disabled = true; btn.textContent = 'Processing...';
+ btn.disabled = true; btn.textContent = 'Sending your money...';
  const newBalance = balance - amount;
  const newWithdrawn = (currentUser.withdrawn || 0) + amount;
  const txKey = 'tx_wd_' + Date.now();
@@ -2703,7 +2703,7 @@ async function doReinvest() {
  const now = dateStr();
  const todayKey = getDateKey(new Date());
  const btn = document.querySelector('#sec-reinvest .green-btn');
- btn.disabled = true; btn.textContent = 'Processing...';
+ btn.disabled = true; btn.textContent = 'Growing your capital...';
  try {
  const newBalance = balance - amount + profit;
  const newStake = (currentUser.stake || 0) + amount;
